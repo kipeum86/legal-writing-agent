@@ -1,0 +1,39 @@
+# Design document (internal)
+legal-writing-agent-design-v4.md
+
+# Library assets (user-managed, confidential)
+library/house-styles/*
+library/templates/*
+library/precedents/*
+!library/house-styles/.gitkeep
+!library/templates/.gitkeep
+!library/precedents/.gitkeep
+
+# Input documents (user-provided, confidential)
+input/*
+!input/.gitkeep
+
+# Output artifacts (generated, confidential)
+output/documents/*
+output/manifests/*
+output/clause-maps/*
+output/placeholders/*
+output/term-registries/*
+output/checkpoint.json
+output/change-map.json
+output/outline.json
+output/draft.md
+output/draft-sections/
+!output/documents/.gitkeep
+!output/manifests/.gitkeep
+!output/clause-maps/.gitkeep
+!output/placeholders/.gitkeep
+!output/term-registries/.gitkeep
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node modules (for docx-generator)
+node_modules/
+package-lock.json

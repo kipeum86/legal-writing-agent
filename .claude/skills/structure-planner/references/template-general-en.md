@@ -1,0 +1,46 @@
+# Template: General Legal (General Legal Documents) — English
+
+## Policy Document
+```
+1. TITLE
+2. PURPOSE
+3. SCOPE
+4. DEFINITIONS
+5. POLICY STATEMENT
+6. PROCEDURES
+   6.1 [Topic 1]
+   6.2 [Topic 2]
+7. COMPLIANCE AND ENFORCEMENT
+8. EXCEPTIONS
+9. EFFECTIVE DATE AND REVIEW
+```
+
+## Compliance Guideline
+```
+1. INTRODUCTION
+2. SCOPE AND APPLICABILITY
+3. REGULATORY FRAMEWORK
+4. GUIDELINE REQUIREMENTS
+   4.1 [Requirement 1]
+   4.2 [Requirement 2]
+5. COMPLIANCE CHECKLIST
+6. VIOLATIONS AND PENALTIES
+7. FREQUENTLY ASKED QUESTIONS
+8. EFFECTIVE DATE
+```
+
+## Training Material
+```
+1. OVERVIEW
+2. LEARNING OBJECTIVES
+3. KEY CONCEPTS
+4. PRACTICAL EXAMPLES
+5. CASE STUDIES
+6. ASSESSMENT / REVIEW QUESTIONS
+7. RESOURCES AND REFERENCES
+```
+
+## Notes
+- Support level: Full
+- Flexible structure
+- Formal but accessible register
