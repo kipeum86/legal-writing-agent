@@ -1,5 +1,7 @@
 # Bilingual Legal Writing Agent
 
+🌐 **Language**: English | [한국어](docs/ko/README.md)
+
 A Claude Code agent that drafts and revises **non-contract legal documents** in Korean and English, applying jurisdiction-appropriate legal writing conventions.
 
 ## What It Does
