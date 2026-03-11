@@ -1,5 +1,7 @@
 # Formatting Conventions Quick Reference
 
+🌐 **Language**: English | [한국어](ko/formatting-conventions-reference.md)
+
 > Cross-language formatting reference for the Legal Writing Agent.
 
 ## Korean vs. English Convention Comparison

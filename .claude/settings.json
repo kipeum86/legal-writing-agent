@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(find 'c:\\\\Users\\\\kplee\\\\Desktop\\\\VS Code\\\\legal-writing-agent' -not -path */.git/* -type d)",
+      "Bash(find 'c:\\\\Users\\\\kplee\\\\Desktop\\\\VS Code\\\\legal-writing-agent' -not -path */.git/* -type f)"
+    ],
     "additionalDirectories": [
       "c:\\Users\\kipeu\\OneDrive\\바탕 화면\\VS Code\\legal-writing-agent\\.claude\\skills\\request-interpreter\\references",
       "c:\\Users\\kipeu\\OneDrive\\바탕 화면\\VS Code\\legal-writing-agent\\.claude\\skills\\convention-selector\\references"
