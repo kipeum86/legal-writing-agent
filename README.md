@@ -6,13 +6,13 @@ A Claude Code agent that drafts and revises **non-contract legal documents** in 
 
 ## Best Results: Use the Library
 
-The agent performs best when you actively populate `/library/` with your organization's real materials.
+The agent performs best when you actively populate `/library/` with your organization's real materials. Everything in `/library/` is stored locally in this project folder, so you can build up your own reusable writing base over time.
 
 - Add strong sample writing to `/library/precedents/` to guide tone, structure, level of detail, and preferred phrasing
 - Add reusable skeletons to `/library/templates/` for document-specific section flow
 - Add internal formatting or style preferences to `/library/house-styles/`
 
-High-quality, closely matched samples usually lead to noticeably better outputs. If you want the draft to sound like your team, the most effective way is to give the agent good example writing in the Library.
+High-quality, closely matched samples usually lead to noticeably better outputs. If you want the draft to sound like your team, the most effective way is to give the agent good example writing in the Library and keep that local Library curated with your team's best materials.
 
 ## What It Does
 
