@@ -76,6 +76,23 @@ input 폴더에 있는 답변서 수정해줘. 피고 주장 부분 보강해야
 Revise the brief in /input/. Strengthen the argument in Section III.
 ```
 
+## Data Security and Privacy
+
+This project runs locally on your filesystem. Your `/input/`, `/output/`, and `/library/` files stay in this project folder, and `/library/` is gitignored by default so your reusable materials are not committed unless you choose otherwise.
+
+However, drafting and revision still rely on Claude Code / Anthropic model API calls. In practice, that means prompts and document text you provide to the agent may be transmitted to Anthropic in order to generate outputs.
+
+If you plan to use this for real legal work involving confidential, privileged, or personally identifiable information:
+
+- Prefer a commercial Anthropic organization or API setup over a personal consumer account, and review the retention terms that apply to your plan
+- If your organization requires tighter controls, evaluate whether an approved Zero Data Retention configuration is available and appropriate for your workflow; Anthropic's current documentation notes important feature and product exceptions
+- Check with your organization's security, compliance, and IT teams before processing sensitive matter files through any AI tool
+
+Official Anthropic references:
+- [Claude Code data usage](https://docs.anthropic.com/en/docs/claude-code/data-usage)
+- [Commercial data retention](https://privacy.anthropic.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data)
+- [Zero Data Retention scope and exceptions](https://privacy.anthropic.com/en/articles/8956058-i-have-a-zero-data-retention-agreement-with-anthropic-what-products-does-it-apply-to)
+
 ## Project Structure
 
 ```
@@ -189,7 +206,7 @@ python .claude/skills/consistency-checker/scripts/citation-format-checker.py doc
 
 ## Library System
 
-The `/library/` folder contains three types of reusable assets. These are **user-managed** and **gitignored** (confidential).
+The `/library/` folder contains three types of reusable assets. These are **user-managed** and **gitignored by default**, which helps keep them out of version control. They still remain subject to your Claude Code / Anthropic data-handling setup when their contents are sent in prompts.
 
 ### House Styles (`/library/house-styles/`)
 

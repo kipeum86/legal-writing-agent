@@ -76,6 +76,23 @@ input 폴더에 있는 답변서 수정해줘. 피고 주장 부분 보강해야
 Revise the brief in /input/. Strengthen the argument in Section III.
 ```
 
+## 데이터 보안 및 개인정보
+
+이 프로젝트는 로컬 파일시스템에서 실행됩니다. `/input/`, `/output/`, `/library/`의 파일은 이 프로젝트 폴더 안에 남아 있으며, `/library/`는 기본적으로 `gitignore` 처리되어 사용자가 따로 바꾸지 않는 한 저장소에 커밋되지 않습니다.
+
+다만 초안 작성과 수정은 여전히 Claude Code / Anthropic 모델 API 호출에 의존합니다. 즉, 에이전트에 제공한 프롬프트와 문서 텍스트는 결과 생성을 위해 Anthropic으로 전송될 수 있습니다.
+
+실제 법률 업무에서 기밀정보, 비밀유지 대상 정보, 개인정보를 다룰 계획이라면:
+
+- 개인용 소비자 계정보다 상업용 Anthropic 조직 또는 API 구성을 우선 고려하고, 현재 플랜에 적용되는 보관 정책을 확인하세요
+- 더 강한 통제가 필요하다면 승인된 Zero Data Retention 구성이 현재 워크플로우에 적합한지 검토하세요. Anthropic 공식 문서에는 적용 제외되는 기능과 제품이 명시되어 있습니다
+- 민감한 사건 자료를 AI 도구에 처리시키기 전, 조직의 보안, 컴플라이언스, IT 부서와 먼저 협의하세요
+
+Anthropic 공식 참고자료:
+- [Claude Code data usage](https://docs.anthropic.com/en/docs/claude-code/data-usage)
+- [상업용 데이터 보관 정책](https://privacy.anthropic.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data)
+- [Zero Data Retention 적용 범위 및 예외](https://privacy.anthropic.com/en/articles/8956058-i-have-a-zero-data-retention-agreement-with-anthropic-what-products-does-it-apply-to)
+
 ## 프로젝트 구조
 
 ```
@@ -192,7 +209,7 @@ python .claude/skills/consistency-checker/scripts/citation-format-checker.py doc
 
 ## 라이브러리 시스템
 
-`/library/` 폴더에는 세 가지 유형의 재사용 가능한 자산이 포함됩니다. **사용자가 직접 관리**하며 **gitignore** 처리됩니다(기밀 유지).
+`/library/` 폴더에는 세 가지 유형의 재사용 가능한 자산이 포함됩니다. **사용자가 직접 관리**하며 기본적으로 **gitignore** 처리되어 버전 관리에서 제외되기 쉽습니다. 다만 그 내용이 프롬프트에 포함되어 전송되면, 해당 부분은 Claude Code / Anthropic 데이터 처리 설정의 적용을 받습니다.
 
 ### 하우스 스타일 (`/library/house-styles/`)
 
