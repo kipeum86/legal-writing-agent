@@ -4,6 +4,16 @@
 
 A Claude Code agent that drafts and revises **non-contract legal documents** in Korean and English, applying jurisdiction-appropriate legal writing conventions.
 
+## Best Results: Use the Library
+
+The agent performs best when you actively populate `/library/` with your organization's real materials.
+
+- Add strong sample writing to `/library/precedents/` to guide tone, structure, level of detail, and preferred phrasing
+- Add reusable skeletons to `/library/templates/` for document-specific section flow
+- Add internal formatting or style preferences to `/library/house-styles/`
+
+High-quality, closely matched samples usually lead to noticeably better outputs. If you want the draft to sound like your team, the most effective way is to give the agent good example writing in the Library.
+
 ## What It Does
 
 - **Drafts** new legal documents from user instructions (D1–D6 pipeline)
@@ -46,7 +56,8 @@ A Claude Code agent that drafts and revises **non-contract legal documents** in 
 
 1. Open this project folder in your terminal
 2. Run `claude` to start Claude Code — `CLAUDE.md` loads automatically
-3. Give instructions:
+3. For better results, place templates, house styles, and sample writing in `/library/` first
+4. Give instructions:
 
 **Drafting:**
 ```
