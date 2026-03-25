@@ -302,6 +302,20 @@ The agent infers intensity from context ("빨리 초안만" → Light, "최종�
 | Korean doc + English concept | 적법절차(due process)의 원칙에 따라... |
 | English doc + Korean concept | the Gab/Eul (갑/을) party designation... |
 
+## Part of Law Firm Pearl
+
+This agent is part of the **법무법인 진주 (Law Firm Pearl)** series of specialized legal AI agents:
+
+| Agent | Attorney | Specialty |
+|-------|----------|-----------|
+| [game-legal-research](https://github.com/lowtidebuild/game-legal-research) | 심진주 (Sim Jinju) | Game industry law |
+| [legal-translation-agent](https://github.com/lowtidebuild/legal-translation-agent) | 변혁기 (Byeon Hyeok-gi) | Legal translation |
+| [general-legal-research](https://github.com/lowtidebuild/general-legal-research) | 김재식 (Kim Jaesik) | Legal research |
+| [PIPA-expert](https://github.com/lowtidebuild/PIPA-expert) | 정보호 (Jeong Bo-ho) | Data privacy law |
+| [contract-review-agent](https://github.com/lowtidebuild/contract-review-agent) | 고덕수 (Ko Duksoo) | Contract review |
+| **[legal-writing-agent](https://github.com/lowtidebuild/legal-writing-agent)** | **한석봉 (Han Seokbong)** | **Legal writing** |
+| [second-review-agent](https://github.com/lowtidebuild/second-review-agent) | 반성문 (Ban Seong-mun) | Quality review (Partner) |
+
 ## License
 
 Licensed under the [Apache License 2.0](LICENSE).
