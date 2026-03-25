@@ -106,6 +106,10 @@ Official Anthropic references:
 │   ├── /placeholders/                 # Placeholder registry (JSON)
 │   └── /term-registries/             # Defined term tracking (JSON)
 ├── /library/                          # Reusable assets (user-managed)
+│   ├── /inbox/                        # Drop source files here for ingest
+│   ├── /grade-a/                      # Official primary sources (statutes, guidelines)
+│   ├── /grade-b/                      # Secondary sources (case law, law firm materials)
+│   ├── /grade-c/                      # Academic/reference sources
 │   ├── /house-styles/                 # Org-specific formatting rules
 │   ├── /templates/                    # Document structure skeletons
 │   └── /precedents/                   # Reference documents
@@ -118,7 +122,8 @@ Official Anthropic references:
     ├── /legal-drafter/                # D3/R4: Core drafting
     ├── /document-reviser/             # R2/R4: Revision scope & tracking
     ├── /consistency-checker/          # D4/R5: Quality checks & validation
-    └── /output-formatter/             # D5/R6: File generation & versioning
+    ├── /output-formatter/             # D5/R6: File generation & versioning
+    └── /ingest/                       # Source file ingestion & classification
 ```
 
 ## Pipelines
@@ -150,6 +155,7 @@ R7  File Save ◄── R6  Output (tracked changes) ◄── R5  Consistency C
 | `document-reviser` | R2, R4 | Enforce revision scope, track changes, preserve untouched sections |
 | `consistency-checker` | D4, R5 | 8/10-item checklist, self-review, run validation scripts |
 | `output-formatter` | D5–D6, R6–R7 | Generate files (.docx/.pdf/.md/.txt), auto-version |
+| `ingest` | — | Convert, classify, and catalog source files from inbox |
 
 ## Convention System
 
@@ -206,7 +212,7 @@ python .claude/skills/consistency-checker/scripts/citation-format-checker.py doc
 
 ## Library System
 
-The `/library/` folder contains three types of reusable assets. These are **user-managed** and **gitignored by default**, which helps keep them out of version control. They still remain subject to your Claude Code / Anthropic data-handling setup when their contents are sent in prompts.
+The `/library/` folder contains reusable assets and ingested sources. These are **user-managed** and **gitignored by default**, which helps keep them out of version control. They still remain subject to your Claude Code / Anthropic data-handling setup when their contents are sent in prompts.
 
 ### House Styles (`/library/house-styles/`)
 
@@ -225,6 +231,31 @@ Document structure skeletons. The agent auto-matches by document type and langua
 ### Precedents (`/library/precedents/`)
 
 Previously completed documents. The agent analyzes their structure and replicates patterns with high fidelity, substituting only specified variables.
+
+### Adding Your Own Sources
+
+1. Drop any file (PDF, DOCX, etc.) into `library/inbox/`
+2. Tell the agent: `/ingest` or "파일 넣었어"
+3. The agent will automatically:
+   - Convert to structured Markdown
+   - Classify source grade (A/B/C)
+   - Generate metadata (frontmatter)
+   - Place in the appropriate `library/grade-{a,b,c}/` folder
+   - Update search indexes
+
+> **Note:** Dropping files alone does not trigger processing.
+> You must run `/ingest` or tell the agent (e.g. "inbox에 파일 넣었어")
+> to start the parsing pipeline.
+
+**Source Grades:**
+
+| Grade | Description | Examples |
+|---|---|---|
+| A | Official primary sources | Statutes, regulations, government guidelines |
+| B | Secondary sources | Case law, law firm newsletters, bar association materials |
+| C | Academic/reference | Journal articles, theses, academic papers |
+
+Ingested sources serve as authority packets for Conditional-support documents (Advisory, Litigation, Regulatory).
 
 ## File Handling
 

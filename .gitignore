@@ -5,9 +5,19 @@ legal-writing-agent-design-v4.md
 library/house-styles/*
 library/templates/*
 library/precedents/*
+library/inbox/*
+library/grade-a/*
+library/grade-b/*
+library/grade-c/*
 !library/house-styles/.gitkeep
 !library/templates/.gitkeep
 !library/precedents/.gitkeep
+!library/inbox/.gitkeep
+!library/inbox/_processed/.gitkeep
+!library/inbox/_failed/.gitkeep
+!library/grade-a/.gitkeep
+!library/grade-b/.gitkeep
+!library/grade-c/.gitkeep
 
 # Input documents (user-provided, confidential)
 input/*
