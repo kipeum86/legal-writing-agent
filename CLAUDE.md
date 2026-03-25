@@ -272,16 +272,31 @@ Same as D6. File name includes `_revised_`.
 
 ## Library Protocol
 
-The agent draws on `/library/` containing three asset types (read-only during drafting):
+The agent draws on `/library/` containing six asset types:
 
 | Asset Type | Purpose | Location | Selection |
 |---|---|---|---|
 | **House style** | Org-specific formatting | `/library/house-styles/{style-name}/` | User selects per session; if one: auto-apply; if none: base defaults |
 | **Document template** | Structural skeleton | `/library/templates/{doc-type}/` | Auto-matched by document type + language |
 | **Precedent document** | Reference for replication | `/library/precedents/` | User provides or search by type + jurisdiction |
+| **Grade A source** | 법령, 공식 가이드라인 | `/library/grade-a/` | Authority packet for Conditional documents |
+| **Grade B source** | 판례, 로펌 해설, 실무자료 | `/library/grade-b/` | Authority packet for Conditional documents |
+| **Grade C source** | 학술 논문, 참고자료 | `/library/grade-c/` | Background reference |
 
-**Loading rules**: House style at D1. Templates at D2. Precedents at D1 or D3 when provided.
+**Loading rules**: House style at D1. Templates at D2. Precedents at D1 or D3 when provided. Graded sources at D1 (authority packet) or D3 (citation).
 **Precedent fidelity**: Default high — replicate structure and style, substituting only specified variables.
+
+## Source Ingest
+
+사용자가 외부 소스 파일을 `library/inbox/`에 넣고 `/ingest`를 요청하면:
+
+1. `.claude/skills/ingest/SKILL.md`를 읽어 워크플로우 확인
+2. inbox 내 파일을 markitdown으로 .md 변환
+3. 내용 분석하여 Grade 자동 판별 (A/B/C)
+4. frontmatter 생성 + 적절한 `library/grade-x/` 폴더로 배치
+5. 인덱스 업데이트
+
+**트리거 키워드:** "ingest", "소스 추가", "자료 넣었어", "inbox"
 
 ## Sequential Document Context
 
