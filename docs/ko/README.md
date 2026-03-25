@@ -304,6 +304,20 @@ output/documents/20260311_advisory_tax-opinion_v2.docx    # 수정본
 | 한국어 문서 + 영어 개념 | 적법절차(due process)의 원칙에 따라... |
 | 영어 문서 + 한국어 개념 | the Gab/Eul (갑/을) party designation... |
 
+## 법무법인 진주 (Law Firm Pearl)
+
+**법무법인 진주** 소속 전문 법률 AI 에이전트 시리즈:
+
+| 에이전트 | 변호사 | 전문 분야 |
+|---------|--------|----------|
+| [game-legal-research](https://github.com/kipeum86/game-legal-research) | 심진주 | 게임 산업법 |
+| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | 변혁기 | 법률 번역 |
+| [general-legal-research](https://github.com/kipeum86/general-legal-research) | 김재식 | 법률 리서치 |
+| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | 정보호 | 개인정보보호법 |
+| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | 고덕수 | 계약서 검토 |
+| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **한석봉** | **법률 문서 작성** |
+| [second-review-agent](https://github.com/kipeum86/second-review-agent) | 반성문 | 품질 리뷰 (파트너) |
+
 ## 라이선스
 
 [Apache License 2.0](../../LICENSE) 라이선스를 따릅니다.
