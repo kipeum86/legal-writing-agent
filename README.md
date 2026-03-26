@@ -2,6 +2,10 @@
 
 🌐 **Language**: English | [한국어](docs/ko/README.md)
 
+> **This tool is for legal document drafting assistance only — it does not provide legal advice.** Outputs are AI-generated and may contain errors despite built-in self-review. All documents should be reviewed by a qualified attorney before use. **[Full Disclaimer](docs/en/DISCLAIMER.md)** · **[면책사항](docs/ko/DISCLAIMER.md)**
+
+> **New here?** Read the **[How to Use Guide](docs/en/HOW-TO-USE.md)** — no technical background required. **[사용 가이드 (한국어)](docs/ko/HOW-TO-USE.md)**
+
 A Claude Code agent that drafts and revises **non-contract legal documents** in Korean and English, applying jurisdiction-appropriate legal writing conventions.
 
 ## Best Results: Use the Library
