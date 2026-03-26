@@ -304,7 +304,7 @@ output/documents/20260311_advisory_tax-opinion_v2.docx    # 수정본
 | 한국어 문서 + 영어 개념 | 적법절차(due process)의 원칙에 따라... |
 | 영어 문서 + 한국어 개념 | the Gab/Eul (갑/을) party designation... |
 
-## 법무법인 진주 (Law Firm Pearl)
+## 법무법인 진주 (Jinju Law Firm)
 
 **법무법인 진주** 소속 전문 법률 AI 에이전트 시리즈:
 
