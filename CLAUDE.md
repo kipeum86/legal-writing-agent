@@ -125,7 +125,7 @@ User request received
 **Trigger**: D1 parameters resolved.
 **Skills**: `/convention-selector`, `/structure-planner`
 
-1. Select convention set: Language + Jurisdiction → base style guide; Document type → template from `/library/templates/`; House style overlay
+1. Select convention set: Language + Jurisdiction → base style guide; Document type → template from `/library/templates/`; House style overlay. **한국어 법률의견서인 경우 `docs/ko-legal-opinion-style-guide.md`를 반드시 읽어 적용.**
 2. Generate document outline from template + user instructions
 3. Initialize term registry and clause map
 4. **Present outline and proceed**: Show outline briefly, then start drafting immediately. User can interrupt to modify — no need to wait for explicit approval.
@@ -252,6 +252,20 @@ Same as D6. File name includes `_revised_`.
 | English | UK | `style-guide-en-uk` | A4; OSCOLA |
 | English | International | `style-guide-en-intl` | A4; neutral English |
 | Bilingual (KR+EN) | Cross-border | Both referenced | Primary language's page/number |
+
+### Korean Legal Opinion Style Guide
+
+**한국어 법률의견서(법률검토의견, 클라이언트 메모 포함)를 작성할 때는 반드시 `docs/ko-legal-opinion-style-guide.md`를 읽고 그 규칙을 따를 것.** 이 가이드는 실제 법무법인 작성 의견서 3건에서 추출한 스타일 규칙을 체계화한 것으로, 다음을 포함합니다:
+- 문서 전체 구조 (MEMORANDUM 헤더, 정보 블록, 배경 사실, 질의 요지, disclaimer, 검토의견, 결론, 서명 블록)
+- 법령 인용 형식 (법령 블록 테이블, 인라인 인용)
+- 판례 인용 형식
+- 정의 용어 관례 (약칭 패턴, 후속 사용 규칙)
+- 문체 및 어조 (합니다체, 법률 전문 문어체, 금지 표현)
+- 확신도 표현 체계 (Level 1–5)
+- 번호 매김 관례 (대섹션→중섹션→소섹션→세부→열거)
+- 종결 disclaimer 및 서명 블록
+- DOCX 타이포그래피 규칙 (용지, 서체, 줄간격, CJK 폰트 설정)
+- 논증 흐름 패턴 및 예문 패턴집
 
 ## Bilingual Term Handling
 
