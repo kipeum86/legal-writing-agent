@@ -49,9 +49,13 @@
 ### Never Default (substantive)
 | Parameter | Action if missing |
 |---|---|
-| Governing law | Ask user |
+| Governing law | Infer from context if reasonably clear; ask only if genuinely ambiguous and the answer would materially change the output |
 | Claims / defenses | Placeholder |
 | Applicable statutes | Placeholder |
 | Regulatory requirements | Placeholder |
 | Factual basis | Placeholder |
 | Legal conclusions | Placeholder |
+
+### Skeleton-Only Rule for Conditional Documents
+- If `documentType` is `advisory`, `litigation`, or `regulatory` and `authorityPacketProvided` is `false`, set `skeletonOnly` to `true`
+- In skeleton-only mode, preserve structure and boilerplate, but use substantive placeholders instead of defaulting legal analysis

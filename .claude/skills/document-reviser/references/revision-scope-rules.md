@@ -1,7 +1,7 @@
 # Revision Scope Rules
 
 ## Core Principle
-**Modify only what is requested.** Untouched sections maintain canonical clause identity.
+**Modify what is requested, plus required convention and integrity fixes already brought into scope by the pipeline.** Untouched sections maintain canonical clause identity.
 
 ## Scope Classification
 
@@ -9,6 +9,7 @@
 - Sections explicitly referenced in user's revision instructions
 - Content changes: rewording, restructuring, adding, removing
 - Full convention compliance applied to modified sections
+- Convention issues already identified at R3 when the user did not expressly opt out
 
 ### Preserve
 - Sections NOT referenced in revision instructions
@@ -23,10 +24,11 @@
   - Cross-reference updates (if referenced sections changed)
   - Defined term updates (if terminology changed)
   - Table of contents updates
+  - Convention corrections in nearby text when needed to keep the revised document internally consistent with R3 selections
 - NOT allowed:
   - Substantive rewording
-  - Style improvements
-  - Convention corrections (unless user chose option 1 at R3)
+  - Style improvements outside the revision scope
+  - New convention cleanup unrelated to requested changes if the user expressly limited scope to requested edits only
 
 ## Scope Boundary Examples
 
@@ -40,5 +42,6 @@
 ## Convention Issues in Original Document
 - Detected at R3, presented to user with three options
 - Option 1: Fix alongside → convention fixes added to scope
-- Option 2: Only requested → convention issues ignored (default)
+- Option 2: Only requested → convention issues ignored only if the user expressly chooses this narrower scope
 - Option 3: Show full list → inform then user decides
+- Default behavior if no narrower choice is made: treat convention issues as part of the revision scope and fix them alongside requested changes
