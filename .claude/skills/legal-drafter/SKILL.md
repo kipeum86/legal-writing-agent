@@ -6,6 +6,12 @@
 - **Drafting Pipeline**: Step D3 (section-by-section drafting)
 - **Revision Pipeline**: Step R4 (revision execution, prose generation)
 
+## Required References
+- `references/defined-term-rules.md` — canonical definition and term-registry rules
+- `references/register-guide-kr.md` — Korean register rules and prohibited patterns
+- `references/register-guide-en.md` — English register rules and prohibited patterns
+- `references/placeholder-format.md` — canonical placeholder tokens and placeholder-registry schema
+
 ## Quality Bar
 **Output must be indistinguishable from a document drafted by a competent human attorney.**
 - Natural prose flow — not template-fill or AI-sounding language
@@ -28,6 +34,7 @@ Draft each section from the approved outline in order:
 ### 2. Register Enforcement
 
 #### Korean (문어체)
+- Apply `references/register-guide-kr.md`
 - Sentence endings: ~한다, ~하여야 한다, ~할 수 있다, ~로 한다, ~에 해당한다
 - Advisory/memo: ~합니다 체 permitted when contextually appropriate
 - NO colloquial endings: ~거든요, ~잖아요, ~인데요
@@ -35,6 +42,7 @@ Draft each section from the approved outline in order:
 - Use formal connectors: 따라서, 그러므로, 이에, 한편, 다만, 또한
 
 #### English (formal)
+- Apply `references/register-guide-en.md`
 - "Must" / "shall" for obligations; "may" for permissions
 - No contractions
 - No colloquialisms
@@ -47,7 +55,12 @@ Draft each section from the approved outline in order:
   - English: "XYZ Corporation (the 'Company')"
 - **Subsequent uses**: Defined term only
 - **Consistency rule**: Same concept = same term throughout. Never vary for style.
-- Update `output/term-registries/{document-id}-terms.json` with each new term
+- Update `output/term-registries/{document-id}-terms.json` with each new term using the canonical entry shape:
+  - `definedTerm`
+  - `fullForm`
+  - `language`
+  - `firstUsedInSection`
+  - `definitionText`
 
 ### 4. Placeholder Insertion
 When information is missing, insert bracketed placeholders:
@@ -85,6 +98,6 @@ When user provided a precedent document:
 
 ## Output
 - Complete draft, section by section
-- Updated term registry
-- Updated placeholder registry
-- Draft saved to `output/draft.md` or `output/draft-sections/`
+- Updated `output/term-registries/{document-id}-terms.json`
+- Updated `output/placeholders/{document-id}-placeholders.json`
+- Draft content prepared for `/output-formatter`

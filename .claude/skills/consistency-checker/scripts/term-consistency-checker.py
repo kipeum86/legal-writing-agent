@@ -15,7 +15,9 @@ saving to output/term-registries/.
 import re
 import sys
 import json
+import argparse
 from collections import defaultdict
+from pathlib import Path
 
 
 # ---------------------------------------------------------------------------
@@ -52,6 +54,55 @@ def offset_to_line(offsets: list[int], pos: int) -> int:
         else:
             hi = mid - 1
     return lo + 1
+
+
+def _language_code(language: str) -> str:
+    """Map detector output to canonical language code when possible."""
+    if language == "korean":
+        return "ko"
+    if language == "english":
+        return "en"
+    return language
+
+
+def _error_report(filepath: str, message: str) -> dict:
+    """Build a standard JSON error report."""
+    return {
+        "file": filepath,
+        "language": "unknown",
+        "definedTerms": [],
+        "issues": [],
+        "issueCount": 0,
+        "status": "error",
+        "error": message,
+    }
+
+
+def _load_text_file(filepath: str) -> tuple[str, str]:
+    """Read a UTF-8 text file and return (text, normalized_path)."""
+    path = Path(filepath)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {filepath}")
+    return path.read_text(encoding="utf-8"), str(path)
+
+
+def _line_text(text: str, line_no: int) -> str | None:
+    """Return the trimmed text of a 1-based line number if available."""
+    lines = text.splitlines()
+    if 1 <= line_no <= len(lines):
+        return lines[line_no - 1].strip()
+    return None
+
+
+class JsonArgumentParser(argparse.ArgumentParser):
+    """Argument parser that emits JSON errors for automation-friendly CLI usage."""
+
+    def error(self, message):
+        print(json.dumps({
+            "status": "error",
+            "error": message,
+        }, indent=2, ensure_ascii=False))
+        raise SystemExit(2)
 
 
 # ---------------------------------------------------------------------------
@@ -518,20 +569,29 @@ def generate_registry(
     filepath: str,
     language: str,
     definitions: list[dict],
+    text: str,
 ) -> dict:
     """Generate a term registry JSON from extracted definitions."""
+    language_code = _language_code(language)
     entries = []
     for defn in definitions:
+        definition_text = _line_text(text, defn["line"])
         entries.append({
+            "definedTerm": defn["term"],
             "term": defn["term"],
             "fullForm": defn["fullForm"],
+            "language": language_code,
             "type": defn["type"],
+            "firstUsedInSection": None,
+            "definitionText": definition_text,
             "definedAtLine": defn["line"],
         })
 
     return {
+        "documentId": Path(filepath).stem,
         "file": filepath,
-        "language": language,
+        "language": language_code,
+        "detectedLanguage": language,
         "generatedBy": "term-consistency-checker.py",
         "termCount": len(entries),
         "terms": entries,
@@ -543,19 +603,37 @@ def generate_registry(
 # ---------------------------------------------------------------------------
 
 def main():
-    if len(sys.argv) < 2:
-        print(
-            "Usage: python term-consistency-checker.py <file.md> "
-            "[--generate-registry]",
-            file=sys.stderr,
-        )
-        sys.exit(1)
+    parser = JsonArgumentParser(
+        description="Validate defined term consistency in legal documents."
+    )
+    parser.add_argument("file", help="Path to the document file (.md, .txt, etc.)")
+    parser.add_argument(
+        "--generate-registry",
+        action="store_true",
+        help="Output a term registry JSON instead of a validation report",
+    )
+    args = parser.parse_args()
 
-    filepath = sys.argv[1]
-    generate_reg = "--generate-registry" in sys.argv
+    filepath = args.file
 
-    with open(filepath, "r", encoding="utf-8") as f:
-        text = f.read()
+    try:
+        text, normalized_path = _load_text_file(filepath)
+    except FileNotFoundError as exc:
+        print(json.dumps(_error_report(filepath, str(exc)), indent=2, ensure_ascii=False))
+        sys.exit(2)
+    except UnicodeDecodeError:
+        print(json.dumps(
+            _error_report(filepath, f"Unable to decode file as UTF-8: {filepath}"),
+            indent=2,
+            ensure_ascii=False,
+        ))
+        sys.exit(2)
+    except OSError as exc:
+        print(json.dumps(_error_report(filepath, f"Unable to read file: {exc}"), indent=2, ensure_ascii=False))
+        sys.exit(2)
+    except Exception as exc:
+        print(json.dumps(_error_report(filepath, f"Unexpected error: {exc}"), indent=2, ensure_ascii=False))
+        sys.exit(2)
 
     language = detect_language(text)
     line_offsets = build_line_index(text)
@@ -570,8 +648,8 @@ def main():
         all_definitions = definitions
 
     # ---- Registry mode ------------------------------------------------------
-    if generate_reg:
-        registry = generate_registry(filepath, language, all_definitions)
+    if args.generate_registry:
+        registry = generate_registry(normalized_path, language, all_definitions, text)
         print(json.dumps(registry, indent=2, ensure_ascii=False))
         return
 
@@ -623,7 +701,7 @@ def main():
 
     # ---- Output report ------------------------------------------------------
     report = {
-        "file": filepath,
+        "file": normalized_path,
         "language": language,
         "definedTerms": defined_terms_summary,
         "issues": issues,

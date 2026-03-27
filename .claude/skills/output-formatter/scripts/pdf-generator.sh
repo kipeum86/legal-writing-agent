@@ -3,51 +3,113 @@
 # Converts markdown or docx to PDF.
 # Usage: ./pdf-generator.sh <input-file> <output.pdf> [--lang ko|en]
 #
-# Prerequisites: pandoc, wkhtmltopdf (or weasyprint), or libreoffice for .docx
+# Prerequisites: pandoc or LibreOffice / soffice
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+usage() {
+  echo "Usage: $0 <input-file> <output.pdf> [--lang ko|en]"
+}
+
+if [[ $# -lt 2 ]]; then
+  usage
+  exit 2
+fi
+
 INPUT="$1"
 OUTPUT="$2"
-LANG="${3:---lang}"
-LANG_VAL="${4:-ko}"
+shift 2
+
+LANG_VAL="ko"
+
+find_office_bin() {
+  if command -v libreoffice &> /dev/null; then
+    echo "libreoffice"
+    return 0
+  fi
+  if command -v soffice &> /dev/null; then
+    echo "soffice"
+    return 0
+  fi
+  return 1
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --lang)
+      if [[ $# -lt 2 ]]; then
+        echo "Error: --lang requires a value."
+        exit 2
+      fi
+      LANG_VAL="$2"
+      shift 2
+      ;;
+    --jurisdiction)
+      # Accepted for compatibility with dispatcher passthrough.
+      shift 2
+      ;;
+    *)
+      echo "Error: Unsupported option '$1'."
+      exit 2
+      ;;
+  esac
+done
 
 if [[ ! -f "$INPUT" ]]; then
   echo "Error: Input file '$INPUT' not found."
   exit 1
 fi
 
+mkdir -p "$(dirname "$OUTPUT")"
+
 EXT="${INPUT##*.}"
 
 case "$EXT" in
   md|txt)
-    # Convert markdown/txt to PDF via pandoc
     if command -v pandoc &> /dev/null; then
-      PANDOC_ARGS="-V geometry:margin=1in"
       if [[ "$LANG_VAL" == "ko" ]]; then
-        PANDOC_ARGS="-V geometry:a4paper -V geometry:top=20mm -V geometry:bottom=15mm -V geometry:left=20mm -V geometry:right=20mm -V mainfont='Noto Serif CJK KR' --pdf-engine=xelatex"
+        pandoc "$INPUT" -o "$OUTPUT" \
+          -V papersize:a4 \
+          -V geometry:top=20mm \
+          -V geometry:bottom=15mm \
+          -V geometry:left=20mm \
+          -V geometry:right=20mm \
+          -V "mainfont=Noto Serif CJK KR" \
+          --pdf-engine=xelatex
+      else
+        pandoc "$INPUT" -o "$OUTPUT" -V geometry:margin=1in
       fi
-      pandoc "$INPUT" -o "$OUTPUT" $PANDOC_ARGS
+      echo "PDF generated: $OUTPUT"
+    elif OFFICE_BIN="$(find_office_bin 2>/dev/null)"; then
+      TMP_DOCX="$(mktemp).docx"
+      python3 "$SCRIPT_DIR/docx-generator.py" "$INPUT" "$TMP_DOCX" --lang "$LANG_VAL"
+      "$OFFICE_BIN" --headless --convert-to pdf --outdir "$(dirname "$OUTPUT")" "$TMP_DOCX"
+      GENERATED_PATH="$(dirname "$OUTPUT")/$(basename "${TMP_DOCX%.docx}.pdf")"
+      if [[ "$GENERATED_PATH" != "$OUTPUT" ]]; then
+        mv "$GENERATED_PATH" "$OUTPUT"
+      fi
+      rm -f "$TMP_DOCX"
       echo "PDF generated: $OUTPUT"
     else
-      echo "Error: pandoc is required for md/txt to PDF conversion."
+      echo "Error: pandoc or LibreOffice/soffice is required for md/txt to PDF conversion."
       exit 1
     fi
     ;;
   docx)
-    # Convert docx to PDF via LibreOffice
-    if command -v libreoffice &> /dev/null; then
-      OUTPUT_DIR=$(dirname "$OUTPUT")
-      libreoffice --headless --convert-to pdf --outdir "$OUTPUT_DIR" "$INPUT"
-      # Rename if needed
-      BASENAME=$(basename "${INPUT%.docx}.pdf")
-      if [[ "$OUTPUT_DIR/$BASENAME" != "$OUTPUT" ]]; then
-        mv "$OUTPUT_DIR/$BASENAME" "$OUTPUT"
+    if OFFICE_BIN="$(find_office_bin 2>/dev/null)"; then
+      OUTPUT_DIR="$(dirname "$OUTPUT")"
+      "$OFFICE_BIN" --headless --convert-to pdf --outdir "$OUTPUT_DIR" "$INPUT"
+      BASENAME="$(basename "${INPUT%.docx}.pdf")"
+      GENERATED_PATH="$OUTPUT_DIR/$BASENAME"
+      if [[ "$GENERATED_PATH" != "$OUTPUT" ]]; then
+        mv "$GENERATED_PATH" "$OUTPUT"
       fi
       echo "PDF generated: $OUTPUT"
     else
-      echo "Error: LibreOffice is required for docx to PDF conversion."
-      echo "Install: sudo apt install libreoffice-core (Linux) or brew install libreoffice (macOS)"
+      echo "Error: LibreOffice or soffice is required for docx to PDF conversion."
+      echo "Install LibreOffice and ensure 'libreoffice' or 'soffice' is on PATH."
       exit 1
     fi
     ;;

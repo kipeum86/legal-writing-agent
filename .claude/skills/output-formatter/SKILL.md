@@ -6,12 +6,19 @@
 - **Drafting Pipeline**: Step D5 (output generation), D6 (file save)
 - **Revision Pipeline**: Step R6 (output generation), R7 (file save)
 
+## Required References
+- `references/page-setup-kr.md` — Korean page and typography defaults
+- `references/page-setup-en-us.md` — US English page and typography defaults
+- `references/page-setup-en-uk.md` — UK and international English page and typography defaults
+
 ## Responsibilities
 
 ### 1. Inline Preview & Auto-Save (D5/R6)
 - Show the complete document content as inline chat preview
-- For revisions: show tracked changes (diff markers for .md)
-- **Auto-save** to `output/documents/{filename}` immediately after preview
+- For revisions: show revision tracking output appropriate to the format
+  - `.md`: inline diff markers
+  - `.docx`: native tracked changes when available, otherwise Level B redline artifacts
+- **Auto-save** to `output/documents/{date}_{type}_{description}_v{N}.{ext}` immediately after preview
 - Inform user of saved path (no confirmation needed — previous versions are never overwritten)
 
 ### 2. File Generation
@@ -92,6 +99,7 @@ For revisions:
 ```
 {date}_{type}_{description}_revised_v{N}.{ext}
 ```
+- Revision outputs must include the `_revised_` marker before the version suffix
 
 ### 5. Auto-Versioning (D6/R7)
 1. Check `output/documents/` for existing files with same base name

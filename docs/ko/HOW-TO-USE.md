@@ -12,7 +12,8 @@
 |------|------|---------|
 | **Claude Code** | 에이전트를 실행하는 앱 | [시작하기](https://docs.anthropic.com/en/docs/claude-code/overview) — CLI, 데스크톱 앱, VS Code 확장 |
 | **이 저장소** | 에이전트와 작성 규범 포함 | GitHub에서 다운로드 (아래 참조) |
-| **PyYAML** | 검증 스크립트에 필요 | `pip install pyyaml` |
+| **python-docx** | DOCX 생성 및 DOCX 기반 수정 출력에 필요 | `pip install python-docx` |
+| **pandoc** 또는 **LibreOffice** | 이 컴퓨터에서 PDF 출력이 필요할 때 사용 | 로컬에 하나 이상 설치 |
 
 이게 전부입니다. 데이터베이스, 서버 설정이 필요 없습니다.
 
@@ -101,7 +102,10 @@ claude
 
 - 문서 구조 읽기 및 분석
 - 수정 지시를 특정 섹션에 매핑
-- **변경 추적**과 함께 수정 실행 (`.docx` 빨간줄 또는 `.md` 인라인 diff)
+- **변경 추적 결과물**과 함께 수정 실행:
+  - 가능하면 `.docx` 기본 변경 추적
+  - 그렇지 않으면 redline diff, clean copy, change map 형태의 Level B 결과물
+  - `.md` 출력 시 인라인 diff
 - 10개 항목 일관성 검사
 - `_revised_` 접미사와 자동 버전 관리로 저장
 
@@ -118,7 +122,7 @@ claude
 
 ## Library로 더 좋은 결과 얻기
 
-에이전트는 `/library/`에 조직의 실제 자료를 채워둘수록 더 좋은 결과를 냅니다. `/library/`의 모든 자료는 로컬에 저장됩니다.
+에이전트는 `/library/`에 조직의 실제 자료를 채워둘수록 더 좋은 결과를 냅니다. `/library/`의 모든 자료는 로컬에 저장되며, ingest 소스 레지스트리도 기본적으로 로컬에만 유지됩니다.
 
 ### 무엇을 넣을 수 있나
 
@@ -205,6 +209,7 @@ claude
 - 번호: 조·항·호·목 (제1조 → ① → 1. → 가.)
 - 인용: 「법률명」 제N조, 대법원 YYYY. MM. DD. 선고 판결
 - 지면: A4, 바탕체 12pt (본문), 맑은 고딕 (제목)
+- 예외: 한국어 법률의견서 / 클라이언트 메모는 `docs/ko-legal-opinion-style-guide.md`의 전용 프로필(여백 2.54cm, 본문 11pt, 줄간격 1.15)을 따를 수 있습니다
 
 ### 영어 문서
 

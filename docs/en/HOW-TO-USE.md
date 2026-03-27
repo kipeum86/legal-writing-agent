@@ -12,7 +12,8 @@
 |------|-----|---------------|
 | **Claude Code** | This is the app that runs the agent | [Get started here](https://docs.anthropic.com/en/docs/claude-code/overview) — available as CLI, desktop app, or VS Code extension |
 | **This repository** | Contains the agent and writing conventions | Download from GitHub (see below) |
-| **PyYAML** | Required for validation scripts | `pip install pyyaml` |
+| **python-docx** | Required for DOCX generation and DOCX-based revision outputs | `pip install python-docx` |
+| **pandoc** or **LibreOffice** | Needed if you want PDF output on this machine | Install one of them locally |
 
 That's it. No databases, no servers.
 
@@ -101,7 +102,10 @@ The agent runs a 7-step revision pipeline (R1–R7):
 
 - Reads and analyzes your document structure
 - Maps your revision instructions to specific sections
-- Executes changes with **tracked changes** (`.docx` redlines or `.md` inline diff markers)
+- Executes changes with **revision tracking outputs**:
+  - `.docx` native tracked changes when available
+  - otherwise Level B revision artifacts such as a redline diff, clean copy, and change map
+  - `.md` inline diff markers when markdown output is used
 - Runs a 10-item consistency check
 - Saves with `_revised_` suffix and auto-versioning
 
@@ -118,7 +122,7 @@ The agent runs a 7-step revision pipeline (R1–R7):
 
 ## Using the Library for Better Results
 
-The agent performs best when you populate `/library/` with your organization's real materials. Everything in `/library/` stays local.
+The agent performs best when you populate `/library/` with your organization's real materials. Everything in `/library/` stays local, and the ingest source registry is also kept local by default.
 
 ### What to Add
 
@@ -205,6 +209,7 @@ The agent applies **different conventions depending on the document language**:
 - Numbering: 조·항·호·목 (제1조 → ① → 1. → 가.)
 - Citations: 「법률명」 제N조, 대법원 YYYY. MM. DD. 선고 판결
 - Page: A4, 바탕체 12pt (body), 맑은 고딕 (headings)
+- Exception: Korean legal opinions / client memoranda may use the opinion-specific profile from `docs/ko-legal-opinion-style-guide.md` (2.54 cm margins, 11pt body text, 1.15 spacing)
 
 ### English Documents
 

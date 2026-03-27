@@ -6,15 +6,22 @@
 - **Drafting Pipeline**: Step D1
 - **Revision Pipeline**: Step R1
 
+## Required References
+- `references/document-type-registry.md` — canonical category list, support levels, authority-packet requirements, and classification signals
+- `references/parameter-schema.md` — canonical manifest schema and defaulting policy
+
 ## Responsibilities
 
 ### 1. Scope Check
 First, determine if the request is in scope:
 - **In scope**: Non-contract legal document drafting or revision
-- **Out of scope**: Contract drafting/review, document audit, legal advice, legal research
+- **Out of scope**: Contract drafting/review, document review or audit, hallucination/accuracy review, stand-alone legal advice, stand-alone legal research
+- If the user asks for drafting/revision plus advice or research, proceed with the drafting/revision portion only and state the limitation
 - If out of scope → respond: *"This is outside my scope. I handle non-contract legal document drafting and revision."*
 
 ### 2. Document Type Classification
+Use `references/document-type-registry.md` as the canonical category registry.
+
 Classify the request into one of five categories:
 
 | # | Category | Support Level | Authority Packet Required? |
@@ -41,7 +48,8 @@ Extract or infer from user instructions:
 For **Conditional** document types (Advisory, Litigation, Regulatory):
 - Check if user provided an **authority packet** (statutes, case citations, regulations, issue lists, factual chronologies, court rules, agency forms)
 - If authority packet present → proceed normally
-- If missing → offer skeleton-only mode: *"This document type requires an authority packet (applicable laws, case citations, factual basis) for substantive content. Would you like me to generate a skeleton draft with placeholders?"*
+- If missing → automatically enter skeleton-only mode, set `skeletonOnly: true`, and inform the user: *"This document type requires an authority packet (applicable laws, case citations, factual basis) for substantive content. I will generate a skeleton draft with placeholders for the substantive sections."*
+- In skeleton-only mode, use substantive placeholders such as `[Authority needed: {description}]`, `[Argument: {issue}]`, and `[Factual basis needed]` instead of defaulting missing legal content
 
 ### 5. House Style Loading
 - Scan `/library/house-styles/`
@@ -53,10 +61,13 @@ For **Conditional** document types (Advisory, Litigation, Regulatory):
 - **Infer aggressively** — only ask when genuinely ambiguous and the answer would change the output significantly
 - Maximum 3 questions total, 1 round preferred
 - If enough context exists to make a reasonable judgment → proceed and state your assumptions
-- Substantive gaps → placeholder (don't ask, just mark)
-- Governing law → infer from document language, parties, and context; only ask if truly ambiguous
+- Substantive gaps → placeholder or skeleton-only mode (don't invent missing legal content)
+- Governing law / jurisdiction → infer from document language, parties, source document, and context when reasonably clear; only ask if truly ambiguous and the answer would materially change the output
+- Never default substantive legal inputs such as claims, defenses, authorities, or factual basis
 
 ### 7. Output
+Use `references/parameter-schema.md` as the canonical manifest schema.
+
 Save resolved parameters to `output/manifests/{document-id}-manifest.json`:
 ```json
 {
@@ -72,8 +83,15 @@ Save resolved parameters to `output/manifests/{document-id}-manifest.json`:
   "houseStyle": "{style-name}|null",
   "authorityPacketProvided": true|false,
   "skeletonOnly": false,
+  "pageSize": "a4|us-letter",
   "createdAt": "{ISO datetime}",
-  "step": "D1"
+  "updatedAt": "{ISO datetime}",
+  "step": "D1|R1",
+  "sessionContext": {
+    "priorDocumentId": "{uuid}|null",
+    "inheritedTerms": true|false,
+    "inheritedParties": true|false
+  }
 }
 ```
 
@@ -88,7 +106,7 @@ When an existing document is provided for revision:
 4. Identify document type, language, jurisdiction, and conventions
 5. Build term inventory from existing document
 6. Extract clause map with stable section IDs
-7. Save document profile to manifest
+7. Save document profile to the same manifest schema, updating `step` to `R1`
 
 If no document is found in `/input/`, ask the user to place the file there.
 

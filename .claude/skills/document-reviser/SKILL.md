@@ -5,6 +5,9 @@
 ## Trigger
 - **Revision Pipeline**: Steps R2 (scope determination), R4 (revision execution)
 
+## Required References
+- `references/revision-scope-rules.md` — canonical scope-boundary, preserve/cascade rules, and convention-fix handling
+
 ## Responsibilities
 
 ### 1. Revision Scope Determination (R2)
@@ -38,6 +41,7 @@ For sections marked cascade-only:
 - Update cross-references if referenced sections changed
 - Update defined terms if terminology changed
 - Do NOT make substantive changes
+- If R3 identified convention issues, include those fixes by default unless the user expressly limited the revision to requested changes only
 
 ### 3. Change Map (Level B)
 When using Level B tracking, generate `output/change-map.json`:
@@ -62,7 +66,7 @@ When using Level B tracking, generate `output/change-map.json`:
 - After 2 attempts: deliver with `[Drafting Gap: {issue}]` flag
 
 ## Output
-- Revised document with tracked changes
+- Revised document with Level A tracked changes when available, otherwise Level B redline outputs
 - Updated clause map
 - Change map (Level B)
 - Updated term registry

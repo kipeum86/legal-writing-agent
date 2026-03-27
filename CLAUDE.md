@@ -125,13 +125,13 @@ User request received
 **Trigger**: D1 parameters resolved.
 **Skills**: `/convention-selector`, `/structure-planner`
 
-1. Select convention set: Language + Jurisdiction → base style guide; Document type → template from `/library/templates/`; House style overlay. **한국어 법률의견서인 경우 `docs/ko-legal-opinion-style-guide.md`를 반드시 읽어 적용.**
+1. Select convention set: Language + Jurisdiction → base style guide; Document type → custom template override from `/library/templates/` when available, otherwise built-in template from `.claude/skills/structure-planner/references/`; House style overlay. **한국어 법률의견서인 경우 `docs/ko-legal-opinion-style-guide.md`를 반드시 읽어 적용.**
 2. Generate document outline from template + user instructions
-3. Initialize term registry and clause map
+3. Initialize term registry and clause map using canonical JSON schemas
 4. **Present outline and proceed**: Show outline briefly, then start drafting immediately. User can interrupt to modify — no need to wait for explicit approval.
 
 ### D3 — Section-by-Section Drafting
-**Trigger**: Outline approved by user.
+**Trigger**: Outline generated and presented at D2 (user may interrupt or redirect before or during drafting).
 **Skill**: `/legal-drafter`
 
 1. Draft each section sequentially per approved outline
@@ -291,7 +291,7 @@ The agent draws on `/library/` containing six asset types:
 | Asset Type | Purpose | Location | Selection |
 |---|---|---|---|
 | **House style** | Org-specific formatting | `/library/house-styles/{style-name}/` | User selects per session; if one: auto-apply; if none: base defaults |
-| **Document template** | Structural skeleton | `/library/templates/{doc-type}/` | Auto-matched by document type + language |
+| **Document template** | Structural skeleton | `/library/templates/` override or built-in `.claude/skills/structure-planner/references/` | Auto-matched by document type + language |
 | **Precedent document** | Reference for replication | `/library/precedents/` | User provides or search by type + jurisdiction |
 | **Grade A source** | 법령, 공식 가이드라인 | `/library/grade-a/` | Authority packet for Conditional documents |
 | **Grade B source** | 판례, 로펌 해설, 실무자료 | `/library/grade-b/` | Authority packet for Conditional documents |
@@ -345,6 +345,11 @@ Each document generates structured metadata:
 - **Clause map**: `output/clause-maps/{document-id}-clause-map.json` — stable section IDs
 - **Placeholder registry**: `output/placeholders/{document-id}-placeholders.json`
 - **Term registry**: `output/term-registries/{document-id}-terms.json`
+
+**Canonical schema expectations**:
+- **Matter manifest** includes: `documentId`, `documentType`, `supportLevel`, `targetLanguage`, `jurisdiction`, `governingLaw`, `parties`, `reviewIntensity`, `outputFormat`, `houseStyle`, `authorityPacketProvided`, `skeletonOnly`, `pageSize`, `createdAt`, `updatedAt`, `step`, `sessionContext`
+- **Clause map** stores stable section objects with: `id`, `title`, `level`, `type`, `numbering`, `children`
+- **Term registry** stores: `documentId`, `language`, `terms[]`, where each term entry includes `definedTerm`, `fullForm`, `language`, `firstUsedInSection`, `definitionText`
 
 ## Version Management
 

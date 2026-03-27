@@ -1,12 +1,34 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find 'c:\\\\Users\\\\kplee\\\\Desktop\\\\VS Code\\\\legal-writing-agent' -not -path */.git/* -type d)",
-      "Bash(find 'c:\\\\Users\\\\kplee\\\\Desktop\\\\VS Code\\\\legal-writing-agent' -not -path */.git/* -type f)"
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(jq:*)",
+      "Bash(sed:*)",
+      "Bash(diff:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(git:*)",
+      "Bash(bash:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(pandoc:*)",
+      "Bash(libreoffice:*)",
+      "Bash(soffice:*)",
+      "Bash(chmod:*)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\kipeu\\OneDrive\\바탕 화면\\VS Code\\legal-writing-agent\\.claude\\skills\\request-interpreter\\references",
-      "c:\\Users\\kipeu\\OneDrive\\바탕 화면\\VS Code\\legal-writing-agent\\.claude\\skills\\convention-selector\\references"
+      ".claude/skills/request-interpreter/references",
+      ".claude/skills/convention-selector/references",
+      ".claude/skills/document-reviser/references",
+      ".claude/skills/structure-planner/references",
+      ".claude/skills/output-formatter/references"
     ]
   },
   "hooks": {

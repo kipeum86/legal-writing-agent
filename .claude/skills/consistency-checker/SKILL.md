@@ -6,6 +6,14 @@
 - **Drafting Pipeline**: Step D4
 - **Revision Pipeline**: Step R5
 
+## Required References
+- `references/consistency-checklist.md` — expanded checklist procedure
+- `scripts/numbering-validator.py`
+- `scripts/cross-reference-checker.py`
+- `scripts/register-validator.py`
+- `scripts/term-consistency-checker.py`
+- `scripts/citation-format-checker.py`
+
 ## 8-Item Consistency Checklist (Drafting — D4)
 
 | # | Check | Method | Failure Action |
