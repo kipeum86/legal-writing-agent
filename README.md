@@ -21,7 +21,7 @@ High-quality, closely matched samples usually lead to noticeably better outputs.
 ## What It Does
 
 - **Drafts** new legal documents from user instructions (D1–D6 pipeline)
-- **Revises** existing legal documents with tracked changes (R1–R7 pipeline)
+- **Revises** existing legal documents with tracked-change outputs (R1–R7 pipeline)
 - **Dual-standard writing**: Korean documents follow Korean conventions (쟁점→결론→분석, 「법률명」 인용), English documents follow US/UK/international conventions (IRAC/CRAC, Bluebook/OSCOLA)
 - **Reads and writes** `.docx`, `.pdf`, `.md`, `.txt` formats
 
@@ -82,7 +82,7 @@ Revise the brief in /input/. Strengthen the argument in Section III.
 
 ## Data Security and Privacy
 
-This project runs locally on your filesystem. Your `/input/`, `/output/`, and `/library/` files stay in this project folder, and `/library/` is gitignored by default so your reusable materials are not committed unless you choose otherwise.
+This project runs locally on your filesystem. Your `/input/`, `/output/`, and `/library/` files stay in this project folder, and `/library/` user assets plus `library/source-registry.json` are gitignored by default so reusable materials and ingest metadata are not committed unless you choose otherwise.
 
 However, drafting and revision still rely on Claude Code / Anthropic model API calls. In practice, that means prompts and document text you provide to the agent may be transmitted to Anthropic in order to generate outputs.
 
@@ -145,7 +145,7 @@ D6  File Save ◄── D5  Output & Preview ◄── D4  Consistency Check ◄
 ```
 R1  Document Ingestion ──► R2  Scope ──► R3  Convention Check ──► R4  Revision
                                                                        │
-R7  File Save ◄── R6  Output (tracked changes) ◄── R5  Consistency Check ◄┘
+R7  File Save ◄── R6  Output (tracking / redline) ◄── R5  Consistency Check ◄┘
 ```
 
 ## Skills
@@ -216,7 +216,7 @@ python .claude/skills/consistency-checker/scripts/citation-format-checker.py doc
 
 ## Library System
 
-The `/library/` folder contains reusable assets and ingested sources. These are **user-managed** and **gitignored by default**, which helps keep them out of version control. They still remain subject to your Claude Code / Anthropic data-handling setup when their contents are sent in prompts.
+The `/library/` folder contains reusable assets and ingested sources. These are **user-managed** and **gitignored by default**, and the ingest metadata file `library/source-registry.json` is also ignored so source catalogs stay local by default. They still remain subject to your Claude Code / Anthropic data-handling setup when their contents are sent in prompts.
 
 ### House Styles (`/library/house-styles/`)
 

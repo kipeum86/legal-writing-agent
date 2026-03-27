@@ -10,16 +10,32 @@
 
 const fs = require("fs");
 const path = require("path");
+const { spawnSync } = require("child_process");
 
 // Check for docx module
 let docx;
+let usePythonFallback = false;
 try {
   docx = require("docx");
 } catch {
-  console.error(
-    "Error: 'docx' package not installed. Run: npm install docx"
-  );
-  process.exit(1);
+  usePythonFallback = true;
+}
+
+if (usePythonFallback) {
+  const fallbackScript = path.join(__dirname, "docx-generator.py");
+  const result = spawnSync("python3", [fallbackScript, ...process.argv.slice(2)], {
+    stdio: "inherit",
+  });
+
+  if (result.error) {
+    console.error(
+      "Error: neither the Node 'docx' package nor the Python fallback is available.",
+    );
+    console.error(`Underlying error: ${result.error.message}`);
+    process.exit(1);
+  }
+
+  process.exit(result.status ?? 0);
 }
 
 const {
@@ -47,6 +63,18 @@ const PAGE_CONFIGS = {
     bodyFont: "바탕체",
     headingFont: "맑은 고딕",
     fontSize: 24, // half-points (12pt)
+  },
+  "ko-korea-opinion": {
+    size: { width: convertMillimetersToTwip(210), height: convertMillimetersToTwip(297) },
+    margins: {
+      top: convertMillimetersToTwip(25.4),
+      bottom: convertMillimetersToTwip(25.4),
+      left: convertMillimetersToTwip(25.4),
+      right: convertMillimetersToTwip(25.4),
+    },
+    bodyFont: "맑은 고딕",
+    headingFont: "맑은 고딕",
+    fontSize: 22, // 11pt
   },
   "en-us": {
     size: { width: convertInchesToTwip(8.5), height: convertInchesToTwip(11) },
@@ -86,8 +114,13 @@ const PAGE_CONFIGS = {
   },
 };
 
-function getConfigKey(lang, jurisdiction) {
-  if (lang === "ko") return "ko-korea";
+function getConfigKey(lang, jurisdiction, documentType) {
+  if (lang === "ko") {
+    if (["advisory", "legal-opinion", "legal-review-opinion", "client-memorandum"].includes(documentType)) {
+      return "ko-korea-opinion";
+    }
+    return "ko-korea";
+  }
   if (jurisdiction === "us") return "en-us";
   if (jurisdiction === "uk") return "en-uk";
   return "en-intl";
@@ -98,31 +131,49 @@ function parseMarkdownLine(line, config) {
   const h1Match = line.match(/^# (.+)/);
   if (h1Match) {
     return new Paragraph({
-      text: h1Match[1],
+      children: [
+        new TextRun({
+          text: h1Match[1],
+          font: config.headingFont,
+          size: 32,
+          bold: true,
+        }),
+      ],
       heading: HeadingLevel.HEADING_1,
       alignment: AlignmentType.CENTER,
       spacing: { after: 200 },
-      run: { font: config.headingFont, size: 32, bold: true },
     });
   }
 
   const h2Match = line.match(/^## (.+)/);
   if (h2Match) {
     return new Paragraph({
-      text: h2Match[1],
+      children: [
+        new TextRun({
+          text: h2Match[1],
+          font: config.headingFont,
+          size: 28,
+          bold: true,
+        }),
+      ],
       heading: HeadingLevel.HEADING_2,
       spacing: { before: 200, after: 100 },
-      run: { font: config.headingFont, size: 28, bold: true },
     });
   }
 
   const h3Match = line.match(/^### (.+)/);
   if (h3Match) {
     return new Paragraph({
-      text: h3Match[1],
+      children: [
+        new TextRun({
+          text: h3Match[1],
+          font: config.headingFont,
+          size: 24,
+          bold: true,
+        }),
+      ],
       heading: HeadingLevel.HEADING_3,
       spacing: { before: 150, after: 80 },
-      run: { font: config.headingFont, size: 24, bold: true },
     });
   }
 
@@ -145,9 +196,15 @@ function parseMarkdownLine(line, config) {
   });
 }
 
-async function generateDocx(inputPath, outputPath, lang, jurisdiction) {
-  const configKey = getConfigKey(lang, jurisdiction);
+async function generateDocx(inputPath, outputPath, lang, jurisdiction, documentType) {
+  const configKey = getConfigKey(lang, jurisdiction, documentType);
   const config = PAGE_CONFIGS[configKey];
+
+  if (!fs.existsSync(inputPath)) {
+    throw new Error(`Input file not found: ${inputPath}`);
+  }
+
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
   const content = fs.readFileSync(inputPath, "utf-8");
   const lines = content.split("\n");
@@ -186,8 +243,10 @@ const langIdx = args.indexOf("--lang");
 const lang = langIdx !== -1 ? args[langIdx + 1] : "ko";
 const jurIdx = args.indexOf("--jurisdiction");
 const jurisdiction = jurIdx !== -1 ? args[jurIdx + 1] : "korea";
+const docTypeIdx = args.indexOf("--document-type");
+const documentType = docTypeIdx !== -1 ? args[docTypeIdx + 1] : undefined;
 
-generateDocx(inputPath, outputPath, lang, jurisdiction).catch((err) => {
+generateDocx(inputPath, outputPath, lang, jurisdiction, documentType).catch((err) => {
   console.error("Error generating document:", err.message);
   process.exit(1);
 });

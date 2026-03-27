@@ -19,6 +19,7 @@ import re
 import sys
 import json
 import argparse
+from pathlib import Path
 
 
 # ---------------------------------------------------------------------------
@@ -63,6 +64,37 @@ def _make_issue(
     }
     result.update(kwargs)
     return result
+
+
+def _error_report(filepath: str, message: str) -> dict:
+    """Build a standard JSON error report."""
+    return {
+        "file": filepath,
+        "language": "unknown",
+        "issueCount": 0,
+        "issues": [],
+        "status": "error",
+        "error": message,
+    }
+
+
+def _load_text_file(filepath: str) -> tuple[str, str]:
+    """Read a UTF-8 text file and return (text, normalized_path)."""
+    path = Path(filepath)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {filepath}")
+    return path.read_text(encoding='utf-8'), str(path)
+
+
+class JsonArgumentParser(argparse.ArgumentParser):
+    """Argument parser that emits JSON errors for automation-friendly CLI usage."""
+
+    def error(self, message):
+        print(json.dumps({
+            "status": "error",
+            "error": message,
+        }, indent=2, ensure_ascii=False))
+        raise SystemExit(2)
 
 
 # ---------------------------------------------------------------------------
@@ -633,7 +665,7 @@ def detect_language(text: str) -> str:
 # ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(
+    parser = JsonArgumentParser(
         description="Validate sequential numbering in legal documents."
     )
     parser.add_argument("file", help="Path to the document file (.md, .txt, etc.)")
@@ -644,8 +676,24 @@ def main():
     )
     args = parser.parse_args()
 
-    with open(args.file, 'r', encoding='utf-8') as f:
-        text = f.read()
+    try:
+        text, normalized_path = _load_text_file(args.file)
+    except FileNotFoundError as exc:
+        print(json.dumps(_error_report(args.file, str(exc)), indent=2, ensure_ascii=False))
+        sys.exit(2)
+    except UnicodeDecodeError:
+        print(json.dumps(
+            _error_report(args.file, f"Unable to decode file as UTF-8: {args.file}"),
+            indent=2,
+            ensure_ascii=False,
+        ))
+        sys.exit(2)
+    except OSError as exc:
+        print(json.dumps(_error_report(args.file, f"Unable to read file: {exc}"), indent=2, ensure_ascii=False))
+        sys.exit(2)
+    except Exception as exc:
+        print(json.dumps(_error_report(args.file, f"Unexpected error: {exc}"), indent=2, ensure_ascii=False))
+        sys.exit(2)
 
     language = detect_language(text)
 
@@ -655,7 +703,7 @@ def main():
         issues, verbose_info = validate_english_numbering(text, verbose=args.verbose)
 
     report: dict = {
-        "file": args.file,
+        "file": normalized_path,
         "language": language,
         "issueCount": len(issues),
         "issues": issues,

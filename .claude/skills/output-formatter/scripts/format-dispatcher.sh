@@ -1,16 +1,24 @@
 #!/usr/bin/env bash
 # format-dispatcher.sh
 # Routes document generation to the appropriate format-specific script.
-# Usage: ./format-dispatcher.sh <input.md> <output-format> [options]
+# Usage: ./format-dispatcher.sh <input.md> <output-format> [--output path] [options]
 #
 # Supported formats: docx, pdf, md, txt
 
 set -euo pipefail
 
+usage() {
+  echo "Usage: $0 <input-file> <output-format> [--output path] [options]"
+}
+
+if [[ $# -lt 2 ]]; then
+  usage
+  exit 2
+fi
+
 INPUT="$1"
 FORMAT="$2"
 shift 2
-OPTIONS="$*"
 
 if [[ ! -f "$INPUT" ]]; then
   echo "Error: Input file '$INPUT' not found."
@@ -18,30 +26,57 @@ if [[ ! -f "$INPUT" ]]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BASENAME="${INPUT%.*}"
-OUTPUT="${BASENAME}.${FORMAT}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+OUTPUT_DIR="$REPO_ROOT/output/documents"
+mkdir -p "$OUTPUT_DIR"
+
+OUTPUT=""
+PASSTHRU=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --output)
+      if [[ $# -lt 2 ]]; then
+        echo "Error: --output requires a path argument."
+        exit 2
+      fi
+      OUTPUT="$2"
+      shift 2
+      ;;
+    *)
+      PASSTHRU+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [[ -z "$OUTPUT" ]]; then
+  INPUT_NAME="$(basename "${INPUT%.*}")"
+  OUTPUT="$OUTPUT_DIR/${INPUT_NAME}.${FORMAT}"
+fi
+
+mkdir -p "$(dirname "$OUTPUT")"
 
 case "$FORMAT" in
   md)
-    # Markdown: just copy
-    cp "$INPUT" "$OUTPUT"
+    if [[ "$INPUT" != "$OUTPUT" ]]; then
+      cp "$INPUT" "$OUTPUT"
+    fi
     echo "Output: $OUTPUT"
     ;;
   txt)
-    # Plain text: strip markdown formatting
     if command -v pandoc &> /dev/null; then
       pandoc "$INPUT" -t plain -o "$OUTPUT"
     else
-      # Fallback: simple sed-based strip
       sed 's/^#\+\s*//' "$INPUT" | sed 's/\*\*//g' | sed 's/\*//g' > "$OUTPUT"
     fi
     echo "Output: $OUTPUT"
     ;;
   docx)
-    "$SCRIPT_DIR/docx-generator.js" "$INPUT" "$OUTPUT" $OPTIONS
+    node "$SCRIPT_DIR/docx-generator.js" "$INPUT" "$OUTPUT" "${PASSTHRU[@]}"
     ;;
   pdf)
-    "$SCRIPT_DIR/pdf-generator.sh" "$INPUT" "$OUTPUT" $OPTIONS
+    bash "$SCRIPT_DIR/pdf-generator.sh" "$INPUT" "$OUTPUT" "${PASSTHRU[@]}"
     ;;
   *)
     echo "Error: Unsupported format '$FORMAT'. Supported: docx, pdf, md, txt"

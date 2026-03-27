@@ -12,6 +12,7 @@ import sys
 import json
 import argparse
 from typing import Optional
+from pathlib import Path
 
 
 # ---------------------------------------------------------------------------
@@ -21,16 +22,16 @@ from typing import Optional
 # Korean statute: 「법률명」 제N조
 _KR_STATUTE_CORRECT = re.compile(r'「([^」]+)」\s*제(\d+)조')
 # Incorrect: bare name + 제N조 without 「」
-_KR_STATUTE_BARE = re.compile(r'(?<!「)([가-힣]{2,}(?:법|령|규칙|조례))\s+제(\d+)조')
+_KR_STATUTE_BARE = re.compile(r'(?<!「)([가-힣]{1,}(?:법|령|규칙|조례))\s+제(\d+)조')
 
 # Korean court case citation
 # 대법원 2023. 5. 18. 선고 2022다12345 판결
 _KR_COURT_NAMES = r'(?:대법원|고등법원|지방법원|헌법재판소|특허법원|가정법원|행정법원)'
 _KR_CASE_FULL = re.compile(
     rf'({_KR_COURT_NAMES})\s+'
-    r'(\d{{4}})\.\s*(\d{{1,2}})\.\s*(\d{{1,2}})\.\s*'
+    r'(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\s*'
     r'선고\s+'
-    r'(\d{{4}}[가-힣]{{1,2}}\d+)\s+'
+    r'(\d{4}[가-힣]{1,2}\d+)\s+'
     r'(판결|결정|명령)'
 )
 # Loose match to find malformed case citations
@@ -149,25 +150,27 @@ def _validate_korean_citations(text: str, lines: list[str]) -> tuple[list[dict],
                 })
 
     # Detect loosely matched but not fully matched case citations
-    full_starts = {m.start() for m in _KR_CASE_FULL.finditer(text)}
+    full_spans = [(m.start(), m.end()) for m in _KR_CASE_FULL.finditer(text)]
     for m in _KR_CASE_LOOSE.finditer(text):
-        if m.start() not in full_starts:
-            line_no = text[:m.start()].count('\n') + 1
-            citations.append({
-                "type": "case",
-                "text": m.group(0).strip(),
-                "line": line_no,
-                "valid": False,
-            })
-            issues.append({
-                "type": "format_error",
-                "subtype": "malformed_case_citation",
-                "line": line_no,
-                "found": m.group(0).strip(),
-                "message": "판례 인용 형식이 올바르지 않습니다. "
-                           "올바른 형식: '법원명 YYYY. MM. DD. 선고 사건번호 판결/결정'",
-                "severity": "critical",
-            })
+        if any(m.start() >= span_start and m.end() <= span_end for span_start, span_end in full_spans):
+            continue
+
+        line_no = text[:m.start()].count('\n') + 1
+        citations.append({
+            "type": "case",
+            "text": m.group(0).strip(),
+            "line": line_no,
+            "valid": False,
+        })
+        issues.append({
+            "type": "format_error",
+            "subtype": "malformed_case_citation",
+            "line": line_no,
+            "found": m.group(0).strip(),
+            "message": "판례 인용 형식이 올바르지 않습니다. "
+                       "올바른 형식: '법원명 YYYY. MM. DD. 선고 사건번호 판결/결정'",
+            "severity": "critical",
+        })
 
     return citations, issues
 
@@ -178,8 +181,8 @@ def _validate_korean_citations(text: str, lines: list[str]) -> tuple[list[dict],
 
 # Case: Party v. Party, Vol Reporter Page (Court Year)
 _US_CASE = re.compile(
-    r'([A-Z][A-Za-z\'\.\s]+?)\s+v\.\s+([A-Z][A-Za-z\'\.\s]+?),\s+'
-    r'(\d+)\s+([A-Z][A-Za-z\.\s]{1,20}?)\s+(\d+)'
+    r'(?:\*|_)?([A-Z][A-Za-z\'\.\s]+?)\s+v\.\s+([A-Z][A-Za-z\'\.\s]+?)(?:\*|_)?\,\s+'
+    r'(\d+)\s+([A-Z][A-Za-z0-9\.\s]{1,20}?)\s+(\d+)'
     r'(?:\s*\(([^)]+)\s+(\d{4})\))?'
 )
 
@@ -190,7 +193,7 @@ _US_CASE_ITALIC = re.compile(
 
 # Statute: Title U.S.C. ss Section
 _US_STATUTE = re.compile(
-    r'(\d+)\s+U\.S\.C\.\s*(?:§|ss?\.?)\s*(\d+(?:\([a-z]\))*)'
+    r'(\d+)\s+U\.S\.C\.\s*(?:§|ss?\.?)\s*(\d+[A-Za-z]*(?:\([A-Za-z0-9]+\))*)'
     r'(?:\s*\((\d{4})\))?'
 )
 
@@ -451,6 +454,40 @@ def _detect_language(text: str) -> str:
     return "korean" if korean_chars > english_chars else "english"
 
 
+def _error_report(filepath: str, message: str) -> dict:
+    """Build a standard JSON error report."""
+    return {
+        "file": filepath,
+        "language": "unknown",
+        "jurisdiction": "unknown",
+        "citationsFound": 0,
+        "citations": [],
+        "issueCount": 0,
+        "issues": [],
+        "status": "error",
+        "error": message,
+    }
+
+
+def _load_text_file(filepath: str) -> tuple[str, str]:
+    """Read a UTF-8 text file and return (text, normalized_path)."""
+    path = Path(filepath)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {filepath}")
+    return path.read_text(encoding='utf-8'), str(path)
+
+
+class JsonArgumentParser(argparse.ArgumentParser):
+    """Argument parser that emits JSON errors for automation-friendly CLI usage."""
+
+    def error(self, message):
+        print(json.dumps({
+            "status": "error",
+            "error": message,
+        }, indent=2, ensure_ascii=False))
+        raise SystemExit(2)
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -491,7 +528,7 @@ def validate_citations(text: str, jurisdiction: Optional[str] = None) -> dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(
+    parser = JsonArgumentParser(
         description="Validate legal citation formats (Korean / US Bluebook / UK OSCOLA)."
     )
     parser.add_argument("file", help="Path to the document file (.md, .txt, etc.)")
@@ -503,11 +540,27 @@ def main():
     )
     args = parser.parse_args()
 
-    with open(args.file, 'r', encoding='utf-8') as f:
-        text = f.read()
+    try:
+        text, normalized_path = _load_text_file(args.file)
+    except FileNotFoundError as exc:
+        print(json.dumps(_error_report(args.file, str(exc)), indent=2, ensure_ascii=False))
+        sys.exit(2)
+    except UnicodeDecodeError:
+        print(json.dumps(
+            _error_report(args.file, f"Unable to decode file as UTF-8: {args.file}"),
+            indent=2,
+            ensure_ascii=False,
+        ))
+        sys.exit(2)
+    except OSError as exc:
+        print(json.dumps(_error_report(args.file, f"Unable to read file: {exc}"), indent=2, ensure_ascii=False))
+        sys.exit(2)
+    except Exception as exc:
+        print(json.dumps(_error_report(args.file, f"Unexpected error: {exc}"), indent=2, ensure_ascii=False))
+        sys.exit(2)
 
     report = validate_citations(text, args.jurisdiction)
-    report["file"] = args.file
+    report["file"] = normalized_path
 
     print(json.dumps(report, indent=2, ensure_ascii=False))
 

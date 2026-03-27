@@ -5,12 +5,24 @@
 ## Trigger
 - **Drafting Pipeline**: Step D2 (structure planning, after convention selection)
 
+## Built-In Template Set
+- `references/template-advisory-kr.md`
+- `references/template-advisory-en.md`
+- `references/template-corporate-kr.md`
+- `references/template-corporate-en.md`
+- `references/template-litigation-kr.md`
+- `references/template-litigation-en.md`
+- `references/template-regulatory-kr.md`
+- `references/template-regulatory-en.md`
+- `references/template-general-kr.md`
+- `references/template-general-en.md`
+
 ## Responsibilities
 
 ### 1. Template Loading
-1. Check `/library/templates/` for a matching template: `{doc-type}-{language}.md`
-2. If template exists → use as structural skeleton
-3. If no template → generate outline from convention set + user instructions
+1. Check `/library/templates/` for a matching custom template override: `{doc-type}-{language}.md`
+2. If no custom template exists, load the built-in template `references/template-{doc-type}-{language}.md`
+3. If neither exists → generate outline from convention set + user instructions
 
 ### 2. Outline Generation
 Create a complete document outline with:
@@ -28,12 +40,14 @@ Create `output/clause-maps/{document-id}-clause-map.json`:
   "sections": [
     {
       "id": "s1",
+      "numbering": "1.",
       "title": "Section title",
       "level": 1,
       "type": "boilerplate|substantive",
       "children": [
         {
           "id": "s1.1",
+          "numbering": "1.1",
           "title": "Sub-section title",
           "level": 2,
           "type": "boilerplate|substantive",
@@ -50,9 +64,19 @@ Create `output/term-registries/{document-id}-terms.json`:
 ```json
 {
   "documentId": "{uuid}",
-  "terms": []
+  "language": "ko|en",
+  "terms": [
+    {
+      "definedTerm": "string",
+      "fullForm": "string",
+      "language": "ko|en",
+      "firstUsedInSection": "s1",
+      "definitionText": "string"
+    }
+  ]
 }
 ```
+Initialize `terms` as an empty array at D2 if no defined terms are known yet.
 
 ### 5. Present Outline & Proceed
 Show the outline briefly, then **immediately proceed to drafting**. No need to wait for explicit approval — user can interrupt if modifications are needed.

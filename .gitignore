@@ -2,6 +2,8 @@
 legal-writing-agent-design-v4.md
 
 # Library assets (user-managed, confidential)
+.claude/settings.local.json
+library/source-registry.json
 library/house-styles/*
 library/templates/*
 library/precedents/*
@@ -24,6 +26,7 @@ input/*
 !input/.gitkeep
 
 # Output artifacts (generated, confidential)
+output/codex-quality-audit-prompt.md
 output/documents/*
 output/manifests/*
 output/clause-maps/*
