@@ -1,5 +1,6 @@
 # Design document (internal)
 legal-writing-agent-design-v4.md
+configured supplemental reference
 
 # Library assets (user-managed, confidential)
 .claude/settings.local.json
