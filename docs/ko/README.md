@@ -6,7 +6,7 @@
 
 > **처음이신가요?** **[사용 가이드](./HOW-TO-USE.md)**를 읽어보세요 — 기술 배경 없이도 사용할 수 있습니다. **[How to Use (English)](../en/HOW-TO-USE.md)**
 
-클로드 코드(Claude Code) 에이전트로, 한국어와 영어로 **비계약 법률문서**를 초안 작성 및 수정하며, 각 법역에 맞는 법률문서 작성 규범을 적용합니다.
+**Jinju Legal Orchestrator**의 일부로, 이 클로드 코드(Claude Code) 에이전트는 한국어와 영어로 **비계약 법률문서**를 초안 작성 및 수정하며, 각 법역에 맞는 법률문서 작성 규범을 적용합니다.
 
 ## 더 좋은 결과를 위한 핵심: Library 활용
 
@@ -226,7 +226,7 @@ python .claude/skills/consistency-checker/scripts/citation-format-checker.py doc
 기관별 서식 재정의. 스타일마다 폴더를 생성합니다:
 
 ```
-/library/house-styles/my-firm/
+/library/house-styles/my-org/
 ├── style-config.json    # 여백, 폰트, 번호 설정
 └── signature-block.md   # 표준 서명 형식
 ```
@@ -308,20 +308,20 @@ output/documents/20260311_advisory_tax-opinion_v2.docx    # 수정본
 | 한국어 문서 + 영어 개념 | 적법절차(due process)의 원칙에 따라... |
 | 영어 문서 + 한국어 개념 | the Gab/Eul (갑/을) party designation... |
 
-## 법무법인 진주 (Jinju Law Firm)
+## Jinju Legal Orchestrator
 
-**법무법인 진주** 소속 전문 법률 AI 에이전트 시리즈:
+**Jinju Legal Orchestrator** 소속 전문 법률 워크플로우 에이전트 시리즈:
 
-| 에이전트 | 변호사 | 전문 분야 |
-|---------|--------|----------|
-| [game-legal-research](https://github.com/kipeum86/game-legal-research) | 심진주 | 게임 산업법 |
-| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | 변혁기 | 법률 번역 |
-| [general-legal-research](https://github.com/kipeum86/general-legal-research) | 김재식 | 법률 리서치 |
-| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | 정보호 | 개인정보보호법 |
-| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | 김덕배 | 데이터 보호법 (GDPR) |
-| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | 고덕수 | 계약서 검토 |
-| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **한석봉** | **법률 문서 작성** |
-| [second-review-agent](https://github.com/kipeum86/second-review-agent) | 반성문 | 품질 리뷰 (파트너) |
+| 에이전트 | 이름 | 역할 |
+|---------|------|------|
+| [game-legal-research](https://github.com/kipeum86/game-legal-research) | 심진주 | 게임 산업법 스페셜리스트 |
+| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | 변혁기 | 법률 번역 스페셜리스트 |
+| [general-legal-research](https://github.com/kipeum86/general-legal-research) | 김재식 | 법률 리서치 스페셜리스트 |
+| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | 정보호 | 개인정보 스페셜리스트 |
+| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | 김덕배 | 데이터 보호 스페셜리스트 |
+| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | 고덕수 | 계약 검토 스페셜리스트 |
+| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **한석봉** | **법률 드래프팅 스페셜리스트** |
+| [second-review-agent](https://github.com/kipeum86/second-review-agent) | 반성문 | 시니어 리뷰 스페셜리스트 |
 
 ## 라이선스
 

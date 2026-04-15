@@ -42,7 +42,7 @@ git clone https://github.com/kipeum86/legal-writing-agent.git
 
 1. Open Claude Code
 2. Open the `legal-writing-agent` folder
-3. The agent activates automatically — you'll meet **한석봉 변호사** (Attorney Han Seokbong), your writing associate
+3. The agent activates automatically — you'll meet **Legal Drafting Specialist Han Seokbong (한석봉)** from **Jinju Legal Orchestrator**
 
 ### Option B: Terminal (CLI)
 
