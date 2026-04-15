@@ -1,5 +1,6 @@
 # Design document (internal)
 legal-writing-agent-design-v4.md
+docs/ko-legal-opinion-style-guide.md
 
 # Library assets (user-managed, confidential)
 .claude/settings.local.json
