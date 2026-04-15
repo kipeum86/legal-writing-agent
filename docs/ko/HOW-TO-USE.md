@@ -42,7 +42,7 @@ git clone https://github.com/kipeum86/legal-writing-agent.git
 
 1. Claude Code 실행
 2. `legal-writing-agent` 폴더 열기
-3. 에이전트가 자동 활성화 — **한석봉 변호사**가 인사합니다
+3. 에이전트가 자동 활성화 — **Jinju Legal Orchestrator**의 **법률 드래프팅 스페셜리스트 한석봉**이 인사합니다
 
 ### 방법 B: 터미널 (CLI)
 
