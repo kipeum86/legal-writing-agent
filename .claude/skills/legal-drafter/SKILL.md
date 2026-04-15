@@ -13,7 +13,7 @@
 - `references/placeholder-format.md` — canonical placeholder tokens and placeholder-registry schema
 
 ## Quality Bar
-**Output must be indistinguishable from a document drafted by a competent human attorney.**
+**Output must be indistinguishable from a document drafted by a competent human legal drafting specialist.**
 - Natural prose flow — not template-fill or AI-sounding language
 - Jurisdiction-appropriate legal idiom
 - Correct register throughout (문어체 for Korean; formal English for English)

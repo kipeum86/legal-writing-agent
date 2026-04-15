@@ -6,7 +6,7 @@
 
 > **New here?** Read the **[How to Use Guide](docs/en/HOW-TO-USE.md)** — no technical background required. **[사용 가이드 (한국어)](docs/ko/HOW-TO-USE.md)**
 
-A Claude Code agent that drafts and revises **non-contract legal documents** in Korean and English, applying jurisdiction-appropriate legal writing conventions.
+Part of **Jinju Legal Orchestrator**, this Claude Code agent drafts and revises **non-contract legal documents** in Korean and English, applying jurisdiction-appropriate legal writing conventions.
 
 ## Best Results: Use the Library
 
@@ -223,7 +223,7 @@ The `/library/` folder contains reusable assets and ingested sources. These are 
 Organization-specific formatting overrides. Create a folder per style:
 
 ```
-/library/house-styles/my-firm/
+/library/house-styles/my-org/
 ├── style-config.json    # Margins, fonts, numbering preferences
 └── signature-block.md   # Standard signature format
 ```
@@ -306,20 +306,20 @@ The agent infers intensity from context ("빨리 초안만" → Light, "최종�
 | Korean doc + English concept | 적법절차(due process)의 원칙에 따라... |
 | English doc + Korean concept | the Gab/Eul (갑/을) party designation... |
 
-## Part of Jinju Law Firm
+## Part of Jinju Legal Orchestrator
 
-This agent is part of the **법무법인 진주 (Jinju Law Firm)** series of specialized legal AI agents:
+This agent is part of **Jinju Legal Orchestrator**, a series of specialist legal workflow agents:
 
-| Agent | Attorney | Specialty |
-|-------|----------|-----------|
-| [game-legal-research](https://github.com/lowtidebuild/game-legal-research) | 심진주 (Sim Jinju) | Game industry law |
-| [legal-translation-agent](https://github.com/lowtidebuild/legal-translation-agent) | 변혁기 (Byeon Hyeok-gi) | Legal translation |
-| [general-legal-research](https://github.com/lowtidebuild/general-legal-research) | 김재식 (Kim Jaesik) | Legal research |
-| [PIPA-expert](https://github.com/lowtidebuild/PIPA-expert) | 정보호 (Jeong Bo-ho) | Data privacy law |
-| [GDPR-expert](https://github.com/lowtidebuild/GDPR-expert) | 김덕배 (Kim De Bruyne) | Data protection law (GDPR) |
-| [contract-review-agent](https://github.com/lowtidebuild/contract-review-agent) | 고덕수 (Ko Duksoo) | Contract review |
-| **[legal-writing-agent](https://github.com/lowtidebuild/legal-writing-agent)** | **한석봉 (Han Seokbong)** | **Legal writing** |
-| [second-review-agent](https://github.com/lowtidebuild/second-review-agent) | 반성문 (Ban Seong-mun) | Quality review (Partner) |
+| Agent | Name | Role |
+|-------|------|------|
+| [game-legal-research](https://github.com/lowtidebuild/game-legal-research) | 심진주 (Sim Jinju) | Game industry law specialist |
+| [legal-translation-agent](https://github.com/lowtidebuild/legal-translation-agent) | 변혁기 (Byeon Hyeok-gi) | Legal translation specialist |
+| [general-legal-research](https://github.com/lowtidebuild/general-legal-research) | 김재식 (Kim Jaesik) | Legal research specialist |
+| [PIPA-expert](https://github.com/lowtidebuild/PIPA-expert) | 정보호 (Jeong Bo-ho) | Privacy specialist |
+| [GDPR-expert](https://github.com/lowtidebuild/GDPR-expert) | 김덕배 (Kim De Bruyne) | Data protection specialist |
+| [contract-review-agent](https://github.com/lowtidebuild/contract-review-agent) | 고덕수 (Ko Duksoo) | Contract review specialist |
+| **[legal-writing-agent](https://github.com/lowtidebuild/legal-writing-agent)** | **한석봉 (Han Seokbong)** | **Legal drafting specialist** |
+| [second-review-agent](https://github.com/lowtidebuild/second-review-agent) | 반성문 (Ban Seong-mun) | Senior review specialist |
 
 ## License
 
