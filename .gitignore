@@ -1,54 +1,70 @@
-# Design document (internal)
-legal-writing-agent-design-v4.md
-docs/notes/naming-transition-guide.md
-docs/ko-legal-opinion-style-guide.md
+# -----------------------------------------------------------------------------
+# Security note
+# -----------------------------------------------------------------------------
+# Do NOT list sensitive filenames in this file. The .gitignore itself is
+# committed and public. For one-off local files, prefer .git/info/exclude.
+# For files that must remain readable by agents, place them under an opaque
+# directory (see docs/_private/) and ignore that whole directory with a
+# wildcard rule.
+# -----------------------------------------------------------------------------
 
-# Library assets (user-managed, confidential)
+# Local-only Claude settings
 .claude/settings.local.json
-library/source-registry.json
-library/house-styles/*
-library/templates/*
-library/precedents/*
-library/inbox/*
-library/grade-a/*
-library/grade-b/*
-library/grade-c/*
+
+# Opaque private directory — agents may read, but filenames are not exposed
+docs/_private/**
+!docs/_private/
+!docs/_private/.gitkeep
+!docs/_private/README.md
+
+# User-managed library assets (confidential — see library/README.md)
+library/**
+!library/
+!library/README.md
+!library/.gitkeep
+!library/house-styles/
 !library/house-styles/.gitkeep
+!library/templates/
 !library/templates/.gitkeep
+!library/precedents/
 !library/precedents/.gitkeep
+!library/inbox/
 !library/inbox/.gitkeep
+!library/inbox/_processed/
 !library/inbox/_processed/.gitkeep
+!library/inbox/_failed/
 !library/inbox/_failed/.gitkeep
+!library/grade-a/
 !library/grade-a/.gitkeep
+!library/grade-b/
 !library/grade-b/.gitkeep
+!library/grade-c/
 !library/grade-c/.gitkeep
 
-# Input documents (user-provided, confidential)
-input/*
+# User-provided input documents (confidential)
+input/**
+!input/
 !input/.gitkeep
 
-# Output artifacts (generated, confidential)
-output/codex-quality-audit-prompt.md
-output/documents/*
-output/manifests/*
-output/clause-maps/*
-output/placeholders/*
-output/term-registries/*
-output/checkpoint.json
-output/change-map.json
-output/outline.json
-output/draft.md
-output/draft-sections/
+# Generated output artifacts (confidential)
+output/**
+!output/
+!output/.gitkeep
+!output/documents/
 !output/documents/.gitkeep
+!output/manifests/
 !output/manifests/.gitkeep
+!output/clause-maps/
 !output/clause-maps/.gitkeep
+!output/placeholders/
 !output/placeholders/.gitkeep
+!output/term-registries/
 !output/term-registries/.gitkeep
 
-# Python cache
+# Python
 __pycache__/
 *.pyc
 
-# Node modules (for docx-generator)
+# Node (docx-generator)
 node_modules/
 package-lock.json
