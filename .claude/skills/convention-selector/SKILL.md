@@ -12,7 +12,7 @@
 - `references/style-guide-en-us.md` — US legal-writing conventions
 - `references/style-guide-en-uk.md` — UK legal-writing conventions
 - `references/style-guide-en-intl.md` — international English conventions
-- `docs/ko-legal-opinion-style-guide.md` — mandatory supplement for Korean legal opinions, legal review opinions, and client memoranda
+- `docs/_private/ko-legal-opinion-style-guide.md` — mandatory supplement for Korean legal opinions, legal review opinions, and client memoranda
 
 ## Responsibilities
 
@@ -34,7 +34,7 @@ Given the parameters from D1, select the complete convention set:
 
 **Step 3 — House Style Overlay**: If house style loaded at D1, overlay on base style guide. House style takes precedence for formatting (headings, numbering, fonts, margins, signature blocks).
 
-**Step 4 — Mandatory Supplemental Guide**: If the document is a Korean legal opinion / legal review opinion / client memorandum, you MUST load and apply `docs/ko-legal-opinion-style-guide.md`. Where that guide conflicts with generic Korean defaults, the opinion-specific guide controls for structure, numbering, citation, confidence language, and typography.
+**Step 4 — Mandatory Supplemental Guide**: If the document is a Korean legal opinion / legal review opinion / client memorandum, you MUST load and apply `docs/_private/ko-legal-opinion-style-guide.md`. Where that guide conflicts with generic Korean defaults, the opinion-specific guide controls for structure, numbering, citation, confidence language, and typography.
 
 ### 2. Convention Verification (R3)
 For revision pipeline, verify the existing document against the applicable convention set:
@@ -54,7 +54,7 @@ For revision pipeline, verify the existing document against the applicable conve
 - **한자 병기**: Optional on first use: 채권(債權), 물권(物權)
 - **Date**: YYYY년 MM월 DD일
 - **Signature**: Company → Title → Name → (인)
-- **Korean legal opinions**: For 법률의견서/법률검토의견/클라이언트 메모, apply `docs/ko-legal-opinion-style-guide.md` as a mandatory supplement
+- **Korean legal opinions**: For 법률의견서/법률검토의견/클라이언트 메모, apply `docs/_private/ko-legal-opinion-style-guide.md` as a mandatory supplement
 
 #### English US (style-guide-en-us)
 - **Register**: Formal. "Must" for obligations; "may" for permissions. No contractions.

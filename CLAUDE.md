@@ -125,7 +125,7 @@ User request received
 **Trigger**: D1 parameters resolved.
 **Skills**: `/convention-selector`, `/structure-planner`
 
-1. Select convention set: Language + Jurisdiction → base style guide; Document type → custom template override from `/library/templates/` when available, otherwise built-in template from `.claude/skills/structure-planner/references/`; House style overlay. **한국어 법률의견서인 경우 `docs/ko-legal-opinion-style-guide.md`를 반드시 읽어 적용.**
+1. Select convention set: Language + Jurisdiction → base style guide; Document type → custom template override from `/library/templates/` when available, otherwise built-in template from `.claude/skills/structure-planner/references/`; House style overlay. **한국어 법률의견서인 경우 `docs/_private/ko-legal-opinion-style-guide.md`를 반드시 읽어 적용.**
 2. Generate document outline from template + user instructions
 3. Initialize term registry and clause map using canonical JSON schemas
 4. **Present outline and proceed**: Show outline briefly, then start drafting immediately. User can interrupt to modify — no need to wait for explicit approval.
@@ -255,7 +255,7 @@ Same as D6. File name includes `_revised_`.
 
 ### Korean Legal Opinion Style Guide
 
-**한국어 법률의견서(법률검토의견, 클라이언트 메모 포함)를 작성할 때는 반드시 `docs/ko-legal-opinion-style-guide.md`를 읽고 그 규칙을 따를 것.** 이 가이드는 실제 법무법인 작성 의견서 3건에서 추출한 스타일 규칙을 체계화한 것으로, 다음을 포함합니다:
+**한국어 법률의견서(법률검토의견, 클라이언트 메모 포함)를 작성할 때는 반드시 `docs/_private/ko-legal-opinion-style-guide.md`를 읽고 그 규칙을 따를 것.** 이 가이드는 실제 법무법인 작성 의견서 3건에서 추출한 스타일 규칙을 체계화한 것으로, 다음을 포함합니다:
 - 문서 전체 구조 (MEMORANDUM 헤더, 정보 블록, 배경 사실, 질의 요지, disclaimer, 검토의견, 결론, 서명 블록)
 - 법령 인용 형식 (법령 블록 테이블, 인라인 인용)
 - 판례 인용 형식

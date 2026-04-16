@@ -11,7 +11,7 @@
 - Support level: `Conditional`
 - Authority packet required for substantive legal analysis
 - If the authority packet is missing, preserve the structure below and fill substantive analysis sections with canonical placeholders such as `[Authority needed: applicable statute or precedent]`, `[Argument: issue to be analyzed]`, and `[Factual basis needed]`
-- For Korean legal opinions, `docs/ko-legal-opinion-style-guide.md` controls where it is more specific than this template
+- For Korean legal opinions, `docs/_private/ko-legal-opinion-style-guide.md` controls where it is more specific than this template
 
 ## Section Tags
 - `[B]` = Boilerplate or administrative content that can usually be drafted without external authority
@@ -107,4 +107,4 @@
 ## Drafting Reminders
 - 질의가 여러 개면 `질의 1 → 결론 1 → 분석 1`의 대응 관계가 문서 전반에서 유지되어야 한다
 - 한국어 의견서에서는 결론 선제시가 가능하지만, 결론을 뒷받침하는 법적 근거가 반드시 뒤따라야 한다
-- 법령 블록과 판례 인용은 `docs/ko-legal-opinion-style-guide.md`의 형식을 우선 적용한다
+- 법령 블록과 판례 인용은 `docs/_private/ko-legal-opinion-style-guide.md`의 형식을 우선 적용한다

@@ -17,7 +17,7 @@
 | **Register** | 문어체 (~한다) | Formal (must/may) | Formal (must/may) | Neutral formal |
 | **Margins** | 20/15/20/20mm | 1″ all | 1″ all | 25mm all |
 
-Note: Korean legal opinions, legal review opinions, and client memoranda may override the generic Korean row above. In that opinion-specific profile, use A4, 2.54 cm margins, 11pt body text, and 1.15 line spacing per `docs/ko-legal-opinion-style-guide.md`.
+Note: Korean legal opinions, legal review opinions, and client memoranda may override the generic Korean row above. In that opinion-specific profile, use A4, 2.54 cm margins, 11pt body text, and 1.15 line spacing per `docs/_private/ko-legal-opinion-style-guide.md`.
 
 ## Register Quick Check
 

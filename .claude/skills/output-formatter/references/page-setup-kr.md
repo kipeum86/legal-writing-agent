@@ -1,7 +1,7 @@
 # Korean Document Page Setup
 
 ## Scope
-Use this file for generic Korean legal-document defaults. If the document is a Korean legal opinion, legal review opinion, or client memorandum, `docs/ko-legal-opinion-style-guide.md` may override these defaults where that guide specifies opinion-specific typography.
+Use this file for generic Korean legal-document defaults. If the document is a Korean legal opinion, legal review opinion, or client memorandum, `docs/_private/ko-legal-opinion-style-guide.md` may override these defaults where that guide specifies opinion-specific typography.
 
 ## A4 Standard
 | Parameter | Value |
@@ -61,5 +61,5 @@ Use this file for generic Korean legal-document defaults. If the document is a K
 - 법원 제출 문서에서는 대리인 표기와 제출처 표기를 템플릿 구조에 맞춘다
 
 ## Override Rule
-- Korean legal opinions may use opinion-specific typography from `docs/ko-legal-opinion-style-guide.md`
+- Korean legal opinions may use opinion-specific typography from `docs/_private/ko-legal-opinion-style-guide.md`
 - House style may override margins, fonts, and header/footer presentation, but should not undermine document readability or numbering clarity

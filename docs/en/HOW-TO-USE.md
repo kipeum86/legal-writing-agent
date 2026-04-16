@@ -209,7 +209,7 @@ The agent applies **different conventions depending on the document language**:
 - Numbering: 조·항·호·목 (제1조 → ① → 1. → 가.)
 - Citations: 「법률명」 제N조, 대법원 YYYY. MM. DD. 선고 판결
 - Page: A4, 바탕체 12pt (body), 맑은 고딕 (headings)
-- Exception: Korean legal opinions / client memoranda may use the opinion-specific profile from `docs/ko-legal-opinion-style-guide.md` (2.54 cm margins, 11pt body text, 1.15 spacing)
+- Exception: Korean legal opinions / client memoranda may use the opinion-specific profile from `docs/_private/ko-legal-opinion-style-guide.md` (2.54 cm margins, 11pt body text, 1.15 spacing)
 
 ### English Documents
 

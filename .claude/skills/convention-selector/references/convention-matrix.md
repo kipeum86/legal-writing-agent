@@ -12,7 +12,7 @@
 | Bilingual (KR+EN) | Cross-border | Both referenced | Primary language's numbering | Primary language's page size | Both as needed | Primary language's date format |
 
 **Mandatory supplement for Korean legal opinions**:
-- If the document is a Korean legal opinion, legal review opinion, or client memorandum, load `docs/ko-legal-opinion-style-guide.md` in addition to `style-guide-kr`
+- If the document is a Korean legal opinion, legal review opinion, or client memorandum, load `docs/_private/ko-legal-opinion-style-guide.md` in addition to `style-guide-kr`
 - The opinion style guide controls where it conflicts with the generic Korean guide
 
 ## Selection Algorithm
@@ -23,7 +23,7 @@
 3. Look up style guide from matrix
 4. Load matching template from /library/templates/ when present; otherwise use built-in references/template-{doc-type}-{language}.md
 5. Apply house style overlay (if loaded at D1)
-6. Load docs/ko-legal-opinion-style-guide.md when the document is a Korean legal opinion family document
+6. Load docs/_private/ko-legal-opinion-style-guide.md when the document is a Korean legal opinion family document
 7. Return complete convention set
 ```
 
@@ -39,4 +39,4 @@ House style does NOT override:
 - Legal citation format (jurisdiction-bound)
 - Register/formality level (language-bound)
 - Substantive structure (document-type-bound)
-- Mandatory Korean legal opinion rules from `docs/ko-legal-opinion-style-guide.md`
+- Mandatory Korean legal opinion rules from `docs/_private/ko-legal-opinion-style-guide.md`
