@@ -75,7 +75,7 @@ For **Conditional** document types (Advisory, Litigation, Regulatory):
 ### 7. Output
 Use `references/parameter-schema.md` as the canonical manifest schema.
 
-Save resolved parameters to `output/manifests/{document-id}-manifest.json`:
+Save resolved parameters to the manifest path under the resolved output base directory:
 ```json
 {
   "documentId": "{uuid}",
@@ -104,7 +104,7 @@ Save resolved parameters to `output/manifests/{document-id}-manifest.json`:
 
 ### 8. For Revision (R1): Document Ingestion
 When an existing document is provided for revision:
-1. Read the document from `/input/` folder or from a user-specified path
+1. Read the document from the resolved input directory (`$LEGAL_AGENT_PRIVATE_DIR/input/` when set, otherwise `<repo>/input/`) or from a user-specified path
 2. Parse by format:
    - `.docx`: Use `python-docx` to extract paragraphs, tables, styles, and structure
    - `.pdf`: Use Claude Code's native PDF reading capability (Read tool)
@@ -115,7 +115,7 @@ When an existing document is provided for revision:
 6. Extract clause map with stable section IDs
 7. Save document profile to the same manifest schema, updating `step` to `R1`
 
-If no document is found in `/input/`, ask the user to place the file there.
+If no document is found in the resolved input directory, ask the user to place the file there.
 
 ## Failure Handling
 - `.docx` parsing fails → try `python-docx`; if still fails → ask for `.md` or `.txt`
