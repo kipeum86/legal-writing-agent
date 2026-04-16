@@ -46,22 +46,12 @@ library/**
 # User-provided input documents (confidential)
 input/**
 !input/
-!input/.gitkeep
+!input/README.md
 
 # Generated output artifacts (confidential)
 output/**
 !output/
-!output/.gitkeep
-!output/documents/
-!output/documents/.gitkeep
-!output/manifests/
-!output/manifests/.gitkeep
-!output/clause-maps/
-!output/clause-maps/.gitkeep
-!output/placeholders/
-!output/placeholders/.gitkeep
-!output/term-registries/
-!output/term-registries/.gitkeep
+!output/README.md
 
 # Python
 __pycache__/
