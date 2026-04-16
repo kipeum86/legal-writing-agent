@@ -30,6 +30,8 @@ library/**
 !library/precedents/.gitkeep
 !library/inbox/
 !library/inbox/.gitkeep
+!library/inbox/_audit/
+!library/inbox/_audit/.gitkeep
 !library/inbox/_processed/
 !library/inbox/_processed/.gitkeep
 !library/inbox/_failed/
