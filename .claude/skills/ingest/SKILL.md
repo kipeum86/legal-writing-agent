@@ -36,6 +36,7 @@ library/inbox/ 에 파일 드롭
   │
   ├─ Step 1: 파일 스캔
   ├─ Step 2: Markdown 변환
+  ├─ Step 2.5: Prompt-injection gate
   ├─ Step 3: Grade 자동 판별
   ├─ Step 4: Frontmatter 생성
   ├─ Step 5: 목적 폴더로 이동
@@ -63,6 +64,35 @@ inbox/ 내 모든 파일을 Glob으로 탐색
 | `.md`, `.txt` | 변환 불필요, 그대로 사용 |
 
 **변환 실패 시:** 해당 파일을 `library/inbox/_failed/`로 이동 + 유저에게 실패 사유 안내
+
+### Step 2.5 — Prompt-injection gate
+
+Every converted Markdown passes through `tools/security/ingest_gate.py` before it can be graded or routed.
+
+```python
+from pathlib import Path
+from tools.security.ingest_gate import IngestQuarantined, run_gate
+
+try:
+    outcome = run_gate(
+        Path(converted_md_path),
+        audit_dir=Path("library/inbox/_audit"),
+        quarantine_dir=Path("library/inbox/_failed"),
+    )
+except IngestQuarantined as exc:
+    raise UserError(
+        f"Ingest blocked: {exc.match_count} injection patterns matched. "
+        f"Audit details: {exc.audit_path}. "
+        f"Review the file manually before retrying."
+    )
+```
+
+Policy:
+- Clean -> proceed to Step 3 (Grade detection) and Step 5 (placement).
+- Dirty -> file moves to `library/inbox/_failed/`, audit JSON under `library/inbox/_audit/`. Notify the user with a short summary (pattern categories, filename, audit path). Do NOT silently drop.
+- The audit JSON is the audit trail. Do not delete it after a run.
+
+See `docs/security/trust-boundaries.md` for the rule set and `tools/security/sanitizer.py` for the pattern catalog.
 
 ### Step 3: Grade 자동 판별
 
