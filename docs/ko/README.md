@@ -72,7 +72,7 @@ Draft a legal memorandum analyzing whether the non-compete clause is enforceable
 ```
 
 **수정:**
-`/input/` 폴더에 문서를 넣은 후:
+resolved input directory(`$LEGAL_AGENT_PRIVATE_DIR/input/`가 설정되어 있으면 그 경로, 아니면 `<repo>/input/`)에 문서를 넣은 후:
 ```
 input 폴더에 있는 답변서 수정해줘. 피고 주장 부분 보강해야 해.
 ```
@@ -80,9 +80,19 @@ input 폴더에 있는 답변서 수정해줘. 피고 주장 부분 보강해야
 Revise the brief in /input/. Strengthen the argument in Section III.
 ```
 
+## 기밀 파일 처리
+
+실제 사건 파일을 저장소 밖에 두려면 `LEGAL_AGENT_PRIVATE_DIR`를 설정하세요:
+
+```bash
+export LEGAL_AGENT_PRIVATE_DIR="$HOME/.local/share/legal-writing-agent"
+```
+
+설정하면 수정 입력은 `$LEGAL_AGENT_PRIVATE_DIR/input/`, 생성 출력은 `$LEGAL_AGENT_PRIVATE_DIR/output/` 아래에 저장됩니다. 설정하지 않으면 로컬/개발 편의를 위해 `<repo>/input/`, `<repo>/output/`로 fallback합니다.
+
 ## 데이터 보안 및 개인정보
 
-이 프로젝트는 로컬 파일시스템에서 실행됩니다. `/input/`, `/output/`, `/library/`의 파일은 이 프로젝트 폴더 안에 남아 있으며, `/library/` 사용자 자산과 `library/source-registry.json`은 기본적으로 `gitignore` 처리되어 사용자가 따로 바꾸지 않는 한 저장소에 커밋되지 않습니다.
+이 프로젝트는 로컬 파일시스템에서 실행됩니다. `/library/`는 의도적으로 저장소 안에 두고, 기밀 수정 입력물과 생성 산출물은 기본적으로 저장소 밖의 `LEGAL_AGENT_PRIVATE_DIR` 아래에 두는 것을 권장합니다. 저장소 안의 `input/`, `output/`는 fallback stub입니다. `/library/` 사용자 자산과 `library/source-registry.json`은 기본적으로 `gitignore` 처리되어 사용자가 따로 바꾸지 않는 한 저장소에 커밋되지 않습니다.
 
 다만 초안 작성과 수정은 여전히 Claude Code / Anthropic 모델 API 호출에 의존합니다. 즉, 에이전트에 제공한 프롬프트와 문서 텍스트는 결과 생성을 위해 Anthropic으로 전송될 수 있습니다.
 
@@ -102,13 +112,8 @@ Anthropic 공식 참고자료:
 ```
 /
 ├── CLAUDE.md                          # 에이전트 오케스트레이터
-├── /input/                            # 수정할 문서를 여기에 배치
-├── /output/
-│   ├── /documents/                    # 생성된 문서 (자동 버전 관리)
-│   ├── /manifests/                    # 문서 파라미터 (JSON)
-│   ├── /clause-maps/                  # 섹션 추적 (JSON)
-│   ├── /placeholders/                 # 자리 표시자 레지스트리 (JSON)
-│   └── /term-registries/             # 정의 용어 추적 (JSON)
+├── /input/                            # README stub; 실제 입력은 $LEGAL_AGENT_PRIVATE_DIR/input/ 권장
+├── /output/                           # README stub; 실제 출력은 $LEGAL_AGENT_PRIVATE_DIR/output/ 권장
 ├── /library/                          # 재사용 가능한 자산 (사용자 관리)
 │   ├── /inbox/                        # 소스 파일 드롭 → /ingest로 처리
 │   ├── /grade-a/                      # 공식 1차 소스 (법령, 가이드라인)
@@ -277,8 +282,8 @@ python .claude/skills/consistency-checker/scripts/citation-format-checker.py doc
 출력 파일은 자동으로 버전이 부여됩니다(`_v1`, `_v2`, `_v3`). 이전 버전은 절대 덮어쓰지 않습니다.
 
 ```
-output/documents/20260311_advisory_tax-opinion_v1.docx
-output/documents/20260311_advisory_tax-opinion_v2.docx    # 수정본
+$LEGAL_AGENT_PRIVATE_DIR/output/documents/20260311_advisory_tax-opinion_v1.docx
+$LEGAL_AGENT_PRIVATE_DIR/output/documents/20260311_advisory_tax-opinion_v2.docx    # 수정본
 ```
 
 ## 주요 설계 원칙

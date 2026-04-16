@@ -86,13 +86,13 @@ The agent runs a 6-step pipeline (D1–D6):
 3. **Drafts** section by section — maintaining term consistency throughout
 4. **Self-reviews** — runs an 8-item consistency checklist (terms, numbering, cross-references, register, conventions)
 5. **Formats** the final document
-6. **Saves** automatically to `output/documents/` with versioning (`_v1`, `_v2`, ...)
+6. **Saves** automatically to the resolved documents directory with versioning (`_v1`, `_v2`, ...)
 
 ---
 
 ## Revising an Existing Document
 
-Place your document in the `input/` folder, then tell the agent what to change:
+Place your document in the resolved input directory (`$LEGAL_AGENT_PRIVATE_DIR/input/` when set, otherwise `<repo>/input/`), then tell the agent what to change:
 
 > "input 폴더에 넣은 의견서 수정해줘. 3번 쟁점 부분 논거를 보강하고 결론 다시 써줘."
 

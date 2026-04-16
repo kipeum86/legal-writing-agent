@@ -27,7 +27,7 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
-OUTPUT_DIR="$REPO_ROOT/output/documents"
+OUTPUT_DIR="$(PYTHONPATH="$REPO_ROOT" python3 -c 'from tools.security.paths import documents_dir; print(documents_dir())')"
 mkdir -p "$OUTPUT_DIR"
 
 OUTPUT=""

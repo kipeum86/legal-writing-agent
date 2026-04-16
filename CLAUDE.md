@@ -115,7 +115,7 @@ User request received
 
 **Classification signals**:
 - **Drafting**: "의견서 작성해줘", "draft a memo", "준비서면 써줘"; no file attached; instructions describe new content
-- **Revision**: "이 의견서 수정해줘", "revise this brief", "고쳐줘"; file in `/input/` folder or attached; instructions reference specific sections
+- **Revision**: "이 의견서 수정해줘", "revise this brief", "고쳐줘"; file in the resolved input directory or attached; instructions reference specific sections
 - **Out of scope**: "NDA 만들어줘", "계약서", "contract", "이 문서 검토해줘", "review for errors"
 
 ## Drafting Pipeline (D1–D6)
@@ -130,7 +130,7 @@ User request received
 4. Load house style from `/library/house-styles/` (auto-apply; if none: base defaults)
 5. For Conditional-support types: check for authority packet. If missing → enter skeleton-only mode automatically (inform, don't ask)
 6. **Minimal clarification**: only ask when the answer would materially change the output. State assumptions and proceed.
-7. Save parameters to `output/manifests/{document-id}-manifest.json`
+7. Save parameters to the resolved manifest path under the output base directory (`$LEGAL_AGENT_PRIVATE_DIR/output/manifests/{document-id}-manifest.json` when set, otherwise `<repo>/output/manifests/{document-id}-manifest.json`)
 
 **Inference-first approach**: Infer governing law from language/context. Infer format as `.docx` unless stated otherwise. Infer review intensity from tone. State assumptions briefly and proceed — user can correct.
 
@@ -152,7 +152,7 @@ User request received
 3. Maintain term registry: same term = same form throughout
 4. For long documents (>30 pages): draft core sections first, then procedural; checkpoint after major section groups
 5. If user provided precedent: replicate structure and style, substituting only specified variables
-6. Missing information → bracketed placeholders tracked in `output/placeholders/{document-id}-placeholders.json`
+6. Missing information → bracketed placeholders tracked in the resolved placeholder registry path (`$LEGAL_AGENT_PRIVATE_DIR/output/placeholders/{document-id}-placeholders.json` when set, otherwise `<repo>/output/placeholders/{document-id}-placeholders.json`)
 7. Self-correct failing sections (max 2 attempts per section)
 
 **Quality bar**: Output must be indistinguishable from a document drafted by a competent human legal drafting specialist.
@@ -187,15 +187,15 @@ When user requests scope change during D3:
 
 1. Format document per convention set + house style
 2. Present inline preview in chat
-3. **Auto-save** to `output/documents/{date}_{type}_{description}_v{N}.{ext}` — no confirmation needed (previous versions never overwritten)
+3. **Auto-save** to the resolved documents directory (`$LEGAL_AGENT_PRIVATE_DIR/output/documents/{date}_{type}_{description}_v{N}.{ext}` when set, otherwise `<repo>/output/documents/{date}_{type}_{description}_v{N}.{ext}`) — no confirmation needed (previous versions never overwritten)
 4. Inform user of saved file path
 
 ### D6 — File Save
 **Trigger**: D5 complete (automatic).
 
-1. Auto-save to `output/documents/` with auto-versioning (v1, v2, v3...)
+1. Auto-save to the resolved documents directory with auto-versioning (v1, v2, v3...)
 2. Never overwrite previous versions
-3. Save session state to `output/checkpoint.json`
+3. Save session state to the resolved checkpoint path
 
 ## Revision Pipeline (R1–R7)
 
@@ -203,12 +203,12 @@ When user requests scope change during D3:
 **Trigger**: Existing document + modification instructions.
 **Skill**: `/request-interpreter`
 
-1. Read document from `/input/` folder or user-specified path. Supported: `.docx` (via `python-docx`), `.pdf` (native Read), `.md`, `.txt`
+1. Read document from the resolved input directory (`$LEGAL_AGENT_PRIVATE_DIR/input/` when set, otherwise `<repo>/input/`) or a user-specified path. Supported: `.docx` (via `python-docx`), `.pdf` (native Read), `.md`, `.txt`
 2. Parse and extract document structure (headings, sections, numbering)
 3. Identify type, language, jurisdiction, conventions
 4. Build term inventory from existing document
 5. Extract clause map
-6. Save to `output/manifests/{document-id}-manifest.json`
+6. Save to the resolved manifest path
 
 ### R2 — Revision Scope Determination
 **Skill**: `/document-reviser`
@@ -231,7 +231,7 @@ When user requests scope change during D3:
 1. Execute revisions per scope plan
 2. Track all changes:
    - `.docx` Level A: native Word tracked changes (when validated)
-   - `.docx` Level B (fallback): redline document + clean copy + `output/change-map.json`
+   - `.docx` Level B (fallback): redline document + clean copy + resolved `change-map.json`
    - `.md`: inline diff markers (`~~deleted~~` / `**inserted**`)
 3. Preserve untouched sections: canonical clause identity (text + structural nesting unchanged per clause-map stable IDs)
 4. Self-correct (max 2 attempts)
@@ -349,15 +349,15 @@ Retain prior document's manifest and term registry, not full text.
 | Convention override | `[Convention Note: {description}]` |
 | Drafting gap | `[Drafting Gap: {issue}]` |
 
-All placeholders tracked in `output/placeholders/{document-id}-placeholders.json`.
+All placeholders tracked in the resolved placeholder registry path.
 
 ## Document Manifest Protocol
 
 Each document generates structured metadata:
-- **Matter manifest**: `output/manifests/{document-id}-manifest.json` — all resolved parameters
-- **Clause map**: `output/clause-maps/{document-id}-clause-map.json` — stable section IDs
-- **Placeholder registry**: `output/placeholders/{document-id}-placeholders.json`
-- **Term registry**: `output/term-registries/{document-id}-terms.json`
+- **Matter manifest**: resolved `manifests/{document-id}-manifest.json` under the output base directory — all resolved parameters
+- **Clause map**: resolved `clause-maps/{document-id}-clause-map.json` under the output base directory — stable section IDs
+- **Placeholder registry**: resolved `placeholders/{document-id}-placeholders.json` under the output base directory
+- **Term registry**: resolved `term-registries/{document-id}-terms.json` under the output base directory
 
 **Canonical schema expectations**:
 - **Matter manifest** includes: `documentId`, `documentType`, `supportLevel`, `targetLanguage`, `jurisdiction`, `governingLaw`, `parties`, `reviewIntensity`, `outputFormat`, `houseStyle`, `authorityPacketProvided`, `skeletonOnly`, `pageSize`, `createdAt`, `updatedAt`, `step`, `sessionContext`
@@ -370,10 +370,17 @@ Each document generates structured metadata:
 - Previous versions NEVER overwritten
 - File name: `{date}_{type}_{description}_v{N}.{ext}`
 
+## Private Work Product Location
+
+- Runtime input/output paths resolve through `LEGAL_AGENT_PRIVATE_DIR`.
+- When set, the agent uses `$LEGAL_AGENT_PRIVATE_DIR/input/` and `$LEGAL_AGENT_PRIVATE_DIR/output/`.
+- When unset, the agent falls back to `<repo>/input/` and `<repo>/output/` for local/dev compatibility.
+- Real client work product should live outside the repo whenever possible. The in-repo `input/` and `output/` directories are fallback stubs, not the preferred storage location.
+
 ## Session State & Resume
 
-- Save checkpoint at every pipeline step to `output/checkpoint.json`
-- On session start: check for `output/checkpoint.json` → offer to resume
+- Save checkpoint at every pipeline step to the resolved checkpoint path
+- On session start: check the resolved checkpoint path → offer to resume
 
 ## Failure Handling
 

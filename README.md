@@ -72,7 +72,7 @@ Draft a legal memorandum analyzing whether the non-compete clause is enforceable
 ```
 
 **Revision:**
-Place the document in `/input/`, then:
+Place the document in the resolved input directory (`$LEGAL_AGENT_PRIVATE_DIR/input/` when set, otherwise `<repo>/input/`), then:
 ```
 input 폴더에 있는 답변서 수정해줘. 피고 주장 부분 보강해야 해.
 ```
@@ -80,9 +80,19 @@ input 폴더에 있는 답변서 수정해줘. 피고 주장 부분 보강해야
 Revise the brief in /input/. Strengthen the argument in Section III.
 ```
 
+## Confidential-File Handling
+
+Set `LEGAL_AGENT_PRIVATE_DIR` to keep live matter files outside the repo:
+
+```bash
+export LEGAL_AGENT_PRIVATE_DIR="$HOME/.local/share/legal-writing-agent"
+```
+
+When set, revision inputs resolve under `$LEGAL_AGENT_PRIVATE_DIR/input/` and generated outputs resolve under `$LEGAL_AGENT_PRIVATE_DIR/output/`. If unset, the agent falls back to `<repo>/input/` and `<repo>/output/` for local/dev compatibility.
+
 ## Data Security and Privacy
 
-This project runs locally on your filesystem. Your `/input/`, `/output/`, and `/library/` files stay in this project folder, and `/library/` user assets plus `library/source-registry.json` are gitignored by default so reusable materials and ingest metadata are not committed unless you choose otherwise.
+This project runs locally on your filesystem. `/library/` stays in the repo by design, while confidential revision inputs and generated outputs are intended to live under `LEGAL_AGENT_PRIVATE_DIR` outside the repo. The repo-local `input/` and `output/` directories remain as fallback stubs only. `/library/` user assets plus `library/source-registry.json` are gitignored by default so reusable materials and ingest metadata are not committed unless you choose otherwise.
 
 However, drafting and revision still rely on Claude Code / Anthropic model API calls. In practice, that means prompts and document text you provide to the agent may be transmitted to Anthropic in order to generate outputs.
 
@@ -102,13 +112,8 @@ Official Anthropic references:
 ```
 /
 ├── CLAUDE.md                          # Agent orchestrator
-├── /input/                            # Place documents here for revision
-├── /output/
-│   ├── /documents/                    # Generated documents (auto-versioned)
-│   ├── /manifests/                    # Document parameters (JSON)
-│   ├── /clause-maps/                  # Section tracking (JSON)
-│   ├── /placeholders/                 # Placeholder registry (JSON)
-│   └── /term-registries/             # Defined term tracking (JSON)
+├── /input/                            # README stub; real inputs should live under $LEGAL_AGENT_PRIVATE_DIR/input/
+├── /output/                           # README stub; real outputs should live under $LEGAL_AGENT_PRIVATE_DIR/output/
 ├── /library/                          # Reusable assets (user-managed)
 │   ├── /inbox/                        # Drop source files here for ingest
 │   ├── /grade-a/                      # Official primary sources (statutes, guidelines)
@@ -275,8 +280,8 @@ Ingested sources serve as authority packets for Conditional-support documents (A
 Output files are auto-versioned (`_v1`, `_v2`, `_v3`). Previous versions are never overwritten.
 
 ```
-output/documents/20260311_advisory_tax-opinion_v1.docx
-output/documents/20260311_advisory_tax-opinion_v2.docx    # revision
+$LEGAL_AGENT_PRIVATE_DIR/output/documents/20260311_advisory_tax-opinion_v1.docx
+$LEGAL_AGENT_PRIVATE_DIR/output/documents/20260311_advisory_tax-opinion_v2.docx    # revision
 ```
 
 ## Key Design Decisions

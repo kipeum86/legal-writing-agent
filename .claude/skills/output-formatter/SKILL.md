@@ -18,7 +18,7 @@
 - For revisions: show revision tracking output appropriate to the format
   - `.md`: inline diff markers
   - `.docx`: native tracked changes when available, otherwise Level B redline artifacts
-- **Auto-save** to `output/documents/{date}_{type}_{description}_v{N}.{ext}` immediately after preview
+- **Auto-save** to the resolved documents directory (`$LEGAL_AGENT_PRIVATE_DIR/output/documents/` when set, otherwise `<repo>/output/documents/`) immediately after preview
 - Inform user of saved path (no confirmation needed — previous versions are never overwritten)
 
 ### 2. File Generation
@@ -35,7 +35,9 @@ Generate the document in the user's chosen format:
 **Reading** (R1 ingestion):
 ```python
 import docx
-doc = docx.Document('input/filename.docx')
+from tools.security import paths
+
+doc = docx.Document(str(paths.input_dir() / "filename.docx"))
 for para in doc.paragraphs:
     # para.style.name, para.text, para.runs
 ```
@@ -45,10 +47,12 @@ for para in doc.paragraphs:
 from docx import Document
 from docx.shared import Pt, Mm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from tools.security import paths
+
 doc = Document()
 # Set page size, margins, fonts per convention set
 # Add paragraphs with correct styles
-doc.save('output/documents/filename.docx')
+doc.save(str(paths.documents_dir() / "filename.docx"))
 ```
 
 #### PDF Reading
@@ -102,10 +106,10 @@ For revisions:
 - Revision outputs must include the `_revised_` marker before the version suffix
 
 ### 5. Auto-Versioning (D6/R7)
-1. Check `output/documents/` for existing files with same base name
+1. Check the resolved documents directory for existing files with same base name
 2. Auto-increment version: v1 → v2 → v3
 3. **Never overwrite** previous versions
-4. Save to `output/documents/`
+4. Save to the resolved documents directory
 
 ### 6. Revision Output (R6)
 In addition to the document:
@@ -113,20 +117,20 @@ In addition to the document:
 - **Level B**: Three files:
   - `{name}_redline_v{N}.{ext}` — shows changes
   - `{name}_clean_v{N}.{ext}` — final clean version
-  - `output/change-map.json` — structured change record
+  - resolved `change-map.json` under the output base directory — structured change record
 - **Change summary**: Brief list of all changes alongside document
 
 ### 7. Session Checkpoint (D6/R7)
-Save session state to `output/checkpoint.json`:
+Save session state to the resolved checkpoint path (`$LEGAL_AGENT_PRIVATE_DIR/output/checkpoint.json` when set, otherwise `<repo>/output/checkpoint.json`):
 ```json
 {
   "lastStep": "D6|R7",
   "documentId": "uuid",
   "documentType": "string",
-  "manifestPath": "output/manifests/{id}-manifest.json",
-  "clauseMapPath": "output/clause-maps/{id}-clause-map.json",
-  "termRegistryPath": "output/term-registries/{id}-terms.json",
-  "outputPath": "output/documents/{filename}",
+  "manifestPath": "$LEGAL_AGENT_PRIVATE_DIR/output/manifests/{id}-manifest.json",
+  "clauseMapPath": "$LEGAL_AGENT_PRIVATE_DIR/output/clause-maps/{id}-clause-map.json",
+  "termRegistryPath": "$LEGAL_AGENT_PRIVATE_DIR/output/term-registries/{id}-terms.json",
+  "outputPath": "$LEGAL_AGENT_PRIVATE_DIR/output/documents/{filename}",
   "version": 1,
   "timestamp": "ISO 8601"
 }
