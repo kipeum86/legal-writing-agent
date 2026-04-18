@@ -42,7 +42,7 @@ git clone https://github.com/kipeum86/legal-writing-agent.git
 
 1. Claude Code 실행
 2. `legal-writing-agent` 폴더 열기
-3. 에이전트가 자동 활성화 — **Jinju Legal Orchestrator**의 **법률 드래프팅 스페셜리스트 한석봉**이 인사합니다
+3. 에이전트가 자동 활성화 — **KP Legal Orchestrator**의 **법률 드래프팅 스페셜리스트**로 실행됩니다
 
 ### 방법 B: 터미널 (CLI)
 
@@ -132,7 +132,7 @@ claude
 | `library/templates/` | 문서 골격 | 섹션 흐름이 안정적으로 유지됨 |
 | `library/house-styles/` | 내부 스타일 규칙 | 조직 고유의 서식 적용 |
 | `library/grade-a/` | 법령, 공식 가이드라인 | 조건부 문서의 근거 자료로 활용 가능 |
-| `library/grade-b/` | 판례, 로펌 해설 | 2차 참고자료로 활용 |
+| `library/grade-b/` | 판례, 실무 해설 자료 | 2차 참고자료로 활용 |
 | `library/grade-c/` | 학술 논문, 참고자료 | 배경 참고용 |
 
 ### Ingest로 소스 추가하기
@@ -160,7 +160,7 @@ claude
 1. **변환** — 파일을 Markdown으로 변환 (MarkItDown 사용)
 2. **자동 분류** — 신뢰도 등급 판별:
    - **Grade A** — 공식 1차 소스: 법령(법률 제XXXXX호), 정부 가이드라인, 공식 기관 발간물
-   - **Grade B** — 검증된 2차 소스: 판례, 로펌 뉴스레터, 변호사회 자료
+   - **Grade B** — 검증된 2차 소스: 판례, 실무 해설 뉴스레터, 변호사회 자료
    - **Grade C** — 학술/참고: 학술지 논문, 학위논문
    - **Grade D** — 거부: 뉴스 기사, AI 요약, 위키 콘텐츠 (경고 메시지 표시)
 3. **메타데이터 생성** — 제목, 문서 유형, 발행처, 날짜, 키워드, 관련 법조문
@@ -175,7 +175,7 @@ claude
 |-----------|---------|
 | 개인정보보호법 전문 (PDF) | Grade A, `grade-a/statutes/`에 배치 |
 | 대법원 판결문 | Grade B, `grade-b/court-precedents/`에 배치 |
-| 김앤장 뉴스레터 | Grade B, `grade-b/law-firm/`에 배치 |
+| 실무 해설 뉴스레터 | Grade B, `grade-b/practice-materials/`에 배치 |
 | 학술 논문 (법학 저널) | Grade C, `grade-c/academic/`에 배치 |
 | 뉴스 기사 | Grade D — 거부 (경고 메시지 표시) |
 

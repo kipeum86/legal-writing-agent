@@ -111,14 +111,14 @@ See `docs/security/trust-boundaries.md` for the rule set and `tools/security/san
 | 가이드라인 표지 | "안내서", "가이드라인", "해설서" + 정부/공공기관명 |
 | 영문 법령 | Public Law, Statute, Act of Parliament, Federal Register |
 
-**Grade B — 2차 소스 (판례, 로펌 해설, 실무자료):**
+**Grade B — 2차 소스 (판례, 실무 해설, 실무자료):**
 
 | 시그널 | 예시 |
 |--------|------|
 | 판례 번호 | `대법원 20XXdaXXXXX`, `헌법재판소 20XX헌마XXX` |
 | 영문 판례 인용 | Bluebook 형식 (e.g., `123 F.3d 456`), neutral citation |
 | 행정 처분례 | `의결 제20XX-XXX-XXX호`, `시정명령` |
-| 로펌 레터헤드/도메인 | kimchang.com, bkl.co.kr, leeko.com 등 |
+| 실무자료 발행 도메인 | practice-update.example, advisory-notes.example 등 |
 | 뉴스레터/실무자료 | "법률 뉴스레터", "Client Alert", "Legal Update" |
 | 법조 칼럼 | 법률신문, 대한변호사협회, Bar Association |
 
@@ -141,7 +141,7 @@ See `docs/security/trust-boundaries.md` for the rule set and `tools/security/san
 - 위 시그널이 어디에도 매칭되지 않으면 유저에게 질문:
   > "이 파일의 성격을 판별하지 못했습니다: `{filename}`
   > 내용 일부: {첫 200자}
-  > Grade를 지정해주세요: A (법령/공식), B (판례/로펌), C (학술)"
+  > Grade를 지정해주세요: A (법령/공식), B (판례/실무자료), C (학술)"
 - 유저 응답 후 처리 계속
 
 ### Step 4: Frontmatter 생성
@@ -151,7 +151,7 @@ See `docs/security/trust-boundaries.md` for the rule set and `tools/security/san
 ```yaml
 ---
 # === 식별 정보 ===
-source_id: "{grade}-{category}-{slug}"    # 예: "b-law-firm-kimchang-noncompete-2026"
+source_id: "{grade}-{category}-{slug}"    # 예: "b-practice-materials-noncompete-update-2026"
 slug: "{자동 생성}"
 title_kr: "{문서에서 추출한 제목}"
 title_en: "{영문 제목 있으면 추출, 없으면 빈값}"
@@ -159,7 +159,7 @@ document_type: "{statute | guideline | decision | precedent | newsletter | artic
 
 # === 소스 정보 ===
 source_grade: "{A | B | C}"
-publisher: "{발행 기관/로펌/저널명}"
+publisher: "{발행 기관/실무자료 발행처/저널명}"
 author: "{저자명 (추출 가능한 경우)}"
 published_date: "{발행일 (추출 가능한 경우)}"
 source_url: "{URL (추출 가능한 경우)}"
@@ -183,7 +183,7 @@ grade_confidence: "{high | medium | low}"  # Grade 판별 확신도
 1. **제목**: 첫 번째 `#` 헤딩 또는 문서 최상단 볼드 텍스트
 2. **키워드**: 법률 관련 핵심 용어 추출 (문서 도메인에 따라)
 3. **legal_provisions**: 정규식으로 "제XX조", "Article XX", "Section XX" 패턴 추출 → 조문 번호 목록
-4. **publisher**: 기관명, 로펌명, 저널명 등 추출
+4. **publisher**: 기관명, 실무자료 발행처, 저널명 등 추출
 5. **published_date**: 날짜 패턴 추출 (YYYY.MM.DD, YYYY년 M월 D일, Month DD, YYYY 등)
 6. **jurisdiction**: 언어/출처 도메인/법령 형식에서 추론
 
@@ -200,7 +200,7 @@ Grade A:
 Grade B:
   decision                    → library/grade-b/decisions/
   precedent                   → library/grade-b/court-precedents/
-  newsletter, article         → library/grade-b/law-firm/
+  newsletter, article         → library/grade-b/practice-materials/
   기타                        → library/grade-b/{category}/
 
 Grade C:
@@ -224,7 +224,7 @@ Grade C:
   "total_sources": 5,
   "by_grade": {
     "A": { "count": 2, "categories": ["statutes", "guidelines"] },
-    "B": { "count": 2, "categories": ["court-precedents", "law-firm"] },
+    "B": { "count": 2, "categories": ["court-precedents", "practice-materials"] },
     "C": { "count": 1, "categories": ["academic"] }
   },
   "sources": [
@@ -254,7 +254,7 @@ Ingest 완료
 처리: 5개 파일
   Grade A: 1건 (민법-시행령-일부개정.pdf → grade-a/statutes/)
   Grade B: 2건
-     - 김장-비경쟁조항-뉴스레터.pdf → grade-b/law-firm/
+     - 비경쟁조항-실무해설-뉴스레터.pdf → grade-b/practice-materials/
      - 대법원-2025다12345.docx → grade-b/court-precedents/
   Grade C: 1건 (법학연구-계약해석론.pdf → grade-c/academic/)
   판별 불가: 1건 (미확인문서.docx → Grade 지정 필요)
