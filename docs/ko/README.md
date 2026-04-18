@@ -6,7 +6,7 @@
 
 > **처음이신가요?** **[사용 가이드](./HOW-TO-USE.md)**를 읽어보세요 — 기술 배경 없이도 사용할 수 있습니다. **[How to Use (English)](../en/HOW-TO-USE.md)**
 
-**Jinju Legal Orchestrator**의 일부로, 이 클로드 코드(Claude Code) 에이전트는 한국어와 영어로 **비계약 법률문서**를 초안 작성 및 수정하며, 각 법역에 맞는 법률문서 작성 규범을 적용합니다.
+**KP Legal Orchestrator**의 일부로, 이 클로드 코드(Claude Code) 에이전트는 한국어와 영어로 **비계약 법률문서**를 초안 작성 및 수정하며, 각 법역에 맞는 법률문서 작성 규범을 적용합니다.
 
 ## 더 좋은 결과를 위한 핵심: Library 활용
 
@@ -117,7 +117,7 @@ Anthropic 공식 참고자료:
 ├── /library/                          # 재사용 가능한 자산 (사용자 관리)
 │   ├── /inbox/                        # 소스 파일 드롭 → /ingest로 처리
 │   ├── /grade-a/                      # 공식 1차 소스 (법령, 가이드라인)
-│   ├── /grade-b/                      # 2차 소스 (판례, 로펌 해설)
+│   ├── /grade-b/                      # 2차 소스 (판례, 실무 해설 자료)
 │   ├── /grade-c/                      # 학술/참고 소스
 │   ├── /house-styles/                 # 기관별 서식 규칙
 │   ├── /templates/                    # 문서 구조 골격
@@ -263,7 +263,7 @@ python .claude/skills/consistency-checker/scripts/citation-format-checker.py doc
 | 등급 | 설명 | 예시 |
 |---|---|---|
 | A | 공식 1차 소스 | 법령, 시행령, 정부 가이드라인 |
-| B | 2차 소스 | 판례, 로펌 뉴스레터, 변호사회 자료 |
+| B | 2차 소스 | 판례, 실무 해설 뉴스레터, 변호사회 자료 |
 | C | 학술/참고 | 학술 논문, 학위 논문, 저널 기사 |
 
 인제스트된 소스는 조건부 지원 문서(의견서, 소송문서, 규제문서)의 authority packet으로 활용됩니다.
@@ -313,20 +313,20 @@ $LEGAL_AGENT_PRIVATE_DIR/output/documents/20260311_advisory_tax-opinion_v2.docx 
 | 한국어 문서 + 영어 개념 | 적법절차(due process)의 원칙에 따라... |
 | 영어 문서 + 한국어 개념 | the Gab/Eul (갑/을) party designation... |
 
-## Jinju Legal Orchestrator
+## KP Legal Orchestrator
 
-**Jinju Legal Orchestrator** 소속 전문 법률 워크플로우 에이전트 시리즈:
+**KP Legal Orchestrator** 소속 공개 전문 법률 워크플로우 저장소:
 
-| 에이전트 | 이름 | 역할 |
-|---------|------|------|
-| [game-legal-research](https://github.com/kipeum86/game-legal-research) | 심진주 | 게임 산업법 스페셜리스트 |
-| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | 변혁기 | 법률 번역 스페셜리스트 |
-| [general-legal-research](https://github.com/kipeum86/general-legal-research) | 김재식 | 법률 리서치 스페셜리스트 |
-| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | 정보호 | 개인정보 스페셜리스트 |
-| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | 김덕배 | 데이터 보호 스페셜리스트 |
-| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | 고덕수 | 계약 검토 스페셜리스트 |
-| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **한석봉** | **법률 드래프팅 스페셜리스트** |
-| [second-review-agent](https://github.com/kipeum86/second-review-agent) | 반성문 | 시니어 리뷰 스페셜리스트 |
+| 저장소 | 공개 역할 |
+|---------|------|
+| [game-legal-research](https://github.com/kipeum86/game-legal-research) | 게임 산업법 스페셜리스트 |
+| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | 법률 번역 스페셜리스트 |
+| [general-legal-research](https://github.com/kipeum86/general-legal-research) | 법률 리서치 스페셜리스트 |
+| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | 개인정보 스페셜리스트 |
+| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | 데이터 보호 스페셜리스트 |
+| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | 계약 검토 스페셜리스트 |
+| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **법률 드래프팅 스페셜리스트** |
+| [second-review-agent](https://github.com/kipeum86/second-review-agent) | 시니어 리뷰 스페셜리스트 |
 
 ## 라이선스
 

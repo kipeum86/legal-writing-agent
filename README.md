@@ -6,7 +6,7 @@
 
 > **New here?** Read the **[How to Use Guide](docs/en/HOW-TO-USE.md)** — no technical background required. **[사용 가이드 (한국어)](docs/ko/HOW-TO-USE.md)**
 
-Part of **Jinju Legal Orchestrator**, this Claude Code agent drafts and revises **non-contract legal documents** in Korean and English, applying jurisdiction-appropriate legal writing conventions.
+Part of **KP Legal Orchestrator**, this Claude Code agent drafts and revises **non-contract legal documents** in Korean and English, applying jurisdiction-appropriate legal writing conventions.
 
 ## Best Results: Use the Library
 
@@ -117,7 +117,7 @@ Official Anthropic references:
 ├── /library/                          # Reusable assets (user-managed)
 │   ├── /inbox/                        # Drop source files here for ingest
 │   ├── /grade-a/                      # Official primary sources (statutes, guidelines)
-│   ├── /grade-b/                      # Secondary sources (case law, law firm materials)
+│   ├── /grade-b/                      # Secondary sources (case law, practice materials)
 │   ├── /grade-c/                      # Academic/reference sources
 │   ├── /house-styles/                 # Org-specific formatting rules
 │   ├── /templates/                    # Document structure skeletons
@@ -261,7 +261,7 @@ Previously completed documents. The agent analyzes their structure and replicate
 | Grade | Description | Examples |
 |---|---|---|
 | A | Official primary sources | Statutes, regulations, government guidelines |
-| B | Secondary sources | Case law, law firm newsletters, bar association materials |
+| B | Secondary sources | Case law, practice updates, bar association materials |
 | C | Academic/reference | Journal articles, theses, academic papers |
 
 Ingested sources serve as authority packets for Conditional-support documents (Advisory, Litigation, Regulatory).
@@ -311,20 +311,20 @@ The agent infers intensity from context ("빨리 초안만" → Light, "최종�
 | Korean doc + English concept | 적법절차(due process)의 원칙에 따라... |
 | English doc + Korean concept | the Gab/Eul (갑/을) party designation... |
 
-## Part of Jinju Legal Orchestrator
+## Part of KP Legal Orchestrator
 
-This agent is part of **Jinju Legal Orchestrator**, a series of specialist legal workflow agents:
+This agent is part of **KP Legal Orchestrator**, a public collection of specialist legal workflow repositories:
 
-| Agent | Name | Role |
-|-------|------|------|
-| [game-legal-research](https://github.com/kipeum86/game-legal-research) | 심진주 (Sim Jinju) | Game industry law specialist |
-| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | 변혁기 (Byeon Hyeok-gi) | Legal translation specialist |
-| [general-legal-research](https://github.com/kipeum86/general-legal-research) | 김재식 (Kim Jaesik) | Legal research specialist |
-| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | 정보호 (Jeong Bo-ho) | Privacy specialist |
-| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | 김덕배 (Kim De Bruyne) | Data protection specialist |
-| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | 고덕수 (Ko Duksoo) | Contract review specialist |
-| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **한석봉 (Han Seokbong)** | **Legal drafting specialist** |
-| [second-review-agent](https://github.com/kipeum86/second-review-agent) | 반성문 (Ban Seong-mun) | Senior review specialist |
+| Repository | Public role |
+|-------|------|
+| [game-legal-research](https://github.com/kipeum86/game-legal-research) | Game industry law specialist |
+| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | Legal translation specialist |
+| [general-legal-research](https://github.com/kipeum86/general-legal-research) | Legal research specialist |
+| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | Privacy specialist |
+| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | Data protection specialist |
+| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | Contract review specialist |
+| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **Legal drafting specialist** |
+| [second-review-agent](https://github.com/kipeum86/second-review-agent) | Senior review specialist |
 
 ## License
 

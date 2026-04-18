@@ -42,7 +42,7 @@ git clone https://github.com/kipeum86/legal-writing-agent.git
 
 1. Open Claude Code
 2. Open the `legal-writing-agent` folder
-3. The agent activates automatically — you'll meet **Legal Drafting Specialist Han Seokbong (한석봉)** from **Jinju Legal Orchestrator**
+3. The agent activates automatically as the **Legal Drafting Specialist** for **KP Legal Orchestrator**
 
 ### Option B: Terminal (CLI)
 
@@ -132,7 +132,7 @@ The agent performs best when you populate `/library/` with your organization's r
 | `library/templates/` | Document skeletons | Agent follows your section flow |
 | `library/house-styles/` | Internal style rules | Agent applies your org's formatting preferences |
 | `library/grade-a/` | Statutes, official guidelines | Available as authority packet for conditional documents |
-| `library/grade-b/` | Case law, law firm memos | Secondary reference material |
+| `library/grade-b/` | Case law, practice memos | Secondary reference material |
 | `library/grade-c/` | Academic papers, commentary | Background reference only |
 
 ### Adding Sources with Ingest
@@ -160,7 +160,7 @@ The agent will:
 1. **Convert** the file to Markdown (using MarkItDown)
 2. **Auto-classify** the source by trust level:
    - **Grade A** — Official primary sources: statutes (법률 제XXXXX호), government guidelines, official agency publications
-   - **Grade B** — Verified secondary sources: case law (판례), law firm newsletters, bar association materials
+   - **Grade B** — Verified secondary sources: case law (판례), practice updates, bar association materials
    - **Grade C** — Academic/reference: journal articles, theses, academic papers
    - **Grade D** — Rejected: news articles, AI summaries, wiki content (with a warning)
 3. **Generate metadata** — title, document type, publisher, date, keywords, related legal provisions
@@ -175,7 +175,7 @@ Your new source is now available as reference material for future drafts.
 |---------|-------------|
 | 개인정보보호법 전문 (PDF) | Grade A, filed under `grade-a/statutes/` |
 | 대법원 판결문 | Grade B, filed under `grade-b/court-precedents/` |
-| 김앤장 뉴스레터 | Grade B, filed under `grade-b/law-firm/` |
+| Practice update newsletter | Grade B, filed under `grade-b/practice-materials/` |
 | 학술 논문 (법학 저널) | Grade C, filed under `grade-c/academic/` |
 | 뉴스 기사 | Grade D — rejected with warning |
 
