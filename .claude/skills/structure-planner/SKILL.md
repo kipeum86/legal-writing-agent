@@ -17,6 +17,10 @@
 - `references/template-general-kr.md`
 - `references/template-general-en.md`
 
+## Context Loading
+
+Use `tools.context.budget` at D2 and load only the selected template for the resolved document type and language. Do not scan the full template set into context unless the document type is genuinely unresolved.
+
 ## Responsibilities
 
 ### 1. Template Loading
