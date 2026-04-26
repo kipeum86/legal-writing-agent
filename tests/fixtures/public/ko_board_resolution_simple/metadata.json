@@ -1,0 +1,10 @@
+{
+  "id": "ko_board_resolution_simple",
+  "description": "Synthetic Korean board resolution fixture for a simple ministerial corporate draft.",
+  "language": "ko",
+  "jurisdiction": "korea",
+  "documentType": "corporate",
+  "supportLevel": "full",
+  "synthetic": true,
+  "containsSensitiveData": false
+}

@@ -22,23 +22,27 @@
 ---
 
 ## Category 2: Corporate (기업문서)
-**Support Level**: Full
-**Authority Packet Required**: No
+**Support Level**: Mixed — subtype-specific
+**Authority Packet Required**: Depends on subtype
 
 ### Document Types
-| Korean | English |
-|---|---|
-| 이사회 결의서 | Board resolution |
-| 정관 | Articles of incorporation |
-| 주주총회 의사록 | Shareholders meeting minutes |
-| 위임장 | Power of attorney / Proxy |
-| 사규/내규 | Internal regulations / Bylaws |
-| 조직규정 | Organizational regulations |
+| Korean | English | Support Level | Authority Packet Required? |
+|---|---|:---:|:---:|
+| 단순 이사회 결의서 | Simple board resolution | Full | No |
+| 단순 주주총회 의사록 | Simple shareholders meeting minutes | Full | No |
+| 정관 | Articles of incorporation / bylaws | Conditional | Yes |
+| 위임장 | Power of attorney / Proxy | Conditional or template-only | Yes |
+| 사규/내규 | Internal regulations / company policies | Conditional | Yes |
+| 조직규정 | Organizational regulations | Conditional | Yes |
 
 ### Classification Signals
 - User mentions: 결의서, 정관, 의사록, 위임장, resolution, minutes, bylaws
 - Content involves: corporate governance, organizational structure
 - Structure involves: formal recitals, resolutions, attestation
+
+### Corporate Subtype Rule
+- Ministerial records such as simple board resolutions and simple meeting minutes can be drafted as `full` support documents from user instructions plus factual placeholders.
+- Normative governance instruments such as articles, bylaws, internal regulations, powers of attorney, and organizational regulations require user-provided legal/organizational choices, an existing document, governing rules, or clause-level instructions. Resolve them as `conditional` and use skeleton-only/template-only mode if the required inputs are missing.
 
 ---
 

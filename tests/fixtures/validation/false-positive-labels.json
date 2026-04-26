@@ -1,0 +1,11 @@
+{
+  "falsePositives": [
+    {
+      "validator": "register",
+      "type": "informal_word",
+      "line": 3,
+      "messageContains": "kind of",
+      "reason": "Fixture marks a known quoted phrase as intentionally preserved."
+    }
+  ]
+}

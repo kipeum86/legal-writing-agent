@@ -11,7 +11,8 @@
 ## Support Profile
 - Support level: `Conditional`
 - A complete opinion requires an authority packet for the rule statements, authorities, and defensible conclusions
-- If authority is missing, keep the outline intact and use canonical placeholders such as `[Authority needed: governing statute or leading case]`, `[Citation needed: source for proposition]`, and `[Argument: issue to analyze]`
+- Apply `docs/policies/drafting-scope.md` before filling conclusions, risk assessments, recommendations, or certainty language
+- If authority is missing, keep the outline intact and use canonical placeholders such as `[Authority needed: governing statute or leading case]`, `[Citation needed: source for proposition]`, `[Argument: issue to analyze]`, `[Counsel conclusion needed: issue]`, `[Counsel certainty needed: issue]`, and `[Counsel risk assessment needed: issue]`
 
 ## Section Tags
 - `[B]` = Boilerplate or administrative material
@@ -35,9 +36,10 @@
    - Use one numbered question per issue
    - If the factual predicate is incomplete, note the assumption directly in the question or in the facts section
 
-4. `2. Short Answer / Executive Summary` `[S]`
-   - Give a direct answer to each question before the detailed analysis
-   - Use calibrated language when the answer depends on assumptions or missing authority
+4. `2. Short Answer / Executive Summary` `[S/AP]`
+   - Give a direct answer only when the user supplied that conclusion or the authority packet supports it
+   - If the conclusion is missing, use `[Counsel conclusion needed: issue]` instead of drafting a bottom line
+   - If certainty is needed but not supplied, use `[Counsel certainty needed: issue]`
 
 5. `3. Facts, Assumptions, and Scope` `[S]`
    - Present only facts material to the analysis
@@ -55,13 +57,15 @@
      - `1. Governing Rule` `[AP]`
      - `2. Application to the Facts` `[S/AP]`
      - `3. Counterarguments / Risks / Uncertainties` `[AP]`
-     - `4. Issue Conclusion` `[S]`
+     - `4. Issue Conclusion` `[S/AP]`
    - Use IRAC or CRAC depending on the style selected at D2
    - Keep the issue heading aligned with the wording in `Questions Presented`
 
-8. `6. Overall Conclusion and Recommendations` `[S]`
-   - Synthesize the issue-level conclusions
-   - If requested, include practical next steps, decision points, or risk-mitigation recommendations
+8. `6. Overall Conclusion and Recommendations` `[S/AP]`
+   - Synthesize only user-supplied or authority-packet-supported issue-level conclusions
+   - If an overall conclusion is missing, use `[Counsel conclusion needed: overall conclusion]`
+   - Include risk-mitigation recommendations only when supplied by the user or supported by the authority packet
+   - Administrative next steps that do not require legal judgment may be included as drafting logistics
 
 9. `7. Qualifications and Limitations` `[B/S]`
    - State reliance on supplied facts
@@ -102,7 +106,7 @@
 ## Boilerplate vs Substantive Guidance
 - Boilerplate: heading, header block, attribution, appendix labels
 - Substantive: questions, short answers, facts, governing authorities, analysis, conclusions, recommendations
-- Conditional support warning: do not write definitive legal conclusions in sections `4` or `5` without authority support
+- Conditional support warning: do not write definitive legal conclusions, risk ratings, recommendations, or certainty language in sections `4`, `5`, or `6` without user-supplied instructions or authority-packet support
 
 ## Drafting Reminders
 - Maintain one-to-one correspondence between each question, its short answer, and its analysis subsection

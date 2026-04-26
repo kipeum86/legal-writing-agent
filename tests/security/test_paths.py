@@ -20,6 +20,10 @@ def test_env_override(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     assert paths.input_dir() == tmp_path / "input"
     assert paths.output_dir() == tmp_path / "output"
     assert paths.manifest_dir() == tmp_path / "output" / "manifests"
+    assert paths.outlines_dir() == tmp_path / "output" / "outlines"
+    assert paths.validation_reports_dir() == tmp_path / "output" / "validation-reports"
+    assert paths.checkpoints_dir() == tmp_path / "output" / "checkpoints"
+    assert paths.schema_errors_dir() == tmp_path / "output" / "schema-errors"
 
 
 def test_expanduser(monkeypatch: pytest.MonkeyPatch) -> None:

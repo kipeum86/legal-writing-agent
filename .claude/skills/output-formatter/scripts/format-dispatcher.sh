@@ -73,7 +73,7 @@ case "$FORMAT" in
     echo "Output: $OUTPUT"
     ;;
   docx)
-    node "$SCRIPT_DIR/docx-generator.js" "$INPUT" "$OUTPUT" "${PASSTHRU[@]}"
+    python3 "$SCRIPT_DIR/docx-generator.py" "$INPUT" "$OUTPUT" "${PASSTHRU[@]}"
     ;;
   pdf)
     bash "$SCRIPT_DIR/pdf-generator.sh" "$INPUT" "$OUTPUT" "${PASSTHRU[@]}"

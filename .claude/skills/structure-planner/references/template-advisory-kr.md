@@ -10,8 +10,9 @@
 ## Support Profile
 - Support level: `Conditional`
 - Authority packet required for substantive legal analysis
-- If the authority packet is missing, preserve the structure below and fill substantive analysis sections with canonical placeholders such as `[Authority needed: applicable statute or precedent]`, `[Argument: issue to be analyzed]`, and `[Factual basis needed]`
+- If the authority packet is missing, preserve the structure below and fill substantive analysis sections with canonical placeholders such as `[Authority needed: applicable statute or precedent]`, `[Argument: issue to be analyzed]`, `[Factual basis needed]`, `[Counsel conclusion needed: issue]`, `[Counsel certainty needed: issue]`, and `[Counsel risk assessment needed: issue]`
 - For Korean legal opinions, `docs/_private/ko-legal-opinion-style-guide.md` controls where it is more specific than this template
+- `docs/policies/drafting-scope.md` controls legal conclusions, risk assessment, recommendations, and certainty language. Do not generate those independently.
 
 ## Section Tags
 - `[B]` = Boilerplate or administrative content that can usually be drafted without external authority
@@ -36,9 +37,10 @@
    - 의뢰인이 요청한 질의를 번호를 매겨 특정
    - 사실관계가 불완전하면 해당 문단에 `[Factual basis needed]`를 삽입
 
-4. `2. 결론 요약` `[S]`
-   - 각 질의별 결론을 먼저 간명하게 제시
-   - 확정적 결론이 어려우면 조건부 결론과 리스크를 함께 적시
+4. `2. 결론 요약` `[S/AP]`
+   - 각 질의별 결론은 사용자 또는 authority packet이 제공한 경우에만 간명하게 제시
+   - 결론이 제공되지 않았으면 `[Counsel conclusion needed: {issue}]`를 사용
+   - 확신도 표현이 필요하지만 제공되지 않았으면 `[Counsel certainty needed: {issue}]`를 사용
    - 한국어 의견서 관행상 `~로 판단됩니다`, `~로 사료됩니다` 등의 표현을 사용
 
 5. `3. 검토의 전제 및 범위` `[B/S]`
@@ -57,14 +59,16 @@
      - `가. 쟁점 1` `[S]`
      - `(1) 관련 법령 및 법리` `[AP]`
      - `(2) 사실관계에의 적용` `[S/AP]`
-     - `(3) 반대 해석 또는 리스크` `[AP]`
-     - `(4) 소결` `[S]`
+      - `(3) 반대 해석 또는 리스크` `[AP]`
+      - `(4) 소결` `[S/AP]`
    - 쟁점이 2개 이상이면 `나.`, `다.` 순으로 확장
    - 한국어 의견서에서는 쟁점명 자체가 결론의 방향을 드러내도록 작성
 
-8. `6. 종합 결론 및 권고사항` `[S]`
-   - 검토의견 전체를 다시 묶어 최종 결론을 제시
-   - 실무상 권고, 추가 확인 필요 사항, 후속 조치가 있으면 별도 문장으로 분리
+8. `6. 종합 결론 및 권고사항` `[S/AP]`
+   - 사용자 또는 authority packet이 제공한 결론을 검토의견 전체와 연결하여 정리
+   - 결론이 제공되지 않았으면 `[Counsel conclusion needed: 종합 결론]`를 사용
+   - 실무상 권고나 리스크 완화 조치는 사용자 또는 authority packet이 제공한 경우에만 작성
+   - 필요한 자료 요청, 추가 사실 확인 요청 등 비실체적 후속 조치는 작성 가능
 
 9. `7. 면책 및 한계` `[B]`
    - 제공된 사실과 자료를 전제로 한 의견임을 명시
@@ -103,6 +107,7 @@
 - Boilerplate에 해당하는 부분: 문서 유형 표시, 정보 블록, 면책 문구, 서명 블록, 별첨 제목
 - Substantive에 해당하는 부분: 질의 정리, 결론 요약, 관련 법령 및 판례, 쟁점별 분석, 권고사항
 - Conditional support 문서이므로 `관련 법령 및 판례`, `검토의견`은 authority packet 없이 완결적으로 쓰지 않는다
+- 결론, 확신도, 리스크, 권고는 `docs/policies/drafting-scope.md`에 따라 사용자 또는 authority packet이 제공한 경우에만 완결 문장으로 작성한다
 
 ## Drafting Reminders
 - 질의가 여러 개면 `질의 1 → 결론 1 → 분석 1`의 대응 관계가 문서 전반에서 유지되어야 한다

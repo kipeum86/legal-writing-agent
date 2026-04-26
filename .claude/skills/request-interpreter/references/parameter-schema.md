@@ -1,5 +1,7 @@
 # Parameter Schema Reference
 
+Scope boundary: `docs/policies/drafting-scope.md` controls legal conclusions, risk assessment, recommendations, certainty language, and safe vs unsafe inference recorded in this schema.
+
 ## Matter Manifest Schema
 
 ```json
@@ -22,6 +24,20 @@
   "houseStyle": "string | null",
   "authorityPacketProvided": "boolean",
   "skeletonOnly": "boolean",
+  "safeInference": [
+    {
+      "field": "string",
+      "value": "string",
+      "basis": "string (user instruction or non-substantive contextual signal)"
+    }
+  ],
+  "unsafeInference": [
+    {
+      "issue": "string",
+      "resolution": "enum: placeholder | clarification_required",
+      "placeholder": "string | null"
+    }
+  ],
   "pageSize": "enum: a4 | us-letter",
   "createdAt": "string (ISO 8601)",
   "updatedAt": "string (ISO 8601)",
@@ -54,8 +70,19 @@
 | Applicable statutes | Placeholder |
 | Regulatory requirements | Placeholder |
 | Factual basis | Placeholder |
-| Legal conclusions | Placeholder |
+| Legal conclusions | `[Counsel conclusion needed: {issue}]` |
+| Risk assessment | `[Counsel risk assessment needed: {issue}]` |
+| Certainty level | `[Counsel certainty needed: {issue}]` |
+| Strategic recommendations | Placeholder unless user-supplied and within drafting scope |
 
 ### Skeleton-Only Rule for Conditional Documents
-- If `documentType` is `advisory`, `litigation`, or `regulatory` and `authorityPacketProvided` is `false`, set `skeletonOnly` to `true`
+- If `documentType` is `advisory`, `litigation`, `regulatory`, or a conditional Corporate subtype and `authorityPacketProvided` is `false`, set `skeletonOnly` to `true`
 - In skeleton-only mode, preserve structure and boilerplate, but use substantive placeholders instead of defaulting legal analysis
+- Record non-substantive defaults in `safeInference`
+- Record missing legal substance in `unsafeInference`, including the placeholder used or whether a clarification is required
+
+### Corporate Subtype Resolution
+- The manifest still stores `supportLevel` as `full` or `conditional`.
+- Resolve mixed Corporate documents before writing the manifest.
+- Simple board resolutions and simple shareholders meeting minutes resolve to `full`.
+- Articles/bylaws, powers of attorney, proxies, internal regulations, company policies, and organizational regulations resolve to `conditional` unless the user supplies enough clause-level instructions to treat the task as template-only drafting.

@@ -11,6 +11,7 @@
 - `references/register-guide-kr.md` — Korean register rules and prohibited patterns
 - `references/register-guide-en.md` — English register rules and prohibited patterns
 - `references/placeholder-format.md` — canonical placeholder tokens and placeholder-registry schema
+- `docs/policies/drafting-scope.md` — authoritative boundary for legal conclusions, risk assessment, recommendations, and certainty language
 
 ## Quality Bar
 **Output must be indistinguishable from a document drafted by a competent human legal drafting specialist.**
@@ -70,6 +71,9 @@ When information is missing, insert bracketed placeholders:
 - `[Authority needed: {description}]`
 - `[Argument: {issue}]`
 - `[Factual basis needed]`
+- `[Counsel conclusion needed: {issue}]`
+- `[Counsel certainty needed: {issue}]`
+- `[Counsel risk assessment needed: {issue}]`
 
 Track all placeholders in `output/placeholders/{document-id}-placeholders.json`
 
@@ -77,6 +81,13 @@ Track all placeholders in `output/placeholders/{document-id}-placeholders.json`
 - User-provided citations: include verbatim, formatted per convention
 - Missing citations: `[Citation needed: {description}]`
 - NEVER fabricate or hallucinate citations
+
+### 5.5 Conclusions, Risk, Recommendations, and Certainty
+- Apply `docs/policies/drafting-scope.md` before drafting any conclusion, risk statement, recommendation, or certainty wording.
+- Include legal conclusions only when they are supplied by the user or an authority packet. Missing conclusion → `[Counsel conclusion needed: {issue}]`.
+- Include risk assessment only when it is supplied by the user or an authority packet. Missing risk statement → `[Counsel risk assessment needed: {issue}]`.
+- Do not assign your own certainty level. Missing certainty → `[Counsel certainty needed: {issue}]`.
+- Administrative next steps may be drafted only when they do not require independent legal judgment.
 
 ### 6. Precedent Fidelity
 When user provided a precedent document:

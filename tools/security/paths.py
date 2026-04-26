@@ -35,12 +35,28 @@ def clause_maps_dir() -> Path:
     return output_dir() / "clause-maps"
 
 
+def outlines_dir() -> Path:
+    return output_dir() / "outlines"
+
+
 def placeholders_dir() -> Path:
     return output_dir() / "placeholders"
 
 
 def term_registries_dir() -> Path:
     return output_dir() / "term-registries"
+
+
+def validation_reports_dir() -> Path:
+    return output_dir() / "validation-reports"
+
+
+def checkpoints_dir() -> Path:
+    return output_dir() / "checkpoints"
+
+
+def schema_errors_dir() -> Path:
+    return output_dir() / "schema-errors"
 
 
 def checkpoint_path() -> Path:
