@@ -99,6 +99,7 @@ class MatterManifest:
     houseStyle: str | None = None
     authorityPacketProvided: bool = False
     skeletonOnly: bool = False
+    authorityChunks: tuple[dict[str, Any], ...] = ()
     safeInference: tuple[dict[str, Any], ...] = ()
     unsafeInference: tuple[dict[str, Any], ...] = ()
     pageSize: str = "a4"
@@ -303,7 +304,7 @@ def _validate_specific(payload: dict[str, Any], errors: list[str]) -> None:
         for field_name in ("authorityPacketProvided", "skeletonOnly"):
             if not isinstance(payload.get(field_name), bool):
                 errors.append(f"{field_name} must be a boolean")
-        for field_name in ("parties", "safeInference", "unsafeInference"):
+        for field_name in ("parties", "safeInference", "unsafeInference", "authorityChunks"):
             if not isinstance(payload.get(field_name), list):
                 errors.append(f"{field_name} must be a list")
         if not isinstance(payload.get("sessionContext"), dict):

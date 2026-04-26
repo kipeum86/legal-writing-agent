@@ -82,8 +82,12 @@ Unsafe inference → use a placeholder or ask a clarification question only when
 ### 4. Support Level Gate
 For **Conditional** document types (Advisory, Litigation, Regulatory, and conditional Corporate subtypes):
 - Check if user provided an **authority packet** (statutes, case citations, regulations, issue lists, factual chronologies, court rules, agency forms)
-- If authority packet present → proceed normally
-- If missing → automatically enter skeleton-only mode, set `skeletonOnly: true`, and inform the user: *"This document type requires an authority packet (applicable laws, case citations, factual basis) for substantive content. I will generate a skeleton draft with placeholders for the substantive sections."*
+- If user did not directly provide an authority packet, run deterministic retrieval when `library/source-registry.json` exists:
+  ```bash
+  python -m tools.retrieval.deterministic --registry library/source-registry.json --document-type <type> --jurisdiction <jurisdiction> --topic <topic> --provision <provision>
+  ```
+- If retrieval returns `sufficiency.status: sufficient`, proceed normally and record selected `sourceId`/`chunkId` pairs in manifest `authorityChunks`
+- If no user packet and retrieval is insufficient → automatically enter skeleton-only mode, set `skeletonOnly: true`, and inform the user: *"This document type requires an authority packet (applicable laws, case citations, factual basis) for substantive content. I will generate a skeleton draft with placeholders for the substantive sections."*
 - In skeleton-only mode, use substantive placeholders such as `[Authority needed: {description}]`, `[Argument: {issue}]`, `[Factual basis needed]`, `[Counsel conclusion needed: {issue}]`, `[Counsel certainty needed: {issue}]`, and `[Counsel risk assessment needed: {issue}]` instead of defaulting missing legal content
 
 ### 5. House Style Loading
@@ -118,6 +122,15 @@ Save resolved parameters to the manifest path under the resolved output base dir
   "houseStyle": "{style-name}|null",
   "authorityPacketProvided": true|false,
   "skeletonOnly": false,
+  "authorityChunks": [
+    {
+      "sourceId": "string",
+      "chunkId": "string",
+      "sourceGrade": "A|B|C",
+      "title": "string",
+      "path": "string"
+    }
+  ],
   "safeInference": [
     {
       "field": "{non-substantive field inferred}",
