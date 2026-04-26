@@ -1,0 +1,9 @@
+{
+  "id": "table_heavy_document",
+  "description": "Synthetic Markdown fixture that exposes current DOCX renderer limitations around tables, lists, blockquotes, and inline emphasis.",
+  "language": "ko",
+  "jurisdiction": "korea",
+  "documentType": "general",
+  "synthetic": true,
+  "containsSensitiveData": false
+}

@@ -8,6 +8,7 @@
 
 ## Required References
 - `references/consistency-checklist.md` — expanded checklist procedure
+- `tools/validation/runner.py` — release-gate wrapper that produces a single validation report artifact
 - `scripts/numbering-validator.py`
 - `scripts/cross-reference-checker.py`
 - `scripts/register-validator.py`
@@ -70,7 +71,15 @@ After checklist, perform a self-review pass:
 
 ## Automated Validation Scripts
 
-The following scripts provide deterministic checks to supplement LLM judgment:
+Run deterministic checks through the release-gate runner whenever a manifest exists:
+
+```bash
+python -m tools.validation.runner <draft.md> --manifest <manifest.json> --fail-on-blocking
+```
+
+The runner emits one `validation_report` JSON containing normalized findings, severity counts, `blocking`, and `renderAllowed`. Rendering must stop when `blocking` is `true`, unless the user explicitly requests an unsafe preview with validation failures disclosed.
+
+The following scripts provide deterministic checks underneath the runner:
 
 | Script | Check | Usage |
 |---|---|---|
@@ -80,7 +89,7 @@ The following scripts provide deterministic checks to supplement LLM judgment:
 | `scripts/term-consistency-checker.py` | Defined term consistency — usage after definition, undefined abbreviations, unused terms, conflicts | `python term-consistency-checker.py <file.md> [--generate-registry]` |
 | `scripts/citation-format-checker.py` | Citation format — Korean 「」 brackets, Bluebook, OSCOLA compliance | `python citation-format-checker.py <file.md> [--jurisdiction korea\|us\|uk\|intl]` |
 
-Run all applicable scripts during D4/R5. Integrate findings into the consistency report.
+Run all applicable scripts during D4/R5 through `tools.validation.runner`. Integrate findings into the consistency report and save the JSON validation report artifact.
 
 ## Output
 - Consistency report (issues found and fixed)

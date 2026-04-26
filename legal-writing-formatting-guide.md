@@ -59,6 +59,8 @@ If any item is missing, state the assumption explicitly in the Scope block with 
 
 Map every conclusion to exactly one term on this scale. Use the same vocabulary throughout a single document. Avoid undefined hedges ("maybe", "possibly", "could be").
 
+For this agent, this section is a formatting convention only. Do not generate legal conclusions, risk assessments, recommendations, or certainty levels unless they are supplied by the user or supported by an authority packet under `docs/policies/drafting-scope.md`; use the counsel placeholders from that policy when support is missing.
+
 | Label | Meaning | Example wording |
 |---|---|---|
 | *Will* / *Clear* | Settled law, on-point authority, no material counter-argument | "The Transaction will constitute a 'business transfer' under art. 12(1)." |
@@ -108,6 +110,7 @@ Flag unresolved conflicts inline with `[Unresolved Conflict]` at the specific fi
 
 ### 9. Recommendations & Action Items
 
+- Apply `docs/policies/drafting-scope.md` before drafting recommendations. Legal risk-mitigation recommendations require user-supplied instructions or authority-packet support; otherwise use the relevant counsel placeholder or limit the section to non-substantive drafting logistics.
 - Separate *Must* (legally required), *Should* (strongly advisable to reduce risk), and *Consider* (optional improvements).
 - Each item is one sentence, starts with an imperative verb, and names the actor (e.g., "**Must:** Obtain the data subject's explicit consent before transferring pseudonymized records.").
 - Sequence items by dependency (do this before that), not alphabetically.
@@ -350,6 +353,8 @@ Mode D is the article-by-article statute-and-commentary output (see `mode-d-temp
 
 결론은 반드시 아래 표 중 하나의 표현에 대응시키며, 한 문서 내에서 용례를 혼용하지 않습니다. 정의되지 않은 헤지 표현("아마도", "어쩌면", "할 수도 있음")은 사용하지 않습니다.
 
+이 에이전트에서 본 절은 표현 형식 기준일 뿐입니다. `docs/policies/drafting-scope.md`에 따라 사용자 또는 authority packet이 제공한 근거가 없는 법률 결론, 리스크 평가, 권고, 확신도는 생성하지 않으며, 근거가 부족한 경우 해당 정책의 counsel placeholder를 사용합니다.
+
 | 표기 | 의미 | 예시 문구 |
 |---|---|---|
 | *명백히 / 확정적으로* | 확립된 법리, 직접 적용 선례, 중대한 반대 논거 없음 | "본건 거래는 법 제12조 제1항의 '영업양도'에 해당합니다." |
@@ -399,6 +404,7 @@ Mode D is the article-by-article statute-and-commentary output (see `mode-d-temp
 
 ### 9. 권고 및 실행 항목
 
+- 권고 작성 전 `docs/policies/drafting-scope.md`를 적용합니다. 법적 리스크 완화 권고는 사용자 제공 지시 또는 authority packet 근거가 있을 때만 작성하고, 근거가 없으면 관련 counsel placeholder를 사용하거나 비실체적 작성 후속 조치로 한정합니다.
 - *필수* (법적 의무), *권고* (리스크 완화 목적으로 강력히 권고), *고려* (선택적 개선)로 구분합니다.
 - 각 항목은 한 문장, 명령형 동사로 시작하며, 행위자를 명시합니다 ("**필수:** 가명정보 이전 전에 정보주체의 명시적 동의를 확보할 것.").
 - 의존 관계를 고려해 순서를 배열합니다 (A를 한 뒤 B). 알파벳 순이 아닙니다.
