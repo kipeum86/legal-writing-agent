@@ -7,9 +7,10 @@
 - **Revision Pipeline**: Step R4 (revision execution, prose generation)
 
 ## Required References
+- `docs/policies/context-budget.md` — context loading limits
+- `tools/context/budget.py` — load only the D3 references returned for the document type/language/jurisdiction
 - `references/defined-term-rules.md` — canonical definition and term-registry rules
-- `references/register-guide-kr.md` — Korean register rules and prohibited patterns
-- `references/register-guide-en.md` — English register rules and prohibited patterns
+- `references/register-guide-kr.md` or `references/register-guide-en.md` — load only the target-language register guide
 - `references/placeholder-format.md` — canonical placeholder tokens and placeholder-registry schema
 - `docs/policies/drafting-scope.md` — authoritative boundary for legal conclusions, risk assessment, recommendations, and certainty language
 
@@ -25,7 +26,7 @@
 
 ### 1. Section-by-Section Sequential Drafting
 Draft each section from the approved outline in order:
-1. Read the section's requirements from the outline and user instructions
+1. Build or follow the D3 context plan; load only the current section requirements, selected style profile, selected register guide, term registry, placeholder rules, and relevant source chunks
 2. Apply the convention set (style guide + house style)
 3. Draft the section in natural legal prose
 4. Register new defined terms in the term registry
