@@ -51,10 +51,10 @@
 - Check: no empty sections (unless placeholder)
 - Check: section order matches outline
 
-### 9. Tracked Changes Completeness (Revision only)
-- All modifications reflected in tracked changes
-- No silent modifications (changes without tracking)
-- Change map (Level B) complete
+### 9. Level B Artifact Completeness (Revision only)
+- All modifications reflected in the clean copy, redline diff, and change map
+- No silent modifications outside the section-level change map
+- Change-map summary counts match the recorded change objects
 
 ### 10. Scope Compliance (Revision only)
 - Compare modified sections against revision scope from R2

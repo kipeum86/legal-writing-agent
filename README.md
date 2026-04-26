@@ -21,7 +21,7 @@ High-quality, closely matched samples usually lead to noticeably better outputs.
 ## What It Does
 
 - **Drafts** new legal documents from user instructions (D1–D6 pipeline)
-- **Revises** existing legal documents with tracked-change outputs (R1–R7 pipeline)
+- **Revises** existing legal documents with Level B clean/redline/change-map outputs (R1–R7 pipeline)
 - **Dual-standard writing**: Korean documents follow Korean conventions (쟁점→결론→분석, 「법률명」 인용), English documents follow US/UK/international conventions (IRAC/CRAC, Bluebook/OSCOLA)
 - **Reads and writes** `.docx`, `.pdf`, `.md`, `.txt` formats
 
@@ -274,6 +274,8 @@ Ingested sources serve as authority packets for Conditional-support documents (A
 | `.pdf` | Claude Code native | via LibreOffice or pandoc |
 | `.md` | Direct | Direct |
 | `.txt` | Direct | Direct |
+
+Revision outputs do not promise native Word tracked changes. The supported revision package is a clean copy, a `{name}_redline_v{N}.diff` file, and a section-level `change-map.json`.
 
 ### Versioning
 

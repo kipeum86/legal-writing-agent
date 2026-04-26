@@ -103,8 +103,7 @@ claude
 - 문서 구조 읽기 및 분석
 - 수정 지시를 특정 섹션에 매핑
 - **변경 추적 결과물**과 함께 수정 실행:
-  - 가능하면 `.docx` 기본 변경 추적
-  - 그렇지 않으면 redline diff, clean copy, change map 형태의 Level B 결과물
+  - clean copy, `{name}_redline_v{N}.diff`, section-level `change-map.json` 형태의 Level B 결과물
   - `.md` 출력 시 인라인 diff
 - 10개 항목 일관성 검사
 - `_revised_` 접미사와 자동 버전 관리로 저장
