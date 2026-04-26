@@ -1,11 +1,11 @@
 {
-  "id": "ko_board_resolution_simple",
-  "description": "Synthetic Korean board resolution fixture for a simple ministerial corporate draft.",
-  "language": "ko",
-  "jurisdiction": "korea",
-  "documentType": "corporate",
+  "id": "en_us_advisory_authority",
+  "description": "Synthetic U.S. advisory fixture with an authority packet supplied by counsel.",
+  "language": "en",
+  "jurisdiction": "us",
+  "documentType": "advisory",
   "supportLevel": "full",
-  "authorityPacketProvided": false,
+  "authorityPacketProvided": true,
   "synthetic": true,
   "containsSensitiveData": false,
   "expectedArtifactTypes": [
