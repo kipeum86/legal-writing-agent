@@ -233,6 +233,10 @@ Grade C:
       "path": "library/grade-a/statutes/민법-일부개정.md",
       "title_kr": "민법 일부개정법률안",
       "source_grade": "A",
+      "jurisdiction": "KR",
+      "topics": ["민법", "계약"],
+      "legal_provisions": ["제390조", "제750조"],
+      "applicable_document_types": ["advisory", "litigation"],
       "ingested_at": "2026-03-25T10:00:00+09:00"
     }
   ]
@@ -241,6 +245,33 @@ Grade C:
 
 - 파일이 없으면 새로 생성
 - 기존 파일이 있으면 엔트리 추가
+
+### Step 6.5: Deterministic Retrieval Metadata
+
+`library/source-registry.json` is the canonical retrieval index for Phase 7a. Each source entry must preserve the ingest schema above and should include retrieval fields when known:
+
+| Field | Purpose |
+|---|---|
+| `source_id` | Stable source identifier |
+| `path` | Markdown source path |
+| `source_grade` | `A`, `B`, or `C` |
+| `jurisdiction` | `KR`, `US`, `UK`, `INTL`, or normalized equivalent |
+| `topics` / `keywords` | Deterministic topic matching |
+| `legal_provisions` | Provision matching, e.g. `제15조`, `Article 15`, `Section 5` |
+| `applicable_document_types` | Optional target document types, e.g. `advisory`, `regulatory` |
+
+Retrieval is executed by:
+
+```bash
+python -m tools.retrieval.deterministic \
+  --registry library/source-registry.json \
+  --document-type advisory \
+  --jurisdiction korea \
+  --topic privacy \
+  --provision '제15조'
+```
+
+The retriever derives chunks at query time. Each selected chunk includes `source_id`, `chunk_id`, `title`, `grade`, `jurisdiction`, `provisions`, `topics`, `charStart`, `charEnd`, and capped `text`.
 
 ---
 

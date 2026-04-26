@@ -24,6 +24,7 @@ def test_manifest_schema_includes_version_and_trust_metadata() -> None:
     assert payload["sanitized"] is True
     assert payload["sanitizerVersion"] == schemas.SANITIZER_VERSION
     assert payload["sourceProvenance"][0]["sourceType"] == "input"
+    assert payload["authorityChunks"] == []
     assert payload["safeInference"] == []
     assert payload["unsafeInference"] == []
 

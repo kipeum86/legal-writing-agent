@@ -71,6 +71,7 @@ Five non-contract document categories with assigned support levels:
 | **Register fidelity** | Formal register always. No colloquial language in legal documents. |
 | **No hallucinated citations** | User-provided citations included verbatim. Missing → `[Citation needed: {description}]`. |
 | **Revision tracking** | Revision outputs use honest Level B artifacts: clean copy, redline diff, and section-level change-map. Do not promise native Word tracked changes. |
+| **Authority retrieval** | Conditional drafts use user-provided authority packets or deterministic `library/source-registry.json` retrieval. Record selected source/chunk IDs in the manifest. |
 
 ## Trust Boundaries & Input Handling
 
@@ -139,7 +140,7 @@ User request received
 2. Identify document type and support level from the Document Type Registry
 3. Infer safe non-substantive parameters from user instructions: document type, target language, parties, review intensity, output format. Unsafe substantive inference (legal conclusions, risk, certainty, claims/defenses, ambiguous governing law) → placeholder or clarification per `docs/policies/drafting-scope.md`
 4. Load house style from `/library/house-styles/` (auto-apply; if none: base defaults)
-5. For Conditional-support types: check for authority packet. If missing → enter skeleton-only mode automatically (inform, don't ask)
+5. For Conditional-support types: check for user-provided authority packet, then deterministic retrieval via `tools.retrieval.deterministic` when `library/source-registry.json` exists. If still missing/insufficient → enter skeleton-only mode automatically (inform, don't ask)
 6. **Minimal clarification**: only ask when the answer would materially change the output. State assumptions and proceed.
 7. Save parameters to the resolved manifest path under the output base directory (`$LEGAL_AGENT_PRIVATE_DIR/output/manifests/{document-id}-manifest.json` when set, otherwise `<repo>/output/manifests/{document-id}-manifest.json`)
 
@@ -301,6 +302,7 @@ The agent draws on `/library/` containing six asset types:
 | **Grade C source** | 학술 논문, 참고자료 | `/library/grade-c/` | Background reference |
 
 **Loading rules**: House style metadata at D1. A single selected template and style profile at D2. Precedent excerpts at D3 only when provided. Graded sources as bounded authority chunks, not whole files.
+**Retrieval rules**: Use `library/source-registry.json` plus `tools.retrieval.deterministic` for Phase 7a. Select at most 5 chunks, cap library authority content, and record selected `sourceId`/`chunkId` pairs in `authorityChunks`.
 **Precedent fidelity**: Default high — replicate structure and style, substituting only specified variables.
 
 ## Source Ingest
@@ -351,6 +353,7 @@ Each document generates structured metadata:
 
 **Canonical schema expectations**:
 - **Matter manifest** includes: `documentId`, `documentType`, `supportLevel`, `targetLanguage`, `jurisdiction`, `governingLaw`, `parties`, `reviewIntensity`, `outputFormat`, `houseStyle`, `authorityPacketProvided`, `skeletonOnly`, `pageSize`, `createdAt`, `updatedAt`, `step`, `sessionContext`
+- **Authority chunks**: manifest `authorityChunks[]` records selected `{sourceId, chunkId, sourceGrade, title, path}` from deterministic retrieval
 - **Clause map** stores stable section objects with: `id`, `title`, `level`, `type`, `numbering`, `children`
 - **Term registry** stores: `documentId`, `language`, `terms[]`, where each term entry includes `definedTerm`, `fullForm`, `language`, `firstUsedInSection`, `definitionText`
 

@@ -24,6 +24,15 @@ Scope boundary: `docs/policies/drafting-scope.md` controls legal conclusions, ri
   "houseStyle": "string | null",
   "authorityPacketProvided": "boolean",
   "skeletonOnly": "boolean",
+  "authorityChunks": [
+    {
+      "sourceId": "string",
+      "chunkId": "string",
+      "sourceGrade": "A | B | C",
+      "title": "string",
+      "path": "string"
+    }
+  ],
   "safeInference": [
     {
       "field": "string",
@@ -77,6 +86,7 @@ Scope boundary: `docs/policies/drafting-scope.md` controls legal conclusions, ri
 
 ### Skeleton-Only Rule for Conditional Documents
 - If `documentType` is `advisory`, `litigation`, `regulatory`, or a conditional Corporate subtype and `authorityPacketProvided` is `false`, set `skeletonOnly` to `true`
+- When deterministic retrieval supplies a sufficient authority packet, set `authorityPacketProvided` to `true`, set `skeletonOnly` to `false`, and record selected source/chunk IDs in `authorityChunks`
 - In skeleton-only mode, preserve structure and boilerplate, but use substantive placeholders instead of defaulting legal analysis
 - Record non-substantive defaults in `safeInference`
 - Record missing legal substance in `unsafeInference`, including the placeholder used or whether a clarification is required
