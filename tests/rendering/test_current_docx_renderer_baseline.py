@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import sys
 from pathlib import Path
 
@@ -69,6 +70,24 @@ def test_renderer_preserves_markdown_structures_as_docx_objects(tmp_path: Path) 
 
     normalized_xml = normalized_docx_part(output_path)
     assert "rsid" not in normalized_xml
+
+
+def test_renderer_matches_normalized_document_xml_golden_hash(tmp_path: Path) -> None:
+    generator = _load_docx_generator()
+    output_path = tmp_path / "table-heavy.docx"
+
+    generator.generate_docx(
+        str(TABLE_FIXTURE / "input.md"),
+        str(output_path),
+        lang="ko",
+        jurisdiction="korea",
+        document_type="general",
+    )
+
+    expected_hash = (TABLE_FIXTURE / "expected_normalized_document_sha256.txt").read_text(encoding="utf-8").strip()
+    normalized_xml = normalized_docx_part(output_path)
+
+    assert hashlib.sha256(normalized_xml.encode("utf-8")).hexdigest() == expected_hash
 
 
 def test_renderer_outputs_footnote_candidates_header_and_page_footer(tmp_path: Path) -> None:
