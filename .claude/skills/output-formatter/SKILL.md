@@ -17,7 +17,7 @@
 - Show the complete document content as inline chat preview
 - For revisions: show revision tracking output appropriate to the format
   - `.md`: inline diff markers
-  - `.docx`: native tracked changes when available, otherwise Level B redline artifacts
+  - `.docx` / `.txt`: Level B clean copy, redline diff, and section-level change-map artifacts
 - **Auto-save** to the resolved documents directory (`$LEGAL_AGENT_PRIVATE_DIR/output/documents/` when set, otherwise `<repo>/output/documents/`) immediately after preview
 - Inform user of saved path (no confirmation needed — previous versions are never overwritten)
 
@@ -113,12 +113,13 @@ For revisions:
 
 ### 6. Revision Output (R6)
 In addition to the document:
-- **Level A**: Native Word tracked changes in .docx
-- **Level B**: Three files:
-  - `{name}_redline_v{N}.{ext}` — shows changes
+- **Level B only**: Three files:
   - `{name}_clean_v{N}.{ext}` — final clean version
-  - resolved `change-map.json` under the output base directory — structured change record
+  - `{name}_redline_v{N}.diff` — unified redline diff
+  - resolved `change-map.json` under the output base directory — section-level structured change record, auto-versioned if needed
 - **Change summary**: Brief list of all changes alongside document
+
+Do not imply that `.docx` native Word tracked changes are supported in Phase 1-8. The `trackingLevel` field in the change map must be `level-b`; it exists for future-proofing.
 
 ### 7. Session Checkpoint (D6/R7)
 Save session state to the resolved checkpoint path (`$LEGAL_AGENT_PRIVATE_DIR/output/checkpoint.json` when set, otherwise `<repo>/output/checkpoint.json`):
