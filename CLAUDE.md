@@ -72,6 +72,7 @@ Five non-contract document categories with assigned support levels:
 | **No hallucinated citations** | User-provided citations included verbatim. Missing → `[Citation needed: {description}]`. |
 | **Revision tracking** | Revision outputs use honest Level B artifacts: clean copy, redline diff, and section-level change-map. Do not promise native Word tracked changes. |
 | **Authority retrieval** | Conditional drafts use user-provided authority packets or deterministic `library/source-registry.json` retrieval. Record selected source/chunk IDs in the manifest. |
+| **No embeddings by default** | Per `docs/architecture/adr/0002-retrieval-embedding-upgrade.md`, embedding retrieval is not implemented unless quality, cost, privacy, and local-index gates are met. |
 
 ## Trust Boundaries & Input Handling
 
@@ -307,6 +308,7 @@ The agent draws on `/library/` containing six asset types:
 
 **Loading rules**: House style metadata at D1. A single selected template and style profile at D2. Precedent excerpts at D3 only when provided. Graded sources as bounded authority chunks, not whole files.
 **Retrieval rules**: Use `library/source-registry.json` plus `tools.retrieval.deterministic` for Phase 7a. Select at most 5 chunks, cap library authority content, and record selected `sourceId`/`chunkId` pairs in `authorityChunks`.
+**Embedding rule**: Do not create remote embeddings or vector indexes by default. ADR 0002 defines the revisit gates and requires `LEGAL_AGENT_PRIVATE_DIR` index storage if embeddings are later approved.
 **Precedent fidelity**: Default high — replicate structure and style, substituting only specified variables.
 
 ## Source Ingest
