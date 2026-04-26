@@ -132,6 +132,8 @@ User request received
 
 ## Drafting Pipeline (D1–D6)
 
+Executable MVP: `python -m tools.pipeline draft --request request.json`
+
 ### D1 — Request Interpretation & Parameter Resolution
 **Trigger**: New document request classified by router.
 **Skill**: `/request-interpreter`
@@ -210,6 +212,8 @@ When user requests scope change during D3:
 3. Save session state to the resolved checkpoint path
 
 ## Revision Pipeline (R1–R7)
+
+Executable MVP: `python -m tools.pipeline revise --input input.docx --instructions instructions.md`
 
 ### R1 — Document Ingestion & Analysis
 **Trigger**: Existing document + modification instructions.
