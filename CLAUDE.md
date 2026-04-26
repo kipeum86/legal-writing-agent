@@ -70,7 +70,7 @@ Five non-contract document categories with assigned support levels:
 | **Terminological consistency** | Same term = same form throughout. Per-document term registry enforced. |
 | **Register fidelity** | Formal register always. No colloquial language in legal documents. |
 | **No hallucinated citations** | User-provided citations included verbatim. Missing → `[Citation needed: {description}]`. |
-| **Tracked changes for revisions** | Revision outputs must use tracked changes (.docx) or redline markup (.md). |
+| **Revision tracking** | Revision outputs use honest Level B artifacts: clean copy, redline diff, and section-level change-map. Do not promise native Word tracked changes. |
 
 ## Trust Boundaries & Input Handling
 
@@ -234,9 +234,9 @@ When user requests scope change during D3:
 
 1. Execute revisions per scope plan
 2. Track all changes:
-   - `.docx` Level A: native Word tracked changes (when validated)
-   - `.docx` Level B (fallback): redline document + clean copy + resolved `change-map.json`
+   - `.docx` / `.txt`: Level B clean copy + `{name}_redline_v{N}.diff` + resolved section-level `change-map.json`
    - `.md`: inline diff markers (`~~deleted~~` / `**inserted**`)
+   - Native Word tracked changes are outside the Phase 1-8 product promise.
 3. Preserve untouched sections: canonical clause identity (text + structural nesting unchanged per clause-map stable IDs)
 4. Self-correct (max 2 attempts)
 
@@ -253,8 +253,8 @@ Same review intensity loop as D4.
 **Skill**: `/output-formatter`
 
 Same as D5, plus:
-- Display tracked changes (Level A or B)
-- Include change summary alongside document
+- Display Level B artifact paths and change summary
+- Ensure the change summary counts match the section-level `change-map.json` summary
 
 ### R7 — File Save
 Same as D6. File name includes `_revised_`.

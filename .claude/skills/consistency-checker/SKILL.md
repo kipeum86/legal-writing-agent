@@ -34,7 +34,7 @@ Items 1–8 above, plus:
 
 | # | Check | Method | Failure Action |
 |---|---|---|---|
-| 9 | **Tracked changes completeness** | All modifications reflected in change tracking | Add missing tracked changes |
+| 9 | **Level B artifact completeness** | All modifications reflected in clean/redline/change-map outputs | Regenerate missing or inconsistent Level B artifacts |
 | 10 | **Scope compliance** | Compare changes against clause map — no out-of-scope modifications | Revert out-of-scope changes |
 
 ## Self-Review Protocol

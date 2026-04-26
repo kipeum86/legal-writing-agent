@@ -103,8 +103,7 @@ The agent runs a 7-step revision pipeline (R1–R7):
 - Reads and analyzes your document structure
 - Maps your revision instructions to specific sections
 - Executes changes with **revision tracking outputs**:
-  - `.docx` native tracked changes when available
-  - otherwise Level B revision artifacts such as a redline diff, clean copy, and change map
+  - Level B revision artifacts: clean copy, `{name}_redline_v{N}.diff`, and section-level `change-map.json`
   - `.md` inline diff markers when markdown output is used
 - Runs a 10-item consistency check
 - Saves with `_revised_` suffix and auto-versioning
