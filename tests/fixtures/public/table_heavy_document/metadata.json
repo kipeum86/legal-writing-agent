@@ -4,6 +4,17 @@
   "language": "ko",
   "jurisdiction": "korea",
   "documentType": "general",
+  "supportLevel": "full",
+  "authorityPacketProvided": false,
   "synthetic": true,
-  "containsSensitiveData": false
+  "containsSensitiveData": false,
+  "expectedArtifactTypes": [
+    "manifest",
+    "outline",
+    "clause_map",
+    "term_registry",
+    "placeholder_registry",
+    "validation_report"
+  ],
+  "expectedValidationStatus": "passed"
 }

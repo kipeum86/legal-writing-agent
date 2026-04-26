@@ -1,9 +1,9 @@
 {
-  "id": "ko_advisory_no_authority",
-  "description": "Synthetic Korean advisory fixture that must remain skeleton-only without an authority packet.",
+  "id": "ko_internal_policy_conditional",
+  "description": "Synthetic Korean internal policy fixture classified as conditional support.",
   "language": "ko",
   "jurisdiction": "korea",
-  "documentType": "advisory",
+  "documentType": "corporate",
   "supportLevel": "conditional",
   "authorityPacketProvided": false,
   "synthetic": true,

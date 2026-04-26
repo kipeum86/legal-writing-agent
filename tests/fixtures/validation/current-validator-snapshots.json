@@ -1,0 +1,60 @@
+{
+  "clean_en_general": {
+    "status": "passed",
+    "blocking": false,
+    "renderAllowed": true,
+    "reviewIntensity": "standard",
+    "summary": {
+      "issueCount": 0,
+      "blockingIssueCount": 0,
+      "suppressedIssueCount": 0,
+      "severityCounts": {
+        "critical": 0,
+        "major": 0,
+        "minor": 0
+      }
+    },
+    "findingValidators": [],
+    "blockingValidators": []
+  },
+  "ko_numbering_gap": {
+    "status": "failed",
+    "blocking": true,
+    "renderAllowed": false,
+    "reviewIntensity": "light",
+    "summary": {
+      "issueCount": 1,
+      "blockingIssueCount": 1,
+      "suppressedIssueCount": 0,
+      "severityCounts": {
+        "critical": 1,
+        "major": 0,
+        "minor": 0
+      }
+    },
+    "findingValidators": [
+      "numbering"
+    ],
+    "blockingValidators": [
+      "numbering"
+    ]
+  },
+  "tracked_placeholder": {
+    "status": "passed",
+    "blocking": false,
+    "renderAllowed": true,
+    "reviewIntensity": "standard",
+    "summary": {
+      "issueCount": 0,
+      "blockingIssueCount": 0,
+      "suppressedIssueCount": 0,
+      "severityCounts": {
+        "critical": 0,
+        "major": 0,
+        "minor": 0
+      }
+    },
+    "findingValidators": [],
+    "blockingValidators": []
+  }
+}

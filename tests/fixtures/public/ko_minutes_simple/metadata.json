@@ -1,10 +1,10 @@
 {
-  "id": "ko_advisory_no_authority",
-  "description": "Synthetic Korean advisory fixture that must remain skeleton-only without an authority packet.",
+  "id": "ko_minutes_simple",
+  "description": "Synthetic Korean meeting minutes fixture for a full-support corporate document.",
   "language": "ko",
   "jurisdiction": "korea",
-  "documentType": "advisory",
-  "supportLevel": "conditional",
+  "documentType": "corporate",
+  "supportLevel": "full",
   "authorityPacketProvided": false,
   "synthetic": true,
   "containsSensitiveData": false,
@@ -16,5 +16,5 @@
     "placeholder_registry",
     "validation_report"
   ],
-  "expectedValidationStatus": "failed"
+  "expectedValidationStatus": "passed"
 }
