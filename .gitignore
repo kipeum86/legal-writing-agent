@@ -11,6 +11,21 @@
 # Local-only Claude settings
 .claude/settings.local.json
 
+# Local agent runtime records
+.claude/sessions/
+.claude/session/
+.claude/logs/
+.claude/history/
+.claude/transcripts/
+.codex/
+.sessions/
+.session/
+sessions/
+session/
+transcripts/
+traces/
+runs/
+
 # Opaque private directory — agents may read, but filenames are not exposed
 docs/_private/**
 !docs/_private/
@@ -53,10 +68,68 @@ output/**
 !output/
 !output/README.md
 
+# OS/editor noise
+.DS_Store
+**/.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# Local notes and generated records
+RELEASE_NOTES.md
+CHANGELOG.local.md
+*.session
+*.session.json
+*.transcript
+*.trace
+*.log
+logs/
+log/
+reports/
+test-results/
+playwright-report/
+
+# Build and coverage output
+build/
+dist/
+site/
+.next/
+.vercel/
+coverage/
+htmlcov/
+.coverage
+.coverage.*
+.nyc_output/
+
+# Temporary runtime files
+tmp/
+temp/
+.tmp/
+.temp/
+*.tmp
+*.temp
+
 # Python
 __pycache__/
+**/__pycache__/
 *.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.hypothesis/
+.tox/
+.nox/
+.venv/
+venv/
+env/
 
 # Node (docx-generator)
 node_modules/
 package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
