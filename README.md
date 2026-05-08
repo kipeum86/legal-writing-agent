@@ -319,11 +319,9 @@ This agent is part of **KP Legal Orchestrator**, a public collection of speciali
 
 | Repository | Public role |
 |-------|------|
-| [game-legal-research](https://github.com/lowtidebuild/game-legal-research) | Game industry law specialist |
+| [legal-research-agent](https://github.com/lowtidebuild/legal-research-agent) | Legal research specialist |
 | [legal-translation-agent](https://github.com/lowtidebuild/legal-translation-agent) | Legal translation specialist |
-| [general-legal-research](https://github.com/lowtidebuild/general-legal-research) | Legal research specialist |
-| [PIPA-expert](https://github.com/lowtidebuild/PIPA-expert) | Privacy specialist |
-| [GDPR-expert](https://github.com/lowtidebuild/GDPR-expert) | Data protection specialist |
+| [data-protection-agent](https://github.com/lowtidebuild/data-protection-agent) | Data protection specialist |
 | [contract-review-agent](https://github.com/lowtidebuild/contract-review-agent) | Contract review specialist |
 | **[legal-writing-agent](https://github.com/lowtidebuild/legal-writing-agent)** | **Legal drafting specialist** |
 | [second-review-agent](https://github.com/lowtidebuild/second-review-agent) | Senior review specialist |
