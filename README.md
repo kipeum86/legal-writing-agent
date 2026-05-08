@@ -319,11 +319,9 @@ This agent is part of **KP Legal Orchestrator**, a public collection of speciali
 
 | Repository | Public role |
 |-------|------|
-| [game-legal-research](https://github.com/kipeum86/game-legal-research) | Game industry law specialist |
+| [legal-research-agent](https://github.com/kipeum86/legal-research-agent) | Legal research specialist |
 | [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | Legal translation specialist |
-| [general-legal-research](https://github.com/kipeum86/general-legal-research) | Legal research specialist |
-| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | Privacy specialist |
-| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | Data protection specialist |
+| [data-protection-agent](https://github.com/kipeum86/data-protection-agent) | Data protection specialist |
 | [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | Contract review specialist |
 | **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **Legal drafting specialist** |
 | [second-review-agent](https://github.com/kipeum86/second-review-agent) | Senior review specialist |
