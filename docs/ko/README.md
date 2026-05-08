@@ -319,11 +319,9 @@ $LEGAL_AGENT_PRIVATE_DIR/output/documents/20260311_advisory_tax-opinion_v2.docx 
 
 | 저장소 | 공개 역할 |
 |---------|------|
-| [game-legal-research](https://github.com/kipeum86/game-legal-research) | 게임 산업법 스페셜리스트 |
+| [legal-research-agent](https://github.com/kipeum86/legal-research-agent) | 법률 리서치 스페셜리스트 |
 | [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | 법률 번역 스페셜리스트 |
-| [general-legal-research](https://github.com/kipeum86/general-legal-research) | 법률 리서치 스페셜리스트 |
-| [PIPA-expert](https://github.com/kipeum86/PIPA-expert) | 개인정보 스페셜리스트 |
-| [GDPR-expert](https://github.com/kipeum86/GDPR-expert) | 데이터 보호 스페셜리스트 |
+| [data-protection-agent](https://github.com/kipeum86/data-protection-agent) | 데이터 보호 스페셜리스트 |
 | [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | 계약 검토 스페셜리스트 |
 | **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **법률 드래프팅 스페셜리스트** |
 | [second-review-agent](https://github.com/kipeum86/second-review-agent) | 시니어 리뷰 스페셜리스트 |
