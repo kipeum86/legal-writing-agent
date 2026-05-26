@@ -123,7 +123,14 @@ Official Anthropic references:
 │   ├── /templates/                    # Document structure skeletons
 │   └── /precedents/                   # Reference documents
 ├── /docs/
-│   └── formatting-conventions-reference.md
+│   ├── README.md                     # Documentation map
+│   ├── /en/                          # English user-facing docs
+│   ├── /ko/                          # Korean user-facing docs
+│   ├── /guides/                      # Broad authoring and formatting guides
+│   ├── /references/                  # Optional quick references
+│   ├── /policies/                    # Agent policy and scope controls
+│   ├── /security/                    # Trust boundary and safety docs
+│   └── /architecture/adr/            # Architecture decision records
 └── /.claude/skills/                   # Agent skills & references
     ├── /request-interpreter/          # D1/R1: Request parsing, classification
     ├── /convention-selector/          # D2/R3: Style guide selection

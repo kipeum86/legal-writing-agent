@@ -135,7 +135,7 @@ def build_context_plan(
         "references": _dedupe(references),
         "optionalReferences": _dedupe(optional_references),
         "forbiddenByDefault": [
-            "legal-writing-formatting-guide.md",
+            "docs/guides/legal-writing-formatting-guide.md",
             "unselected style-guide-* files",
             "docs/references/formatting-modes-reference.md unless mode is requested",
             "full source documents when parser artifacts or chunks suffice",
