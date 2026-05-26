@@ -34,12 +34,12 @@ Selected character counts from local files:
 | File | Characters |
 |---|---:|
 | `CLAUDE.md` | 24,100 |
-| `legal-writing-formatting-guide.md` | 29,304 |
+| `docs/guides/legal-writing-formatting-guide.md` | 29,304 |
 | `configured supplemental reference` | 15,199 |
 | `.claude/skills/convention-selector/style-profiles/ko-korea-advisory.md` | 1,292 |
 | `.claude/skills/structure-planner/references/template-advisory-kr.md` | 4,203 |
 
-`CLAUDE.md` remains substantial, so lazy loading cannot rely on runtime convention alone. The enforceable mechanism is the deterministic context plan in `tools.context.budget`, plus tests that selected plans do not include broad references such as `legal-writing-formatting-guide.md` by default.
+`CLAUDE.md` remains substantial, so lazy loading cannot rely on runtime convention alone. The enforceable mechanism is the deterministic context plan in `tools.context.budget`, plus tests that selected plans do not include broad references such as `docs/guides/legal-writing-formatting-guide.md` by default.
 
 `.claude/settings.json` permits access to selected skill reference directories, but it does not by itself prove that all references are auto-loaded. Skill `SKILL.md` files must therefore continue to say exactly when to run `tools.context.budget` and which returned references to load.
 

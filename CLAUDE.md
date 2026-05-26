@@ -90,7 +90,7 @@ This rule applies equally to the `/ingest`, drafting (D1–D6), and revision (R1
 ## Context Loading
 
 - Follow `docs/policies/context-budget.md` and build task-specific plans with `python -m tools.context.budget` when selecting style/template/reference material.
-- `CLAUDE.md` is core policy only. Do not load `legal-writing-formatting-guide.md`, all style guides, all templates, or Mode A-D references by default.
+- `CLAUDE.md` is core policy only. Do not load `docs/guides/legal-writing-formatting-guide.md`, all style guides, all templates, or Mode A-D references by default.
 - D1 loads registry/scope only; D2 loads one selected style profile and one selected template; D3 loads the current section, selected style profile, selected register guide, term registry, placeholder rules, and relevant source chunks.
 - Mode A-D guidance lives in `docs/references/formatting-modes-reference.md` and is loaded only when requested.
 

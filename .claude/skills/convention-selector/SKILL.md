@@ -32,7 +32,7 @@ Given the parameters from D1, select the complete convention set:
 python -m tools.context.budget --step D2 --document-type <type> --target-language <ko|en> --jurisdiction <jurisdiction>
 ```
 
-Load only the files returned in `references` plus applicable `optionalReferences`. Do not load `legal-writing-formatting-guide.md` by default.
+Load only the files returned in `references` plus applicable `optionalReferences`. Do not load `docs/guides/legal-writing-formatting-guide.md` by default.
 
 **Step 1 — Style Profile**: Language + jurisdiction + document type → compact style profile first, fallback base guide only if no profile exists. Use `references/convention-matrix.md` only for routing ambiguity, not as a blanket style payload.
 

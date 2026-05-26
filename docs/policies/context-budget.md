@@ -35,7 +35,7 @@ Convention selection must first look for:
 .claude/skills/convention-selector/style-profiles/{language}-{jurisdiction}-{documentType}.md
 ```
 
-If no exact profile exists, fall back to the smallest jurisdiction base guide. Do not load `legal-writing-formatting-guide.md` as a default context payload; it is a broad reference file only.
+If no exact profile exists, fall back to the smallest jurisdiction base guide. Do not load `docs/guides/legal-writing-formatting-guide.md` as a default context payload; it is a broad reference file only.
 
 ## Mode Reference Rule
 

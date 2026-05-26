@@ -66,7 +66,7 @@ def test_corporate_registry_is_subtype_specific() -> None:
 
 
 def test_style_guides_do_not_override_drafting_scope() -> None:
-    public_style = read("legal-writing-formatting-guide.md")
+    public_style = read("docs/guides/legal-writing-formatting-guide.md")
 
     assert SCOPE_POLICY in public_style
     assert "formatting convention only" in public_style
