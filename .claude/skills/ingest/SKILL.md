@@ -248,7 +248,7 @@ Grade C:
 
 ### Step 6.5: Deterministic Retrieval Metadata
 
-`library/source-registry.json` is the canonical retrieval index for Phase 7a. Each source entry must preserve the ingest schema above and should include retrieval fields when known:
+`library/source-registry.json` is the canonical retrieval catalog for Phase 7a. Each source entry must preserve the ingest schema above and should include retrieval fields when known:
 
 | Field | Purpose |
 |---|---|
@@ -271,7 +271,15 @@ python -m tools.retrieval.deterministic \
   --provision '제15조'
 ```
 
-The retriever derives chunks at query time. Each selected chunk includes `source_id`, `chunk_id`, `title`, `grade`, `jurisdiction`, `provisions`, `topics`, `charStart`, `charEnd`, and capped `text`.
+After updating the catalog, rebuild the optional deterministic chunk index:
+
+```bash
+python -m tools.retrieval.deterministic \
+  --registry library/source-registry.json \
+  --build-index
+```
+
+When `library/chunk-index.json` exists and its registry/source checksums are current, retrieval uses it to skip repeated source reads and chunking. If the index is missing or stale, retrieval falls back to the live catalog scan. Each selected chunk includes `source_id`, `chunk_id`, `title`, `grade`, `jurisdiction`, `provisions`, `topics`, `charStart`, `charEnd`, and capped `text`.
 
 ---
 

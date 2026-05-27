@@ -7,6 +7,7 @@ matching, then returns bounded chunks for prompt injection.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -16,6 +17,8 @@ from tools.artifacts import schemas
 
 
 SCHEMA_VERSION = "1.0"
+INDEX_MODE = "deterministic-chunk-index"
+DEFAULT_CHUNK_INDEX_NAME = "chunk-index.json"
 DEFAULT_MAX_CHUNKS = 5
 DEFAULT_CHUNK_CHAR_CAP = 2_500
 DEFAULT_TOTAL_CHAR_CAP = 15_000
@@ -34,6 +37,8 @@ def retrieve_authority_chunks(
     max_chunks: int = DEFAULT_MAX_CHUNKS,
     chunk_char_cap: int = DEFAULT_CHUNK_CHAR_CAP,
     total_char_cap: int = DEFAULT_TOTAL_CHAR_CAP,
+    index_path: str | Path | None = None,
+    use_index: bool = True,
 ) -> dict[str, Any]:
     registry_file = Path(registry_path)
     registry = validate_source_registry(_read_json(registry_file))
@@ -46,22 +51,26 @@ def retrieve_authority_chunks(
     }
 
     candidates: list[dict[str, Any]] = []
-    for source in registry["sources"]:
-        source_path = _resolve_source_path(source["path"], registry_file)
-        if not source_path.exists():
+    chunks, index_status = _load_index_chunks(
+        registry_file,
+        registry,
+        chunk_char_cap=chunk_char_cap,
+        index_path=index_path,
+        use_index=use_index,
+    )
+    if chunks is None:
+        chunks = _live_chunks(registry, registry_file, chunk_char_cap=chunk_char_cap)
+
+    for chunk in chunks:
+        score, reasons, relevance_score = _score_chunk(chunk, query)
+        if score <= 0:
             continue
-        text = source_path.read_text(encoding="utf-8")
-        frontmatter, body = _split_frontmatter(text)
-        metadata = _source_metadata(source, frontmatter)
-        for chunk in _chunk_source(metadata, body, chunk_char_cap=chunk_char_cap):
-            score, reasons, relevance_score = _score_chunk(chunk, query)
-            if score <= 0:
-                continue
-            if (query["topics"] or query["provisions"]) and relevance_score <= 0:
-                continue
-            chunk["score"] = score
-            chunk["matchReasons"] = reasons
-            candidates.append(chunk)
+        if (query["topics"] or query["provisions"]) and relevance_score <= 0:
+            continue
+        candidate = dict(chunk)
+        candidate["score"] = score
+        candidate["matchReasons"] = reasons
+        candidates.append(candidate)
 
     candidates.sort(
         key=lambda item: (
@@ -80,12 +89,59 @@ def retrieve_authority_chunks(
         "maxChunks": max_chunks,
         "chunkCharCap": chunk_char_cap,
         "totalCharCap": total_char_cap,
+        "chunkIndex": index_status,
         "selectedChunkIds": [chunk["chunk_id"] for chunk in selected],
         "sourceIds": sorted({chunk["source_id"] for chunk in selected}),
         "totalSelectedChars": sum(len(chunk["text"]) for chunk in selected),
         "chunks": selected,
         "sufficiency": sufficiency,
     }
+
+
+def build_chunk_index(
+    registry_path: str | Path,
+    *,
+    chunk_char_cap: int = DEFAULT_CHUNK_CHAR_CAP,
+) -> dict[str, Any]:
+    registry_file = Path(registry_path)
+    registry = validate_source_registry(_read_json(registry_file))
+    chunks = _live_chunks(registry, registry_file, chunk_char_cap=chunk_char_cap)
+    sources = _source_digests(registry, registry_file)
+    return {
+        "schemaVersion": SCHEMA_VERSION,
+        "indexMode": INDEX_MODE,
+        "registrySha256": _sha256_path(registry_file) if registry_file.exists() else None,
+        "chunkCharCap": chunk_char_cap,
+        "sourceCount": len(sources),
+        "chunkCount": len(chunks),
+        "sources": sources,
+        "chunks": chunks,
+    }
+
+
+def write_chunk_index(
+    registry_path: str | Path,
+    *,
+    index_path: str | Path | None = None,
+    chunk_char_cap: int = DEFAULT_CHUNK_CHAR_CAP,
+) -> dict[str, Any]:
+    registry_file = Path(registry_path)
+    resolved_index_path = Path(index_path) if index_path else default_chunk_index_path(registry_file)
+    index = build_chunk_index(registry_file, chunk_char_cap=chunk_char_cap)
+    resolved_index_path.parent.mkdir(parents=True, exist_ok=True)
+    resolved_index_path.write_text(json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+    return {
+        "schemaVersion": SCHEMA_VERSION,
+        "indexMode": INDEX_MODE,
+        "indexPath": str(resolved_index_path),
+        "chunkCharCap": chunk_char_cap,
+        "sourceCount": index["sourceCount"],
+        "chunkCount": index["chunkCount"],
+    }
+
+
+def default_chunk_index_path(registry_path: str | Path) -> Path:
+    return Path(registry_path).with_name(DEFAULT_CHUNK_INDEX_NAME)
 
 
 def validate_source_registry(registry: dict[str, Any]) -> dict[str, Any]:
@@ -197,6 +253,101 @@ def _source_metadata(source: dict[str, Any], frontmatter: dict[str, Any]) -> dic
     }
 
 
+def _live_chunks(registry: dict[str, Any], registry_file: Path, *, chunk_char_cap: int) -> list[dict[str, Any]]:
+    chunks: list[dict[str, Any]] = []
+    for source in registry["sources"]:
+        source_path = _resolve_source_path(source["path"], registry_file)
+        if not source_path.exists():
+            continue
+        text = source_path.read_text(encoding="utf-8")
+        frontmatter, body = _split_frontmatter(text)
+        metadata = _source_metadata(source, frontmatter)
+        chunks.extend(_chunk_source(metadata, body, chunk_char_cap=chunk_char_cap))
+    return chunks
+
+
+def _load_index_chunks(
+    registry_file: Path,
+    registry: dict[str, Any],
+    *,
+    chunk_char_cap: int,
+    index_path: str | Path | None,
+    use_index: bool,
+) -> tuple[list[dict[str, Any]] | None, dict[str, Any]]:
+    resolved_index_path = Path(index_path) if index_path else default_chunk_index_path(registry_file)
+    status = {
+        "used": False,
+        "status": "disabled" if not use_index else "not_found",
+        "path": str(resolved_index_path),
+    }
+    if not use_index:
+        return None, status
+    if not resolved_index_path.exists():
+        return None, status
+
+    try:
+        index = json.loads(resolved_index_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        status["status"] = "invalid_json"
+        return None, status
+
+    stale_reason = _chunk_index_stale_reason(index, registry_file, registry, chunk_char_cap=chunk_char_cap)
+    if stale_reason:
+        status["status"] = "stale"
+        status["reason"] = stale_reason
+        return None, status
+
+    chunks = index.get("chunks")
+    if not isinstance(chunks, list):
+        status["status"] = "invalid"
+        status["reason"] = "chunks must be a list"
+        return None, status
+
+    status["used"] = True
+    status["status"] = "used"
+    status["chunkCount"] = len(chunks)
+    return chunks, status
+
+
+def _chunk_index_stale_reason(
+    index: dict[str, Any],
+    registry_file: Path,
+    registry: dict[str, Any],
+    *,
+    chunk_char_cap: int,
+) -> str | None:
+    if index.get("schemaVersion") != SCHEMA_VERSION:
+        return "schema version mismatch"
+    if index.get("indexMode") != INDEX_MODE:
+        return "index mode mismatch"
+    if index.get("chunkCharCap") != chunk_char_cap:
+        return "chunk char cap mismatch"
+    expected_registry_sha = _sha256_path(registry_file) if registry_file.exists() else None
+    if index.get("registrySha256") != expected_registry_sha:
+        return "registry checksum mismatch"
+    if index.get("sources") != _source_digests(registry, registry_file):
+        return "source checksum mismatch"
+    return None
+
+
+def _source_digests(registry: dict[str, Any], registry_file: Path) -> list[dict[str, Any]]:
+    sources: list[dict[str, Any]] = []
+    for source in registry["sources"]:
+        source_path = _resolve_source_path(source["path"], registry_file)
+        sources.append(
+            {
+                "source_id": source["source_id"],
+                "path": source["path"],
+                "sha256": _sha256_path(source_path) if source_path.exists() else None,
+            }
+        )
+    return sorted(sources, key=lambda item: (item["source_id"], item["path"]))
+
+
+def _sha256_path(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def _chunk_source(metadata: dict[str, Any], body: str, *, chunk_char_cap: int) -> list[dict[str, Any]]:
     chunks: list[dict[str, Any]] = []
     cursor = 0
@@ -240,11 +391,9 @@ def _score_chunk(chunk: dict[str, Any], query: dict[str, Any]) -> tuple[int, lis
     reasons = [f"grade:{chunk['grade']}"]
     if chunk["jurisdiction"] and chunk["jurisdiction"] == query["jurisdiction"]:
         score += 25
-        relevance += 25
         reasons.append("jurisdiction")
     if query["documentType"] in chunk.get("documentTypes", []):
         score += 10
-        relevance += 10
         reasons.append("documentType")
 
     text_norm = _normalize_token(chunk["text"])
@@ -381,8 +530,11 @@ def build_parser() -> argparse.ArgumentParser:
         description="Retrieve deterministic authority chunks from source-registry metadata.",
     )
     parser.add_argument("--registry", type=Path, required=True, help="library/source-registry.json path")
-    parser.add_argument("--document-type", required=True)
-    parser.add_argument("--jurisdiction", required=True)
+    parser.add_argument("--build-index", action="store_true", help="write a deterministic chunk index and exit")
+    parser.add_argument("--index", type=Path, help="chunk-index.json path; defaults to registry sibling")
+    parser.add_argument("--no-index", action="store_true", help="disable chunk-index lookup for this retrieval")
+    parser.add_argument("--document-type")
+    parser.add_argument("--jurisdiction")
     parser.add_argument("--support-level", choices=("full", "conditional"))
     parser.add_argument("--topic", action="append", default=[])
     parser.add_argument("--provision", action="append", default=[])
@@ -393,7 +545,21 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.build_index:
+        summary = write_chunk_index(
+            args.registry,
+            index_path=args.index,
+            chunk_char_cap=args.chunk_char_cap,
+        )
+        print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
+    if not args.document_type:
+        parser.error("--document-type is required unless --build-index is used")
+    if not args.jurisdiction:
+        parser.error("--jurisdiction is required unless --build-index is used")
+
     result = retrieve_authority_chunks(
         args.registry,
         document_type=args.document_type,
@@ -404,6 +570,8 @@ def main(argv: list[str] | None = None) -> int:
         max_chunks=args.max_chunks,
         chunk_char_cap=args.chunk_char_cap,
         total_char_cap=args.total_char_cap,
+        index_path=args.index,
+        use_index=not args.no_index,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
@@ -411,4 +579,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(main())
-
