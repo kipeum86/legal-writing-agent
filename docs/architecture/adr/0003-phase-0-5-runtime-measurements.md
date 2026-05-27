@@ -35,7 +35,7 @@ Selected character counts from local files:
 |---|---:|
 | `CLAUDE.md` | 24,100 |
 | `docs/guides/legal-writing-formatting-guide.md` | 29,304 |
-| `configured supplemental reference` | 15,199 |
+| Configured configured supplemental reference | 15,199 |
 | `.claude/skills/convention-selector/style-profiles/ko-korea-advisory.md` | 1,292 |
 | `.claude/skills/structure-planner/references/template-advisory-kr.md` | 4,203 |
 

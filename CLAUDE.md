@@ -153,7 +153,7 @@ Executable MVP: `python -m tools.pipeline draft --request request.json`
 **Trigger**: D1 parameters resolved.
 **Skills**: `/convention-selector`, `/structure-planner`
 
-1. Build a D2 context plan with `tools.context.budget`; load only the selected compact style profile, selected template, and applicable house/private supplement. **한국어 법률의견서인 경우 `configured supplemental reference`가 존재하면 적용.**
+1. Build a D2 context plan with `tools.context.budget`; load only the selected compact style profile, selected template, and applicable house/configured supplement. **한국어 법률의견서인 경우 설정된 보조 참조이 설정되어 있으면 적용.**
 2. Generate document outline from template + user instructions
 3. Initialize term registry and clause map using canonical JSON schemas
 4. **Present outline and proceed**: Show outline briefly, then start drafting immediately. User can interrupt to modify — no need to wait for explicit approval.
@@ -274,7 +274,7 @@ Same as D6. File name includes `_revised_`.
 
 ## Convention Selection
 
-Use `/convention-selector` and `tools.context.budget` to choose exactly one compact style profile for the resolved language, jurisdiction, and document type. Fall back to a base style guide only when no profile exists. Korean legal opinions additionally apply `configured supplemental reference` when present locally.
+Use `/convention-selector` and `tools.context.budget` to choose exactly one compact style profile for the resolved language, jurisdiction, and document type. Fall back to a base style guide only when no profile exists. Korean legal opinions additionally apply a configured supplemental reference when present.
 
 ## Bilingual Term Handling
 
