@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Security note
+# Local file note
 # -----------------------------------------------------------------------------
 # Do NOT list private filenames in this file. The .gitignore itself is
 # committed and public. For one-off local files, prefer .git/info/exclude.
@@ -32,7 +32,7 @@ docs/_private/**
 !docs/_private/.gitkeep
 !docs/_private/README.md
 
-# User-managed library assets (confidential — see library/README.md)
+# User-managed library assets (private — see library/README.md)
 library/**
 !library/
 !library/README.md
@@ -58,12 +58,12 @@ library/**
 !library/grade-c/
 !library/grade-c/.gitkeep
 
-# User-provided input documents (confidential)
+# User-provided input documents (private)
 input/**
 !input/
 !input/README.md
 
-# Generated output artifacts (confidential)
+# Generated output artifacts (private)
 output/**
 !output/
 !output/README.md

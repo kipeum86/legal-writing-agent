@@ -31,7 +31,10 @@ def test_simple_korean_corporate_plan_excludes_unrelated_guides() -> None:
     assert plan["withinBudget"] is True
 
 
-def test_korean_advisory_plan_loads_opinion_specific_supplement_only_as_optional() -> None:
+def test_korean_advisory_plan_loads_configured_supplement_only_as_optional(monkeypatch) -> None:
+    supplemental_reference = "docs/_private/supplemental-reference.md"
+    monkeypatch.setenv("LEGAL_AGENT_D2_SUPPLEMENTAL_REFERENCE", supplemental_reference)
+
     plan = build_context_plan(
         step="D2",
         document_type="advisory",
@@ -43,7 +46,8 @@ def test_korean_advisory_plan_loads_opinion_specific_supplement_only_as_optional
 
     assert ".claude/skills/convention-selector/style-profiles/ko-korea-advisory.md" in references
     assert ".claude/skills/structure-planner/references/template-advisory-kr.md" in references
-    assert "configured supplemental reference" in optional
+    assert supplemental_reference in optional
+    assert supplemental_reference not in references
     assert "style-guide-en-uk" not in references
     assert "formatting-modes-reference.md" not in references
     assert plan["withinBudget"] is True

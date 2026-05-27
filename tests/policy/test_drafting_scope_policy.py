@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 
@@ -71,8 +72,9 @@ def test_style_guides_do_not_override_drafting_scope() -> None:
     assert SCOPE_POLICY in public_style
     assert "formatting convention only" in public_style
 
-    private_style_path = ROOT / "configured supplemental reference"
-    if private_style_path.exists():
+    configured_reference = os.environ.get("LEGAL_AGENT_D2_SUPPLEMENTAL_REFERENCE", "").strip()
+    private_style_path = ROOT / configured_reference if configured_reference else None
+    if private_style_path and private_style_path.exists():
         private_style = private_style_path.read_text(encoding="utf-8")
         assert "Drafting-scope override" in private_style
         assert "`counselProvidedCertainty`" in private_style

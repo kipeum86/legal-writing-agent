@@ -12,8 +12,8 @@
 | Bilingual (KR+EN) | Cross-border | Both referenced | Primary language's numbering | Primary language's page size | Both as needed | Primary language's date format |
 
 **Mandatory supplement for Korean legal opinions**:
-- If the document is a Korean legal opinion, legal review opinion, or client memorandum, load `style-profiles/ko-korea-advisory.md` and load `configured supplemental reference` when it exists locally
-- The opinion-specific guide controls where it conflicts with the compact Korean advisory profile
+- If the document is a Korean legal opinion, legal review opinion, or client memorandum, load `style-profiles/ko-korea-advisory.md` and the configured supplemental reference when it exists locally
+- The opinion-specific profile controls where it conflicts with the compact Korean advisory profile
 
 ## Selection Algorithm
 
@@ -24,7 +24,7 @@
 4. Load the compact `style-profiles/{language}-{jurisdiction}-{documentType}.md` profile when present; fallback to the smallest base style guide only if no profile exists
 5. Load matching template from /library/templates/ when present; otherwise use built-in references/template-{doc-type}-{language}.md
 6. Apply house style overlay (if loaded at D1)
-7. Load configured supplemental reference when the document is a Korean legal opinion family document and the file exists locally
+7. Load the configured supplemental reference when the document is a Korean legal opinion family document and the file exists locally
 8. Return complete convention set
 ```
 
@@ -40,4 +40,4 @@ House style does NOT override:
 - Legal citation format (jurisdiction-bound)
 - Register/formality level (language-bound)
 - Substantive structure (document-type-bound)
-- Mandatory Korean legal opinion rules from `configured supplemental reference`
+- Mandatory Korean legal opinion rules from the configured supplemental reference
