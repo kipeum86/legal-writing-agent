@@ -257,7 +257,7 @@ Previously completed documents. The agent analyzes their structure and replicate
    - Classify source grade (A/B/C)
    - Generate metadata (frontmatter)
    - Place in the appropriate `library/grade-{a,b,c}/` folder
-   - Update search indexes
+   - Update `library/source-registry.json` and the optional deterministic chunk index
 
 > **Note:** Dropping files alone does not trigger processing.
 > You must run `/ingest` or tell the agent (e.g. "inbox에 파일 넣었어")
@@ -272,6 +272,12 @@ Previously completed documents. The agent analyzes their structure and replicate
 | C | Academic/reference | Journal articles, theses, academic papers |
 
 Ingested sources serve as authority packets for Conditional-support documents (Advisory, Litigation, Regulatory).
+
+To rebuild the retrieval chunk index manually:
+
+```bash
+python -m tools.retrieval.deterministic --registry library/source-registry.json --build-index
+```
 
 ## File Handling
 

@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from tools.artifacts import schemas
-from tools.retrieval.deterministic import apply_retrieval_to_manifest, retrieve_authority_chunks
+from tools.retrieval.deterministic import apply_retrieval_to_manifest, retrieve_authority_chunks, write_chunk_index
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -250,3 +250,108 @@ def test_retrieval_cli_emits_json(tmp_path: Path) -> None:
     assert payload["retrievalMode"] == "deterministic-keyword-tag"
     assert payload["selectedChunkIds"] == ["a-cli-source#c1"]
 
+
+def test_retrieval_uses_prebuilt_chunk_index(tmp_path: Path) -> None:
+    source = write_source(
+        tmp_path,
+        source_id="a-indexed-source",
+        grade="A",
+        jurisdiction="KR",
+        title="Indexed Source",
+        topics=["privacy"],
+        provisions=["제4조"],
+        body="제4조 privacy 관련 법령 텍스트입니다.",
+    )
+    registry = write_registry(tmp_path, [source])
+    summary = write_chunk_index(registry)
+
+    result = retrieve_authority_chunks(
+        registry,
+        document_type="advisory",
+        jurisdiction="korea",
+        topics=("privacy",),
+        provisions=("제4조",),
+    )
+
+    assert summary["chunkCount"] == 1
+    assert result["chunkIndex"]["used"] is True
+    assert result["chunkIndex"]["status"] == "used"
+    assert result["selectedChunkIds"] == ["a-indexed-source#c1"]
+
+
+def test_stale_chunk_index_falls_back_to_live_sources(tmp_path: Path) -> None:
+    source = write_source(
+        tmp_path,
+        source_id="a-stale-source",
+        grade="A",
+        jurisdiction="KR",
+        title="Stale Source",
+        topics=[],
+        provisions=[],
+        body="oldmarker 관련 법령 텍스트입니다.",
+    )
+    registry = write_registry(tmp_path, [source])
+    write_chunk_index(registry)
+    (tmp_path / source["path"]).write_text(
+        "---\n"
+        "source_id: \"a-stale-source\"\n"
+        "title_kr: \"Stale Source\"\n"
+        "source_grade: \"A\"\n"
+        "jurisdiction: \"KR\"\n"
+        "topics: []\n"
+        "legal_provisions: []\n"
+        "applicable_document_types: [\"advisory\"]\n"
+        "---\n"
+        "제99조 tax 관련 법령 텍스트입니다.\n",
+        encoding="utf-8",
+    )
+
+    result = retrieve_authority_chunks(
+        registry,
+        document_type="advisory",
+        jurisdiction="korea",
+        topics=("oldmarker",),
+    )
+
+    assert result["chunkIndex"]["used"] is False
+    assert result["chunkIndex"]["status"] == "stale"
+    assert result["selectedChunkIds"] == []
+    assert result["sufficiency"]["status"] == "insufficient"
+
+
+def test_retrieval_cli_builds_chunk_index(tmp_path: Path) -> None:
+    source = write_source(
+        tmp_path,
+        source_id="a-build-index-source",
+        grade="A",
+        jurisdiction="KR",
+        title="Build Index Source",
+        topics=["privacy"],
+        provisions=["제6조"],
+        body="제6조 privacy 관련 법령 텍스트입니다.",
+    )
+    registry = write_registry(tmp_path, [source])
+    index_path = tmp_path / "library" / "chunk-index.json"
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "tools.retrieval.deterministic",
+            "--registry",
+            str(registry),
+            "--build-index",
+            "--index",
+            str(index_path),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert completed.returncode == 0
+    payload = json.loads(completed.stdout)
+    assert payload["chunkCount"] == 1
+    assert payload["indexPath"] == str(index_path)
+    assert index_path.exists()

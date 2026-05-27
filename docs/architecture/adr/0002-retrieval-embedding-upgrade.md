@@ -34,10 +34,16 @@ Deterministic retrieval is the production default for Phase 1-8.
 |---|---:|
 | External API cost | USD 0 |
 | External text disclosure | None |
-| Local index storage | Not required beyond `library/source-registry.json` |
-| Current retrieval test cases | 5/5 passing |
+| Local index storage | Optional `library/chunk-index.json` |
+| Current retrieval test cases | 8/8 passing |
 | Authority packet sufficiency behavior | Implemented |
 | Manifest source/chunk recording | Implemented |
+
+The optional chunk index is deterministic and local-only. It stores bounded
+source chunks plus source/registry checksums so retrieval can skip repeated
+file reads and chunking when the registry and source files have not changed.
+If the index is missing or stale, retrieval falls back to the live
+`source-registry.json` scan.
 
 The current repo has no representative retrieval benchmark large enough to prove an embedding quality gain. Adding embeddings now would increase privacy and maintenance burden without measured product benefit.
 
@@ -67,6 +73,5 @@ If embeddings are later implemented:
 ## Consequences
 
 - Phase 8 remains executable without network access or external provider configuration.
-- Confidentiality remains simple: retrieval reads local Markdown and emits bounded chunks.
+- Confidentiality remains simple: retrieval reads local Markdown or a local chunk index and emits bounded chunks.
 - Future embedding work has clear quality, cost, privacy, and storage gates.
-
