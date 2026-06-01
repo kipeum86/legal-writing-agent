@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -72,8 +73,10 @@ def build_context_plan(
             ]
         )
         if language == "ko" and normalized_jurisdiction == "korea" and normalized_type == "advisory":
-            optional_references.append("docs/_private/ko-legal-opinion-style-guide.md")
-            notes.append("Korean advisory work loads the private opinion supplement when present.")
+            supplemental_reference = os.environ.get("LEGAL_AGENT_D2_SUPPLEMENTAL_REFERENCE", "").strip()
+            if supplemental_reference:
+                optional_references.append(supplemental_reference)
+            notes.append("Korean advisory work may load a configured supplemental reference.")
     elif resolved_step == "D3":
         references.extend(
             [
@@ -135,7 +138,7 @@ def build_context_plan(
         "references": _dedupe(references),
         "optionalReferences": _dedupe(optional_references),
         "forbiddenByDefault": [
-            "legal-writing-formatting-guide.md",
+            "docs/guides/legal-writing-formatting-guide.md",
             "unselected style-guide-* files",
             "docs/references/formatting-modes-reference.md unless mode is requested",
             "full source documents when parser artifacts or chunks suffice",

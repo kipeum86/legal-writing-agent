@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-# Run after every security-hardening commit to re-prove the leak is closed.
+# Run after local-surface changes to re-prove the guardrail still holds.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 fail=0
 
-# 1. No individually-named sensitive files in .gitignore
-if grep -nE "(ko-legal-opinion|naming-transition|codex-quality-audit|legal-writing-agent-design|source-registry|draft\.md|change-map\.json|outline\.json)" .gitignore; then
-    echo "FAIL: sensitive filename detected in .gitignore"
+# 1. No individually named local/private files in .gitignore
+if grep -nE "(naming-transition|codex-quality-audit|legal-writing-agent-design|source-registry|draft\.md|change-map\.json|outline\.json)" .gitignore; then
+    echo "FAIL: local/private filename detected in .gitignore"
     fail=1
 else
-    echo "ok: .gitignore carries no individual sensitive filenames"
+    echo "ok: .gitignore carries no individual local/private filenames"
 fi
 
-# 2. Old style-guide path is gone
-if rg -n "docs/ko-legal-opinion-style-guide\.md" -g '!docs/plans/*' -g '!docs/_private/*' -g '!tools/security/checks/gitignore-hygiene.sh'; then
-    echo "FAIL: legacy style-guide path still referenced"
+# 2. Configured supplemental references are configured outside committed paths
+if rg -n "LEGAL_AGENT_D2_SUPPLEMENTAL_REFERENCE" docs README.md CLAUDE.md .claude tools tests -g '!tools/context/budget.py' -g '!tools/security/checks/gitignore-hygiene.sh' -g '!tests/context/test_budget.py' -g '!tests/policy/test_drafting_scope_policy.py'; then
+    echo "FAIL: configured supplemental reference appears in public docs"
     fail=1
 else
-    echo "ok: no residual references to docs/ko-legal-opinion-style-guide.md"
+    echo "ok: configured supplemental references stay out of public docs"
 fi
 
 # 3. Required trust-boundary markers are present

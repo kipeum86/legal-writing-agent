@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 
@@ -66,13 +67,14 @@ def test_corporate_registry_is_subtype_specific() -> None:
 
 
 def test_style_guides_do_not_override_drafting_scope() -> None:
-    public_style = read("legal-writing-formatting-guide.md")
+    public_style = read("docs/guides/legal-writing-formatting-guide.md")
 
     assert SCOPE_POLICY in public_style
     assert "formatting convention only" in public_style
 
-    private_style_path = ROOT / "docs/_private/ko-legal-opinion-style-guide.md"
-    if private_style_path.exists():
+    configured_reference = os.environ.get("LEGAL_AGENT_D2_SUPPLEMENTAL_REFERENCE", "").strip()
+    private_style_path = ROOT / configured_reference if configured_reference else None
+    if private_style_path and private_style_path.exists():
         private_style = private_style_path.read_text(encoding="utf-8")
         assert "Drafting-scope override" in private_style
         assert "`counselProvidedCertainty`" in private_style

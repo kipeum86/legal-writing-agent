@@ -18,20 +18,23 @@ def test_simple_korean_corporate_plan_excludes_unrelated_guides() -> None:
     references = "\n".join(plan["references"] + plan["optionalReferences"])
     loaded_text = _plan_text(plan)
     baseline = len((ROOT / "CLAUDE.md").read_text(encoding="utf-8")) + len(
-        (ROOT / "legal-writing-formatting-guide.md").read_text(encoding="utf-8")
+        (ROOT / "docs/guides/legal-writing-formatting-guide.md").read_text(encoding="utf-8")
     )
 
     assert ".claude/skills/convention-selector/style-profiles/ko-korea-corporate.md" in references
     assert ".claude/skills/structure-planner/references/template-corporate-kr.md" in references
     assert "style-guide-en-us" not in references
     assert "style-guide-en-uk" not in references
-    assert "legal-writing-formatting-guide.md" not in references
+    assert "docs/guides/legal-writing-formatting-guide.md" not in references
     assert "Mode B" not in loaded_text
     assert estimate_plan_chars(plan) <= int(baseline * 0.6)
     assert plan["withinBudget"] is True
 
 
-def test_korean_advisory_plan_loads_opinion_specific_supplement_only_as_optional() -> None:
+def test_korean_advisory_plan_loads_configured_supplement_only_as_optional(monkeypatch) -> None:
+    supplemental_reference = "docs/_private/supplemental-reference.md"
+    monkeypatch.setenv("LEGAL_AGENT_D2_SUPPLEMENTAL_REFERENCE", supplemental_reference)
+
     plan = build_context_plan(
         step="D2",
         document_type="advisory",
@@ -43,7 +46,8 @@ def test_korean_advisory_plan_loads_opinion_specific_supplement_only_as_optional
 
     assert ".claude/skills/convention-selector/style-profiles/ko-korea-advisory.md" in references
     assert ".claude/skills/structure-planner/references/template-advisory-kr.md" in references
-    assert "docs/_private/ko-legal-opinion-style-guide.md" in optional
+    assert supplemental_reference in optional
+    assert supplemental_reference not in references
     assert "style-guide-en-uk" not in references
     assert "formatting-modes-reference.md" not in references
     assert plan["withinBudget"] is True
@@ -103,7 +107,7 @@ def test_context_budget_cli_emits_json_plan() -> None:
 
 
 def test_default_prompt_docs_do_not_embed_mode_or_unselected_style_payloads() -> None:
-    formatting_guide = (ROOT / "legal-writing-formatting-guide.md").read_text(encoding="utf-8")
+    formatting_guide = (ROOT / "docs/guides/legal-writing-formatting-guide.md").read_text(encoding="utf-8")
     selector = (ROOT / ".claude/skills/convention-selector/SKILL.md").read_text(encoding="utf-8")
 
     assert "### 20. Mode B" not in formatting_guide

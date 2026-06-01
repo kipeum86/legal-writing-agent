@@ -123,10 +123,14 @@ Anthropic 공식 참고자료:
 │   ├── /templates/                    # 문서 구조 골격
 │   └── /precedents/                   # 참조 문서
 ├── /docs/
-│   ├── formatting-conventions-reference.md    # 서식 규범 참조 (영어)
-│   └── /ko/
-│       ├── README.md                          # 메인 README (한국어)
-│       └── formatting-conventions-reference.md  # 서식 규범 참조 (한국어)
+│   ├── README.md                     # 문서 지도
+│   ├── /en/                          # 영어 사용자 문서
+│   ├── /ko/                          # 한국어 사용자 문서
+│   ├── /guides/                      # 작성/서식 종합 가이드
+│   ├── /references/                  # 선택형 빠른 참조
+│   ├── /policies/                    # 에이전트 정책 및 scope 통제
+│   ├── /security/                    # trust boundary 및 보안 문서
+│   └── /architecture/adr/            # 아키텍처 의사결정 기록
 └── /.claude/skills/                   # 에이전트 스킬 및 참조자료
     ├── /request-interpreter/          # D1/R1: 요청 해석, 분류
     ├── /convention-selector/          # D2/R3: 스타일 가이드 선택
