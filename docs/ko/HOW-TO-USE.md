@@ -24,12 +24,12 @@
 ### Git이 설치되어 있는 경우
 
 ```bash
-git clone https://github.com/kipeum86/legal-writing-agent.git
+git clone https://github.com/lowtidebuild/legal-writing-agent.git
 ```
 
 ### Git이 없는 경우
 
-1. [github.com/kipeum86/legal-writing-agent](https://github.com/kipeum86/legal-writing-agent) 접속
+1. [github.com/lowtidebuild/legal-writing-agent](https://github.com/lowtidebuild/legal-writing-agent) 접속
 2. 초록색 **"Code"** 버튼 클릭
 3. **"Download ZIP"** 클릭
 4. 원하는 폴더에 압축 해제

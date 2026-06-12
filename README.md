@@ -332,12 +332,12 @@ This agent is part of **KP Legal Orchestrator**, a public collection of speciali
 
 | Repository | Public role |
 |-------|------|
-| [legal-research-agent](https://github.com/kipeum86/legal-research-agent) | Legal research specialist |
-| [legal-translation-agent](https://github.com/kipeum86/legal-translation-agent) | Legal translation specialist |
-| [data-protection-agent](https://github.com/kipeum86/data-protection-agent) | Data protection specialist |
-| [contract-review-agent](https://github.com/kipeum86/contract-review-agent) | Contract review specialist |
-| **[legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)** | **Legal drafting specialist** |
-| [second-review-agent](https://github.com/kipeum86/second-review-agent) | Senior review specialist |
+| [legal-research-agent](https://github.com/lowtidebuild/legal-research-agent) | Legal research specialist |
+| [legal-translation-agent](https://github.com/lowtidebuild/legal-translation-agent) | Legal translation specialist |
+| [data-protection-agent](https://github.com/lowtidebuild/data-protection-agent) | Data protection specialist |
+| [contract-review-agent](https://github.com/lowtidebuild/contract-review-agent) | Contract review specialist |
+| **[legal-writing-agent](https://github.com/lowtidebuild/legal-writing-agent)** | **Legal drafting specialist** |
+| [second-review-agent](https://github.com/lowtidebuild/second-review-agent) | Senior review specialist |
 
 ## License
 

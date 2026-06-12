@@ -24,12 +24,12 @@ That's it. No databases, no servers.
 ### If you have Git installed
 
 ```bash
-git clone https://github.com/kipeum86/legal-writing-agent.git
+git clone https://github.com/lowtidebuild/legal-writing-agent.git
 ```
 
 ### If you don't have Git
 
-1. Go to [github.com/kipeum86/legal-writing-agent](https://github.com/kipeum86/legal-writing-agent)
+1. Go to [github.com/lowtidebuild/legal-writing-agent](https://github.com/lowtidebuild/legal-writing-agent)
 2. Click the green **"Code"** button
 3. Click **"Download ZIP"**
 4. Unzip to a folder of your choice
